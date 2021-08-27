@@ -1,0 +1,82 @@
+package com.example.tandonmedical;
+
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+public class productDetails extends AppCompatActivity {
+
+    private TextView productDetails_category_tv, productDetails_productName_tv, profile_no_of_prescriptions, productDetails_productDescription_tv;
+    private TextView productDetails_productRating_tv, productDetails_discount_tv, productDetails_mrp_tv, productDetails_price_tv;
+    private ImageView productDetails_image_iv, productDetail_back_iv, productDetail_cart_iv;
+    private CardView productDetails_addToCart_cv;
+
+    private String currentUserUid;
+
+    private FirebaseFirestore mDb;
+    private FirebaseAuth firebaseAuth;
+    private StorageReference mStorageRef;
+    private String category, currentDateandTime, description, discount, imageUrl, mrp, name, price;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_product_details);
+        getSupportActionBar().hide();
+
+        productDetails_productName_tv = findViewById(R.id.productDetails_productName_tv);
+        productDetails_category_tv = findViewById(R.id.productDetails_category_tv);
+        productDetails_image_iv = findViewById(R.id.productDetails_image_iv);
+        productDetails_price_tv = findViewById(R.id.productDetails_price_tv);
+        productDetails_mrp_tv = findViewById(R.id.productDetails_mrp_tv);
+        productDetails_discount_tv = findViewById(R.id.productDetails_discount_tv);
+        productDetails_productDescription_tv = findViewById(R.id.productDetails_productDescription_tv);
+        productDetails_productRating_tv = findViewById(R.id.productDetails_productRating_tv);
+        productDetails_addToCart_cv = findViewById(R.id.productDetails_addToCart_cv);
+        productDetail_cart_iv = findViewById(R.id.productDetail_cart_iv);
+        productDetail_back_iv = findViewById(R.id.productDetail_back_iv);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        mDb = FirebaseFirestore.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        currentUserUid = firebaseAuth.getUid();
+
+        if (getIntent().getExtras() != null) {
+            this.category = (String) getIntent().getExtras().get("category");
+            this.currentDateandTime = (String) getIntent().getExtras().get("currentDateandTime");
+            this.description = (String) getIntent().getExtras().get("description");
+            this.discount = (String) getIntent().getExtras().get("discount");
+            this.imageUrl = (String) getIntent().getExtras().get("imageUrl");
+            this.mrp = (String) getIntent().getExtras().get("mrp");
+            this.name = (String) getIntent().getExtras().get("name");
+            this.price = (String) getIntent().getExtras().get("price");
+        }
+
+        productDetails_productName_tv.setText(name);
+        productDetails_category_tv.setText(category);
+        productDetails_price_tv.setText(price+" Rs");
+        productDetails_mrp_tv.setText(mrp+" Rs");
+        productDetails_mrp_tv.setPaintFlags(productDetails_mrp_tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        productDetails_discount_tv.setText("GET "+discount+"% OFF");
+        productDetails_productDescription_tv.setText(description);
+        //productDetails_productRating_tv.setText(name);
+
+        Glide.with(this).load(imageUrl).into(productDetails_image_iv);
+
+
+
+
+    }
+
+
+}
