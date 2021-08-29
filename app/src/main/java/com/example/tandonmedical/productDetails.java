@@ -1,9 +1,12 @@
 package com.example.tandonmedical;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -74,6 +77,27 @@ public class productDetails extends AppCompatActivity {
         Glide.with(this).load(imageUrl).into(productDetails_image_iv);
 
 
+        productDetails_addToCart_cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(productDetails.this, "Added to cart", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        productDetail_back_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        productDetail_cart_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), orders.class));
+            }
+        });
 
 
     }

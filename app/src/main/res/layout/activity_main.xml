@@ -33,10 +33,10 @@
 
             <ImageView
                 android:id="@+id/History_orders_image_view"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_gravity="center"
-                android:background="@drawable/ic_baseline_notifications_none_24"
+                android:background="@drawable/cart"
                 android:backgroundTint="@color/teal_700" />
 
 
@@ -105,6 +105,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/categories_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chooseYourCategory" />
+
 
             <TextView
                 android:id="@+id/Product"
@@ -132,13 +140,7 @@
 
             </FrameLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/categories_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chooseYourCategory" />
+
 
             <TextView
                 android:id="@+id/Doctor"
