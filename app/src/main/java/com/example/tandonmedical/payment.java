@@ -107,10 +107,8 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
         MapStyleOptions mapStyleOptions = MapStyleOptions.loadRawResourceStyle(this, R.raw.maps_style);
         mMap.setMapStyle(mapStyleOptions);
 
-
         enableMyLocationIfPermitted();
         setCameraView();
-
         setUserCurrentLocationOnMap();
     }
 
@@ -145,7 +143,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                     double rightBoundary = geoPoint.getLongitude() + 0.1;
                     mMapBoundary = new LatLngBounds(new LatLng(bottomBoundary, leftBoundary),
                             new LatLng(topBoundary, rightBoundary));
-                    //mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mMapBoundary, 0));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mMapBoundary, 0));
                 }
             }
         });
