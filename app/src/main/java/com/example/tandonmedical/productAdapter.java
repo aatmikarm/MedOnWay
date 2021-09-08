@@ -1,5 +1,7 @@
 package com.example.tandonmedical;
 
+import static androidx.core.content.res.TypedArrayUtils.getText;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -25,6 +28,7 @@ public class productAdapter extends RecyclerView.Adapter<productAdapter.ItemView
 
         this.context = context;
         this.productModelList = productModelList;
+
 
     }
 
@@ -55,7 +59,7 @@ public class productAdapter extends RecyclerView.Adapter<productAdapter.ItemView
                 Intent intent = new Intent(context, productDetails.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("category", productModelList.get(position).getCategory());
-                intent.putExtra("currentDateandTime", productModelList.get(position).getCurrentDateandTime());
+                intent.putExtra("productId", productModelList.get(position).getProductId());
 
                 intent.putExtra("description", productModelList.get(position).getDescription());
                 intent.putExtra("discount", productModelList.get(position).getDiscount());

@@ -8,14 +8,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class productDetails extends AppCompatActivity {
 
@@ -29,7 +37,8 @@ public class productDetails extends AppCompatActivity {
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
-    private String category, currentDateandTime, description, discount, imageUrl, mrp, name, price;
+    private String category, productId, description, discount, imageUrl, mrp, name, price;
+    String checkToLoop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +65,7 @@ public class productDetails extends AppCompatActivity {
 
         if (getIntent().getExtras() != null) {
             this.category = (String) getIntent().getExtras().get("category");
-            this.currentDateandTime = (String) getIntent().getExtras().get("currentDateandTime");
+            this.productId = (String) getIntent().getExtras().get("productId");
             this.description = (String) getIntent().getExtras().get("description");
             this.discount = (String) getIntent().getExtras().get("discount");
             this.imageUrl = (String) getIntent().getExtras().get("imageUrl");
@@ -67,10 +76,10 @@ public class productDetails extends AppCompatActivity {
 
         productDetails_productName_tv.setText(name);
         productDetails_category_tv.setText(category);
-        productDetails_price_tv.setText(price+" Rs");
-        productDetails_mrp_tv.setText(mrp+" Rs");
+        productDetails_price_tv.setText(price + " Rs");
+        productDetails_mrp_tv.setText(mrp + " Rs");
         productDetails_mrp_tv.setPaintFlags(productDetails_mrp_tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        productDetails_discount_tv.setText("GET "+discount+"% OFF");
+        productDetails_discount_tv.setText("GET " + discount + "% OFF");
         productDetails_productDescription_tv.setText(description);
         //productDetails_productRating_tv.setText(name);
 
@@ -81,7 +90,60 @@ public class productDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(productDetails.this, "Added to cart", Toast.LENGTH_SHORT).show();
+
+                mDb.collection("users").document(currentUserUid).collection("orders")
+                        .whereEqualTo("productId", productId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        if (task.isSuccessful()) {
+
+                            if (task.getResult().isEmpty()) {
+
+
+                                Map<String, Object> order = new HashMap<>();
+                                order.put("name", name);
+                                order.put("currentUserUid", currentUserUid);
+                                order.put("imageUrl", imageUrl);
+                                order.put("mrp", mrp);
+                                order.put("price", price);
+                                order.put("discount", discount);
+                                order.put("description", description);
+                                order.put("productId", productId);
+                                order.put("category", category);
+                                //in the cart product status
+                                order.put("status", "inCart");
+                                order.put("quantity", "1");
+
+                                mDb.collection("users").document(currentUserUid).collection("orders").document(productId).set(order);
+
+                                Toast.makeText(productDetails.this, "Added to cart", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getApplicationContext(), orders.class));
+                                finish();
+
+                            }
+                            for (final QueryDocumentSnapshot document : task.getResult()) {
+
+                                String orderStatus = (String) document.get("status");
+
+                                if (orderStatus.equals("inCart")) {
+
+                                    Toast.makeText(productDetails.this, "already in cart", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(getApplicationContext(), orders.class));
+                                    finish();
+
+                                }
+
+
+                            }
+
+
+                        }
+
+
+                    }
+                });
+
 
             }
         });

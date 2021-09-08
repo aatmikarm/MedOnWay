@@ -13,6 +13,8 @@
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/selecteddot.xml" value="0.1615" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_orders.xml" value="0.264" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_pay_and_loc.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_payment.xml" value="0.2" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_product_details.xml" value="0.264" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_profile.xml" value="0.264" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_sign_in.xml" value="0.264" />
@@ -20,7 +22,9 @@
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_specific_category.xml" value="0.264" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/cart_rv_product.xml" value="0.264" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/categories_recycler_view.xml" value="0.20471014492753623" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/custom_user_marker_layout.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/recycler_view_product.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.155" />
       </map>
     </option>
   </component>

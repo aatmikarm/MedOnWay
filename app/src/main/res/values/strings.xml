@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">tandon medical</string>
+    <string name="title_activity_pay_and_loc">payAndLoc</string>
 </resources>

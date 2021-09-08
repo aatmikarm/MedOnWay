@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,18 +20,20 @@ import java.util.ArrayList;
 public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.ItemViewHolder> {
     private Context context;
     private ArrayList<productModelList> productModelList;
+    private cartProductInterface cartProductInterface;
 
-    public cartProductAdapter(Context context, ArrayList<productModelList> productModelList) {
+    public cartProductAdapter(Context context, ArrayList<productModelList> productModelList,com.example.tandonmedical.cartProductInterface cartProductInterface) {
 
         this.context = context;
         this.productModelList = productModelList;
+        this.cartProductInterface = cartProductInterface;
 
     }
 
     @Override
     public cartProductAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_product, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_rv_product, parent, false);
         return new cartProductAdapter.ItemViewHolder(view);
     }
 
@@ -43,31 +46,6 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
         holder.productMrp.setText("Rs. " + productModelList.get(position).mrp + ".00");
         holder.productDiscount.setText(productModelList.get(position).discount + "% OFF");
         holder.productMrp.setPaintFlags(holder.productMrp.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-
-        holder.productContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(context, "url = "+proRecyclerViewListModels.get(position).getImageUrl(), Toast.LENGTH_LONG).show();
-                //add(position , proRecyclerViewListModels.get(1));
-                //remove(position);
-                Intent intent = new Intent(context, productDetails.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("category", productModelList.get(position).getCategory());
-                intent.putExtra("currentDateandTime", productModelList.get(position).getCurrentDateandTime());
-
-                intent.putExtra("description", productModelList.get(position).getDescription());
-                intent.putExtra("discount", productModelList.get(position).getDiscount());
-                intent.putExtra("imageUrl", productModelList.get(position).getImageUrl());
-
-                intent.putExtra("mrp", productModelList.get(position).getMrp());
-                intent.putExtra("name", productModelList.get(position).getName());
-                intent.putExtra("price", productModelList.get(position).getPrice());
-                context.startActivity(intent);
-
-            }
-        });
-
 
     }
 
@@ -84,16 +62,31 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
         TextView productMrp;
         TextView productDiscount;
         ConstraintLayout productContainer;
+        CardView product_cart_remove_cv;
 
         ItemViewHolder(View itemView) {
             super(itemView);
 
-            productName = itemView.findViewById(R.id.rv_product_name);
-            productImage = itemView.findViewById(R.id.rv_product_image);
-            productPrice = itemView.findViewById(R.id.rv_product_discounted_price);
-            productMrp = itemView.findViewById(R.id.rv_product_mrp);
-            productContainer = itemView.findViewById(R.id.product_container);
-            productDiscount = itemView.findViewById(R.id.discount_text_view);
+            productName = itemView.findViewById(R.id.cart_product_name);
+            productImage = itemView.findViewById(R.id.cart_product_image);
+            productPrice = itemView.findViewById(R.id.cart_product_discounted_price);
+            productMrp = itemView.findViewById(R.id.cart_product_mrp);
+            productContainer = itemView.findViewById(R.id.cart_product_container);
+            productDiscount = itemView.findViewById(R.id.cart_discount_text_view);
+            product_cart_remove_cv = itemView.findViewById(R.id.product_cart_remove_cv);
+
+
+
+            product_cart_remove_cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   cartProductInterface.cartProductOnClickInterface(getAdapterPosition());
+
+                    if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+
+                }
+            });
+
 
         }
     }

@@ -91,7 +91,7 @@ public class specificCategory extends AppCompatActivity {
                         productModelList.setDiscount((String) document.get("discount"));
                         productModelList.setMrp((String) document.get("mrp"));
                         productModelList.setCategory((String) document.get("category"));
-                        productModelList.setCurrentDateandTime((String) document.get("currentDateandTime"));
+                        productModelList.setProductId((String) document.get("productId"));
                         productModelList.setDescription((String) document.get("description"));
                         productModelLists.add(productModelList);
 

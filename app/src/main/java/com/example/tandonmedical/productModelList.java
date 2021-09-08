@@ -6,8 +6,17 @@ public class productModelList {
     String price;
     String mrp;
     String category;
-    String currentDateandTime;
+    String productId;
     String description;
+    String quantity;
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
 
     public String getCategory() {
         return category;
@@ -17,12 +26,12 @@ public class productModelList {
         this.category = category;
     }
 
-    public String getCurrentDateandTime() {
-        return currentDateandTime;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setCurrentDateandTime(String currentDateandTime) {
-        this.currentDateandTime = currentDateandTime;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getDescription() {
