@@ -71,10 +71,25 @@ public class orders extends AppCompatActivity implements cartProductInterface {
             }
         }, 3000);
 
+
         cart_buy_cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), payment.class));
+
+                if(totalAmount==0){
+
+                    Toast.makeText(orders.this, "CART IS EMPTY", Toast.LENGTH_SHORT).show();
+
+                }
+                else if(totalAmount !=0 ){
+                    Intent intent = new Intent(orders.this, payment.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("paymentAmount",totalAmount);
+
+                    startActivity(intent);
+
+                }
+
             }
         });
 

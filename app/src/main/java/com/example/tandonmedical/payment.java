@@ -3,6 +3,7 @@ package com.example.tandonmedical;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -18,11 +19,15 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
@@ -74,6 +79,12 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
     private FusedLocationProviderClient mfusedLocationProviderClient;
     private LatLngBounds mMapBoundary;
 
+    private EditText payment_address_et;
+    private TextView paymentActivity_totalPayment;
+    private CardView onlinePayment_cv, CASH_ON_DELIVERY_cv, payment_confirm_cv;
+
+    private Float paymentAmount;
+
     GeoPoint currentUserGeoPoints;
     private StorageReference mStorageRef;
     List<Marker> allMapMarkers = new ArrayList<Marker>();
@@ -95,6 +106,40 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                 .findFragmentById(R.id.paymentMap);
         assert mapFragment != null;
         mapFragment.getMapAsync((OnMapReadyCallback) payment.this);
+
+        if (getIntent().getExtras() != null) {
+            this.paymentAmount = (Float) getIntent().getExtras().get("paymentAmount");
+        }
+
+        payment_address_et = findViewById(R.id.payment_address_et);
+        paymentActivity_totalPayment = findViewById(R.id.paymentActivity_totalPayment);
+        payment_confirm_cv = findViewById(R.id.payment_confirm_cv);
+
+        paymentActivity_totalPayment.setText(String.valueOf(paymentAmount));
+        //Toast.makeText(payment.this, String.valueOf(paymentAmount), Toast.LENGTH_SHORT).show();
+
+        payment_confirm_cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(paymentAmount==0){
+
+                    Toast.makeText(payment.this, "CART IS EMPTY", Toast.LENGTH_SHORT).show();
+                    finish();
+
+                }
+                else if(paymentAmount !=0 ){
+
+
+
+                }
+
+            }
+        });
+
+
+
+
 
 
     }
