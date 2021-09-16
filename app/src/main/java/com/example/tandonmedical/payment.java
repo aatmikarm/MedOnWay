@@ -3,7 +3,6 @@ package com.example.tandonmedical;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -56,6 +55,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -85,6 +86,9 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
 
     private Float paymentAmount;
 
+    private String currentUserUid;
+    private productModelList productModelLists;
+
     GeoPoint currentUserGeoPoints;
     private StorageReference mStorageRef;
     List<Marker> allMapMarkers = new ArrayList<Marker>();
@@ -101,6 +105,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
         firebaseAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        currentUserUid = firebaseAuth.getUid();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.paymentMap);
@@ -109,6 +114,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
 
         if (getIntent().getExtras() != null) {
             this.paymentAmount = (Float) getIntent().getExtras().get("paymentAmount");
+
         }
 
         payment_address_et = findViewById(R.id.payment_address_et);
@@ -122,15 +128,15 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
 
-                if(paymentAmount==0){
+                if (paymentAmount == 0) {
 
                     Toast.makeText(payment.this, "CART IS EMPTY", Toast.LENGTH_SHORT).show();
                     finish();
 
-                }
-                else if(paymentAmount !=0 ){
+                } else if (paymentAmount != 0) {
 
-
+                    updateProductStatus();
+                    finish();
 
                 }
 
@@ -138,7 +144,49 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
         });
 
 
+    }
 
+    private void updateProductStatus() {
+
+        final ArrayList<productModelList> productModelLists = new ArrayList<>();
+
+        mDb.collection("users").document(currentUserUid).collection("orders")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    //it performs a for loop to get each seperate user details and location
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        productModelList productModelList = new productModelList();
+
+                        productModelList.setName((String) document.get("name"));
+                        productModelList.setImageUrl((String) document.get("imageUrl"));
+                        productModelList.setPrice((String) document.get("price"));
+                        productModelList.setDiscount((String) document.get("discount"));
+                        productModelList.setMrp((String) document.get("mrp"));
+                        productModelList.setCategory((String) document.get("category"));
+                        productModelList.setProductId((String) document.get("productId"));
+                        productModelList.setDescription((String) document.get("description"));
+
+                        productModelLists.add(productModelList);
+
+
+                        //update detail of status
+                        Map<String, Object> updateUserInfo = new HashMap<>();
+                        updateUserInfo.put("status", "delivery");
+
+
+                        mDb.collection("users").document(currentUserUid)
+                                .collection("orders").document((String) document.get("productId"))
+                                .update(updateUserInfo);
+
+
+                    }
+
+                }
+            }
+        });
 
 
 

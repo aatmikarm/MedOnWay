@@ -1,15 +1,17 @@
 package com.example.tandonmedical;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,21 +25,24 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class orders extends AppCompatActivity  implements ordersProductInterface{
+public class cart extends AppCompatActivity implements cartProductInterface {
 
-    private RecyclerView ordersProductRecyclerView;
+    private RecyclerView cartProductRecyclerView;
     private String currentUserUid;
+    private TextView cartTotalAmount;
+    private CardView cart_buy_cv;
 
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
     private ArrayList<productModelList> productModelLists;
 
+    float totalAmount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_orders);
-
+        setContentView(R.layout.activity_cart);
         getSupportActionBar().hide();
 
 
@@ -46,31 +51,57 @@ public class orders extends AppCompatActivity  implements ordersProductInterface
         mStorageRef = FirebaseStorage.getInstance().getReference();
         currentUserUid = firebaseAuth.getUid();
 
-        productModelLists = getOrdersProducts();
+        cartTotalAmount = findViewById(R.id.cartTotalAmount);
+        cart_buy_cv = findViewById(R.id.cart_buy_cv);
+
+        productModelLists = getCartProducts();
+
+
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                ordersProductRecyclerView = findViewById(R.id.orders_list_recycler_view);
-                ordersProductAdapter ordersProductAdapter = new ordersProductAdapter(getApplicationContext(), productModelLists, orders.this);
-                ordersProductRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-                ordersProductRecyclerView.setAdapter(ordersProductAdapter);
+                cartProductRecyclerView = findViewById(R.id.cart_list_recycler_view);
+                cartProductAdapter cartProductAdapter = new cartProductAdapter(getApplicationContext(), productModelLists, cart.this);
+                cartProductRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                cartProductRecyclerView.setAdapter(cartProductAdapter);
 
             }
         }, 3000);
 
 
+        cart_buy_cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(totalAmount==0){
+
+                    Toast.makeText(cart.this, "CART IS EMPTY", Toast.LENGTH_SHORT).show();
+
+                }
+                else if(totalAmount !=0 ){
+                    Intent intent = new Intent(cart.this, payment.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("paymentAmount",totalAmount);
+
+                    startActivity(intent);
+
+                }
+
+            }
+        });
 
     }
 
-    private ArrayList<productModelList> getOrdersProducts() {
+
+    private ArrayList<productModelList> getCartProducts() {
 
         final ArrayList<productModelList> productModelLists = new ArrayList<>();
 
         mDb.collection("users").document(currentUserUid).collection("orders")
-                .whereEqualTo("status","delivery")
+                .whereEqualTo("status","inCart")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -90,8 +121,11 @@ public class orders extends AppCompatActivity  implements ordersProductInterface
                         productModelList.setDescription((String) document.get("description"));
 
                         productModelLists.add(productModelList);
+                        totalAmount = totalAmount + Float.parseFloat((String) document.get("price"));;
 
                     }
+
+                    cartTotalAmount.setText(String.valueOf(totalAmount));
 
                 }
             }
@@ -102,10 +136,20 @@ public class orders extends AppCompatActivity  implements ordersProductInterface
     }
 
     @Override
-    public void ordersProductOnClickInterface(int position) {
+    public void cartProductOnClickInterface(int position) {
+        //Toast.makeText(orders.this, productModelLists.get(position).getName().toString() + " Removed from The Cart", Toast.LENGTH_SHORT).show();
 
-        finish();
-        startActivity(new Intent(getApplicationContext(), productStatus.class));
+        mDb.collection("users").document(currentUserUid).collection("orders")
+                .document(productModelLists.get(position).getProductId().toString()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(cart.this, productModelLists.get(position).getName().toString() + " Removed from The Cart", Toast.LENGTH_SHORT).show();
+                finish();
+                startActivity(new Intent(getApplicationContext(), cart.class));
+
+            }
+        });
 
     }
+
 }

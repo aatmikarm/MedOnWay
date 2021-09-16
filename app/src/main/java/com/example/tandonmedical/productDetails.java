@@ -13,12 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -90,60 +89,7 @@ public class productDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-                mDb.collection("users").document(currentUserUid).collection("orders")
-                        .whereEqualTo("productId", productId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                        if (task.isSuccessful()) {
-
-                            if (task.getResult().isEmpty()) {
-
-
-                                Map<String, Object> order = new HashMap<>();
-                                order.put("name", name);
-                                order.put("currentUserUid", currentUserUid);
-                                order.put("imageUrl", imageUrl);
-                                order.put("mrp", mrp);
-                                order.put("price", price);
-                                order.put("discount", discount);
-                                order.put("description", description);
-                                order.put("productId", productId);
-                                order.put("category", category);
-                                //in the cart product status
-                                order.put("status", "inCart");
-                                order.put("quantity", "1");
-
-                                mDb.collection("users").document(currentUserUid).collection("orders").document(productId).set(order);
-
-                                Toast.makeText(productDetails.this, "Added to cart", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(), orders.class));
-                                finish();
-
-                            }
-                            for (final QueryDocumentSnapshot document : task.getResult()) {
-
-                                String orderStatus = (String) document.get("status");
-
-                                if (orderStatus.equals("inCart")) {
-
-                                    Toast.makeText(productDetails.this, "already in cart", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(getApplicationContext(), orders.class));
-                                    finish();
-
-                                }
-
-
-                            }
-
-
-                        }
-
-
-                    }
-                });
-
+                addProductToCart();
 
             }
         });
@@ -157,11 +103,60 @@ public class productDetails extends AppCompatActivity {
         productDetail_cart_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), orders.class));
+                startActivity(new Intent(getApplicationContext(), cart.class));
             }
         });
 
 
+    }
+
+    private void addProductToCart() {
+
+        mDb.collection("users").document(currentUserUid).collection("orders")
+                .document(productId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+
+                if(documentSnapshot.get("productId") == productId){
+
+                    Toast.makeText(productDetails.this, " Already In Cart", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), cart.class));
+                    finish();
+
+                }
+                else if( documentSnapshot.get("productId")==null){
+
+                    Map<String, Object> order = new HashMap<>();
+                    order.put("name", name);
+                    order.put("currentUserUid", currentUserUid);
+                    order.put("imageUrl", imageUrl);
+                    order.put("mrp", mrp);
+                    order.put("price", price);
+                    order.put("discount", discount);
+                    order.put("description", description);
+                    order.put("productId", productId);
+                    order.put("category", category);
+                    //in the cart product status
+                    order.put("status", "inCart");
+                    order.put("quantity", "1");
+
+                    mDb.collection("users").document(currentUserUid)
+                            .collection("orders").document(productId)
+                            .set(order);
+
+                    Toast.makeText(productDetails.this, "Added to cart", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), cart.class));
+                    finish();
+
+                }
+
+
+
+
+            }
+
+        });
     }
 
 

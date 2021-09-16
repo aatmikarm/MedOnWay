@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/History_orders_cardView"
+            android:id="@+id/cart_cardView"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
@@ -32,11 +32,38 @@
                 android:elevation="50dp" />
 
             <ImageView
-                android:id="@+id/History_orders_image_view"
+                android:id="@+id/cart_image_view"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center"
                 android:background="@drawable/cart"
+                android:backgroundTint="@color/teal_700" />
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/orders_cardView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/cart_cardView"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/circular_border"
+                android:elevation="50dp" />
+
+            <ImageView
+                android:id="@+id/History_orders_image_view"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_baseline_notifications_none_24"
                 android:backgroundTint="@color/teal_700" />
 
 
