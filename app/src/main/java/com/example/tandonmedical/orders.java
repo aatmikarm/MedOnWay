@@ -27,6 +27,8 @@ public class orders extends AppCompatActivity  implements ordersProductInterface
 
     private RecyclerView ordersProductRecyclerView;
     private String currentUserUid;
+    private String sellerId;
+    private String seller;
 
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
@@ -85,6 +87,8 @@ public class orders extends AppCompatActivity  implements ordersProductInterface
                         productModelList.setPrice((String) document.get("price"));
                         productModelList.setDiscount((String) document.get("discount"));
                         productModelList.setMrp((String) document.get("mrp"));
+                        productModelList.setSellerId((String) document.get("sellerId"));
+                        productModelList.setSeller((String) document.get("seller"));
                         productModelList.setCategory((String) document.get("category"));
                         productModelList.setProductId((String) document.get("productId"));
                         productModelList.setDescription((String) document.get("description"));
@@ -105,7 +109,12 @@ public class orders extends AppCompatActivity  implements ordersProductInterface
     public void ordersProductOnClickInterface(int position) {
 
         finish();
-        startActivity(new Intent(getApplicationContext(), productStatus.class));
+        Intent intent = new Intent(getApplicationContext(), productStatus.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("sellerId",productModelLists.get(position).getSellerId());
+
+        startActivity(intent);
+
 
     }
 }

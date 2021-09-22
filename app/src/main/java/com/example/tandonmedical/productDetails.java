@@ -36,7 +36,7 @@ public class productDetails extends AppCompatActivity {
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
-    private String category, productId, description, discount, imageUrl, mrp, name, price;
+    private String category, productId, description, discount, imageUrl, mrp, name, price,sellerId,seller;
     String checkToLoop;
 
     @Override
@@ -71,6 +71,8 @@ public class productDetails extends AppCompatActivity {
             this.mrp = (String) getIntent().getExtras().get("mrp");
             this.name = (String) getIntent().getExtras().get("name");
             this.price = (String) getIntent().getExtras().get("price");
+            this.sellerId = (String) getIntent().getExtras().get("sellerId");
+            this.seller = (String) getIntent().getExtras().get("seller");
         }
 
         productDetails_productName_tv.setText(name);
@@ -137,6 +139,8 @@ public class productDetails extends AppCompatActivity {
                     order.put("description", description);
                     order.put("productId", productId);
                     order.put("category", category);
+                    order.put("sellerId", sellerId);
+                    order.put("seller", seller);
                     //in the cart product status
                     order.put("status", "inCart");
                     order.put("quantity", "1");

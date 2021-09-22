@@ -155,7 +155,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    //it performs a for loop to get each seperate user details and location
+
                     for (QueryDocumentSnapshot document : task.getResult()) {
 
                         productModelList productModelList = new productModelList();
@@ -167,6 +167,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                         productModelList.setMrp((String) document.get("mrp"));
                         productModelList.setCategory((String) document.get("category"));
                         productModelList.setProductId((String) document.get("productId"));
+                        productModelList.setSellerId((String) document.get("sellerId"));
                         productModelList.setDescription((String) document.get("description"));
 
                         productModelLists.add(productModelList);

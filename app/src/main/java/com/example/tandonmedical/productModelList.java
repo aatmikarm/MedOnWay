@@ -9,6 +9,24 @@ public class productModelList {
     String productId;
     String description;
     String quantity;
+    String seller;
+    String sellerId;
+
+    public String getSeller() {
+        return seller;
+    }
+
+    public void setSeller(String seller) {
+        this.seller = seller;
+    }
+
+    public String getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId;
+    }
 
     public String getStatus() {
         return status;

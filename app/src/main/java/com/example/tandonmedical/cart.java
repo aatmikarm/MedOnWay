@@ -106,7 +106,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    //it performs a for loop to get each seperate user details and location
+                   
                     for (QueryDocumentSnapshot document : task.getResult()) {
 
                         productModelList productModelList = new productModelList();
@@ -118,6 +118,8 @@ public class cart extends AppCompatActivity implements cartProductInterface {
                         productModelList.setMrp((String) document.get("mrp"));
                         productModelList.setCategory((String) document.get("category"));
                         productModelList.setProductId((String) document.get("productId"));
+                        productModelList.setSeller((String) document.get("seller"));
+                        productModelList.setSellerId((String) document.get("sellerId"));
                         productModelList.setDescription((String) document.get("description"));
 
                         productModelLists.add(productModelList);
@@ -144,8 +146,16 @@ public class cart extends AppCompatActivity implements cartProductInterface {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(cart.this, productModelLists.get(position).getName().toString() + " Removed from The Cart", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(cart.this, productStatus.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                intent.putExtra("productId", productModelLists.get(position).getProductId().toString());
+                intent.putExtra("sellerId", productModelLists.get(position).getSellerId().toString());
+                intent.putExtra("seller", productModelLists.get(position).getSeller().toString());
+
+                startActivity(intent);
                 finish();
-                startActivity(new Intent(getApplicationContext(), cart.class));
 
             }
         });
