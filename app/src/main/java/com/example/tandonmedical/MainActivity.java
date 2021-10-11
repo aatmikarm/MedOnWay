@@ -1,6 +1,11 @@
 package com.example.tandonmedical;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,22 +17,28 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,11 +46,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView username_tv;
     private RecyclerView productRecyclerView, doctorRecyclerView, categoriesRecyclerView;
     private String currentUserUid;
-    private CardView cart_cardView , orders_cardView;
+    private CardView cart_cardView, orders_cardView;
 
+    private FusedLocationProviderClient fusedLocationClient;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
+
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +67,15 @@ public class MainActivity extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
         currentUserUid = firebaseAuth.getUid();
 
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
         username_tv = findViewById(R.id.username_tv);
         cart_cardView = findViewById(R.id.cart_cardView);
         orders_cardView = findViewById(R.id.orders_cardView);
         user_profile_iv = findViewById(R.id.user_profile_iv);
 
         setCurrentUserImage();
+        updateUserLocationOnFirebase();
 
         mDb.collection("users").document(currentUserUid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -124,6 +142,34 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), com.example.tandonmedical.profile.class));
             }
         });
+
+    }
+
+    private void updateUserLocationOnFirebase() {
+
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_FINE_LOCATION},
+                        LOCATION_PERMISSION_REQUEST_CODE);
+            }
+            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+
+                    Location location = task.getResult();
+                    if (location != null) {
+                        Toast.makeText(MainActivity.this, "location = "+location.getLatitude(), Toast.LENGTH_SHORT).show();
+                        GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+                        Map<String, Object> updateUserLocation = new HashMap<>();
+                        updateUserLocation.put("geo_point", geoPoint);
+                        mDb.collection("users").document(firebaseAuth.getUid()).update(updateUserLocation);
+                    }
+                }
+            });
+        }
 
     }
 
