@@ -121,50 +121,43 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.productStatusMap);
         mapFragment.getMapAsync(this);
-
         getSellerDetails();
-
         handler1 = new Handler();
-
         handler1.postDelayed(runnable1 = new Runnable() {
             @Override
             public void run() {
-                distanceBetweenUserAndSeller = String.valueOf(distanceBetweenUserAndSeller(userGeoPoint.getLatitude(), userGeoPoint.getLongitude(),
-                        sellerGeoPoint.getLatitude(), sellerGeoPoint.getLongitude()));
-                productStaus_arrivalTime.setText(distanceBetweenUserAndSeller);
+                if (userGeoPoint != null && sellerGeoPoint != null) {
+                    double distance = distanceBetweenUserAndSeller(userGeoPoint.getLatitude(), userGeoPoint.getLongitude(),
+                            sellerGeoPoint.getLatitude(), sellerGeoPoint.getLongitude());
+                    // 5 is 5meter per second speed and 60 is seconds conversion
+                    double timeInSeconds = (distance / 5);
+                    productStaus_arrivalTime.setText(convertSecondsToTime(timeInSeconds));
+                }
                 handler1.postDelayed(this, 10000);
             }
         }, 5000);
+    }
 
+    private String convertSecondsToTime(double timeInSeconds) {
+        int hours = (int) (timeInSeconds / 3600);
+        int minutes = (int) ((timeInSeconds % 3600) / 60);
+        int seconds = (int) (timeInSeconds % 60);
+        String timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        return timeString;
     }
 
     private double distanceBetweenUserAndSeller(double lat1, double lon1, double lat2, double lon2) {
-
-        lon1 = Math.toRadians(lon1);
-        lon2 = Math.toRadians(lon2);
-        lat1 = Math.toRadians(lat1);
-        lat2 = Math.toRadians(lat2);
-
-        // Haversine formula
-        double dlon = lon2 - lon1;
-        double dlat = lat2 - lat1;
-        double a = Math.pow(Math.sin(dlat / 2), 2)
-                + Math.cos(lat1) * Math.cos(lat2)
-                * Math.pow(Math.sin(dlon / 2), 2);
-
-        double c = 2 * Math.asin(Math.sqrt(a));
-
-        // Radius of earth in kilometers. Use 3956
-        // for miles
-        double r = 6371;
-
-        // calculate the result in time 20 is speed of bike
-        return (((c * r) / 20) * 60);
-
+        Location startPoint = new Location("locationA");
+        startPoint.setLatitude(lat1);
+        startPoint.setLongitude(lon1);
+        Location endPoint = new Location("locationA");
+        endPoint.setLatitude(lat2);
+        endPoint.setLongitude(lon2);
+        double distance = startPoint.distanceTo(endPoint);
+        return distance;
     }
 
     private void getSellerDetails() {
-
         mDb.collection("seller")
                 .document(sellerId)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
