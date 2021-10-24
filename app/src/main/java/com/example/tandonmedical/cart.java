@@ -84,7 +84,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
                 else if(totalAmount !=0 ){
                     Intent intent = new Intent(cart.this, payment.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("paymentAmount",totalAmount);
+                    intent.putExtra("totalAmount",totalAmount);
 
                     startActivity(intent);
 
@@ -101,7 +101,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
         final ArrayList<productModelList> productModelLists = new ArrayList<>();
 
         mDb.collection("users").document(currentUserUid).collection("orders")
-                .whereEqualTo("status","inCart")
+                .whereEqualTo("status","in cart")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -138,28 +138,24 @@ public class cart extends AppCompatActivity implements cartProductInterface {
     }
 
     @Override
-    public void cartProductOnClickInterface(int position) {
-        //Toast.makeText(orders.this, productModelLists.get(position).getName().toString() + " Removed from The Cart", Toast.LENGTH_SHORT).show();
+    public void removeProductFromCart(int position) {
 
         mDb.collection("users").document(currentUserUid).collection("orders")
                 .document(productModelLists.get(position).getProductId().toString()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(cart.this, productModelLists.get(position).getName().toString() + " Removed from The Cart", Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(cart.this, productStatus.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                intent.putExtra("productId", productModelLists.get(position).getProductId().toString());
-                intent.putExtra("sellerId", productModelLists.get(position).getSellerId().toString());
-                intent.putExtra("seller", productModelLists.get(position).getSeller().toString());
-
-                startActivity(intent);
-                finish();
-
             }
         });
 
+    }
+    @Override
+    public void productQuantityMinus(int position) {
+        Toast.makeText(cart.this, "minus", Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public void productQuantityPlus(int position) {
+        Toast.makeText(cart.this, "plus", Toast.LENGTH_SHORT).show();
     }
 
 }

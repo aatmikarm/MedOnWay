@@ -1,7 +1,5 @@
 package com.example.tandonmedical;
 
-import static com.example.tandonmedical.payment.getCircularBitmap;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -10,6 +8,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
@@ -64,7 +66,7 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
 
     private TextView productStatus_deliveryPersonName_tv;
     private TextView productStaus_arrivalTime;
-    private ImageView productStatus_deliveryPerson_iv;
+    private ImageView productStatus_deliveryPerson_iv , productStatus_back_iv;
     private CardView productStatus_deliveryPersonCall;
     private String seller, sellerId, sellerPhone, productId;
     String userDefaultImageUrl = "https://firebasestorage.googleapis.com/v0/b/test1photographer.appspot.com/o/default%2FuserDefault.png?alt=media&token=0f495f89-caa3-4bcb-b278-97548eb77490";
@@ -107,6 +109,7 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
         productStatus_deliveryPersonName_tv = findViewById(R.id.productStatus_deliveryPersonName_tv);
         productStaus_arrivalTime = findViewById(R.id.productStaus_arrivalTime);
         productStatus_deliveryPerson_iv = findViewById(R.id.productStatus_deliveryPerson_iv);
+        productStatus_back_iv = findViewById(R.id.productStatus_back_iv);
         productStatus_deliveryPersonCall = findViewById(R.id.productStatus_deliveryPersonCall);
 
         productStatus_deliveryPersonCall.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +117,13 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", sellerPhone, null));
                 startActivity(intent);
+            }
+        });
+
+        productStatus_back_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -131,7 +141,7 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
                             sellerGeoPoint.getLatitude(), sellerGeoPoint.getLongitude());
                     // 5 is 5meter per second speed and 60 is seconds conversion
                     double timeInSeconds = (distance / 5);
-                    productStaus_arrivalTime.setText(convertSecondsToTime(timeInSeconds));
+                    productStaus_arrivalTime.setText(convertSecondsToTime(timeInSeconds) + " Min");
                 }
                 handler1.postDelayed(this, 10000);
             }
@@ -142,7 +152,7 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
         int hours = (int) (timeInSeconds / 3600);
         int minutes = (int) ((timeInSeconds % 3600) / 60);
         int seconds = (int) (timeInSeconds % 60);
-        String timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        String timeString = String.format("%02d:%02d", hours, minutes);
         return timeString;
     }
 
@@ -362,6 +372,38 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
                 }
             });
         }
+    }
+
+    public static Bitmap getCircularBitmap(Bitmap bitmap) {
+        Bitmap output;
+
+        if (bitmap.getWidth() > bitmap.getHeight()) {
+            output = Bitmap.createBitmap(bitmap.getHeight(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        } else {
+            output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getWidth(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        float r = 0;
+
+        if (bitmap.getWidth() > bitmap.getHeight()) {
+            r = bitmap.getHeight() / 2;
+        } else {
+            r = bitmap.getWidth() / 2;
+        }
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawCircle(r, r, r, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
     }
 
     public Bitmap createCustomMarkerForUser(Context context, Bitmap resource) {

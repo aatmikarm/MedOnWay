@@ -1,7 +1,6 @@
 package com.example.tandonmedical;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,7 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
     private ArrayList<productModelList> productModelList;
     private cartProductInterface cartProductInterface;
 
-    public cartProductAdapter(Context context, ArrayList<productModelList> productModelList,com.example.tandonmedical.cartProductInterface cartProductInterface) {
+    public cartProductAdapter(Context context, ArrayList<productModelList> productModelList, com.example.tandonmedical.cartProductInterface cartProductInterface) {
 
         this.context = context;
         this.productModelList = productModelList;
@@ -60,13 +59,12 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
         TextView productName;
         TextView productPrice;
         TextView productMrp;
-        TextView productDiscount;
+        TextView productDiscount, cartProduct_quantity_tv;
         ConstraintLayout productContainer;
-        CardView product_cart_remove_cv;
+        CardView product_cart_remove_cv, cartProduct_minus_cv, cartProduct_plus_cv;
 
         ItemViewHolder(View itemView) {
             super(itemView);
-
             productName = itemView.findViewById(R.id.cart_product_name);
             productImage = itemView.findViewById(R.id.cart_product_image);
             productPrice = itemView.findViewById(R.id.cart_product_discounted_price);
@@ -74,20 +72,31 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
             productContainer = itemView.findViewById(R.id.cart_product_container);
             productDiscount = itemView.findViewById(R.id.cart_discount_text_view);
             product_cart_remove_cv = itemView.findViewById(R.id.product_cart_remove_cv);
-
-
+            cartProduct_minus_cv = itemView.findViewById(R.id.cartProduct_minus_cv);
+            cartProduct_quantity_tv = itemView.findViewById(R.id.cartProduct_quantity_tv);
+            cartProduct_plus_cv = itemView.findViewById(R.id.cartProduct_plus_cv);
 
             product_cart_remove_cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   cartProductInterface.cartProductOnClickInterface(getAdapterPosition());
-
+                    cartProductInterface.removeProductFromCart(getAdapterPosition());
                     if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
-
                 }
             });
-
-
+            cartProduct_minus_cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cartProductInterface.productQuantityMinus(getAdapterPosition());
+                    if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+                }
+            });
+            cartProduct_plus_cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cartProductInterface.productQuantityPlus(getAdapterPosition());
+                    if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+                }
+            });
         }
     }
 }

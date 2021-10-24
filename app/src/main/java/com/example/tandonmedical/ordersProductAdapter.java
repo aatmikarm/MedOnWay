@@ -42,6 +42,7 @@ public class ordersProductAdapter extends RecyclerView.Adapter<ordersProductAdap
 
         Glide.with(context).load(productModelList.get(position).getImageUrl()).into(holder.productImage);
         holder.productName.setText(productModelList.get(position).name);
+        holder.order_status_tv.setText(productModelList.get(position).status);
         holder.productPrice.setText("Rs. " + productModelList.get(position).price + ".00");
         holder.productMrp.setText("Rs. " + productModelList.get(position).mrp + ".00");
         holder.productDiscount.setText(productModelList.get(position).discount + "% OFF");
@@ -61,8 +62,9 @@ public class ordersProductAdapter extends RecyclerView.Adapter<ordersProductAdap
         TextView productPrice;
         TextView productMrp;
         TextView productDiscount;
+        TextView order_status_tv;
         ConstraintLayout productContainer;
-        CardView product_orders_track_cv;
+        CardView order_status_cv;
 
         ItemViewHolder(View itemView) {
             super(itemView);
@@ -73,10 +75,11 @@ public class ordersProductAdapter extends RecyclerView.Adapter<ordersProductAdap
             productMrp = itemView.findViewById(R.id.orders_product_mrp);
             productContainer = itemView.findViewById(R.id.orders_product_container);
             productDiscount = itemView.findViewById(R.id.orders_discount_text_view);
-            product_orders_track_cv = itemView.findViewById(R.id.product_orders_track_cv);
+            order_status_cv = itemView.findViewById(R.id.order_status_cv);
+            order_status_tv = itemView.findViewById(R.id.order_status_tv);
 
 
-            product_orders_track_cv.setOnClickListener(new View.OnClickListener() {
+            order_status_cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 

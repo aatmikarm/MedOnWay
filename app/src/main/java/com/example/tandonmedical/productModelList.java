@@ -11,6 +11,17 @@ public class productModelList {
     String quantity;
     String seller;
     String sellerId;
+    String status;
+
+    public String getBoughtTimes() {
+        return boughtTimes;
+    }
+
+    public void setBoughtTimes(String boughtTimes) {
+        this.boughtTimes = boughtTimes;
+    }
+
+    String boughtTimes;
 
     public String getSeller() {
         return seller;
@@ -35,8 +46,6 @@ public class productModelList {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    String status;
 
     public String getQuantity() {
         return quantity;

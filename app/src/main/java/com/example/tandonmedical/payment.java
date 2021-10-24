@@ -84,9 +84,10 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
     private TextView paymentActivity_totalPayment;
     private CardView onlinePayment_cv, CASH_ON_DELIVERY_cv, payment_confirm_cv;
 
-    private Float paymentAmount;
+    private Float totalAmount;
 
     private String currentUserUid;
+    private String productId;
     private productModelList productModelLists;
 
     GeoPoint currentUserGeoPoints;
@@ -113,29 +114,29 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync((OnMapReadyCallback) payment.this);
 
         if (getIntent().getExtras() != null) {
-            this.paymentAmount = (Float) getIntent().getExtras().get("paymentAmount");
-
+            this.totalAmount = (Float) getIntent().getExtras().get("totalAmount");
+            this.productId = (String) getIntent().getExtras().get("productId");
         }
 
         payment_address_et = findViewById(R.id.payment_address_et);
         paymentActivity_totalPayment = findViewById(R.id.paymentActivity_totalPayment);
         payment_confirm_cv = findViewById(R.id.payment_confirm_cv);
 
-        paymentActivity_totalPayment.setText(String.valueOf(paymentAmount));
+        paymentActivity_totalPayment.setText(String.valueOf(totalAmount));
         //Toast.makeText(payment.this, String.valueOf(paymentAmount), Toast.LENGTH_SHORT).show();
 
         payment_confirm_cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (paymentAmount == 0) {
+                if (totalAmount == 0) {
 
                     Toast.makeText(payment.this, "CART IS EMPTY", Toast.LENGTH_SHORT).show();
                     finish();
 
-                } else if (paymentAmount != 0) {
+                } else if (totalAmount != 0) {
 
-                    updateProductStatus();
+                    updateUserProductStatus();
                     finish();
 
                 }
@@ -146,7 +147,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
 
     }
 
-    private void updateProductStatus() {
+    private void updateUserProductStatus() {
 
         final ArrayList<productModelList> productModelLists = new ArrayList<>();
 
@@ -175,7 +176,54 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
 
                         //update detail of status
                         Map<String, Object> updateUserInfo = new HashMap<>();
-                        updateUserInfo.put("status", "delivery");
+                        updateUserInfo.put("status", "on the way");
+
+
+                        mDb.collection("users").document(currentUserUid)
+                                .collection("orders").document((String) document.get("productId"))
+                                .update(updateUserInfo);
+
+
+                    }
+
+                }
+            }
+        });
+
+
+
+    }
+
+    private void updateSellerProductStatus() {
+
+        final ArrayList<productModelList> productModelLists = new ArrayList<>();
+
+        mDb.collection("seller").document(currentUserUid).collection("orders")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        productModelList productModelList = new productModelList();
+
+                        productModelList.setName((String) document.get("name"));
+                        productModelList.setImageUrl((String) document.get("imageUrl"));
+                        productModelList.setPrice((String) document.get("price"));
+                        productModelList.setDiscount((String) document.get("discount"));
+                        productModelList.setMrp((String) document.get("mrp"));
+                        productModelList.setCategory((String) document.get("category"));
+                        productModelList.setProductId((String) document.get("productId"));
+                        productModelList.setSellerId((String) document.get("sellerId"));
+                        productModelList.setDescription((String) document.get("description"));
+
+                        productModelLists.add(productModelList);
+
+
+                        //update detail of status
+                        Map<String, Object> updateUserInfo = new HashMap<>();
+                        updateUserInfo.put("status", "on the way");
 
 
                         mDb.collection("users").document(currentUserUid)

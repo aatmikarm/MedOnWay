@@ -1,18 +1,17 @@
 package com.example.tandonmedical;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
-import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,10 +22,11 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class orders extends AppCompatActivity  implements ordersProductInterface{
+public class orders extends AppCompatActivity implements ordersProductInterface {
 
     private RecyclerView ordersProductRecyclerView;
     private String currentUserUid;
+    private ImageView orders_back_iv;
     private String sellerId;
     private String seller;
 
@@ -39,14 +39,14 @@ public class orders extends AppCompatActivity  implements ordersProductInterface
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
-
         getSupportActionBar().hide();
-
 
         firebaseAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         currentUserUid = firebaseAuth.getUid();
+
+        orders_back_iv = findViewById(R.id.orders_back_iv);
 
         productModelLists = getOrdersProducts();
 
@@ -63,6 +63,12 @@ public class orders extends AppCompatActivity  implements ordersProductInterface
             }
         }, 3000);
 
+        orders_back_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
     }
@@ -72,7 +78,7 @@ public class orders extends AppCompatActivity  implements ordersProductInterface
         final ArrayList<productModelList> productModelLists = new ArrayList<>();
 
         mDb.collection("users").document(currentUserUid).collection("orders")
-                .whereEqualTo("status","delivery")
+                .whereEqualTo("status", "on the way")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -92,6 +98,7 @@ public class orders extends AppCompatActivity  implements ordersProductInterface
                         productModelList.setCategory((String) document.get("category"));
                         productModelList.setProductId((String) document.get("productId"));
                         productModelList.setDescription((String) document.get("description"));
+                        productModelList.setStatus((String) document.get("status"));
 
                         productModelLists.add(productModelList);
 
@@ -111,7 +118,7 @@ public class orders extends AppCompatActivity  implements ordersProductInterface
         finish();
         Intent intent = new Intent(getApplicationContext(), productStatus.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("sellerId",productModelLists.get(position).getSellerId());
+        intent.putExtra("sellerId", productModelLists.get(position).getSellerId());
 
         startActivity(intent);
 
