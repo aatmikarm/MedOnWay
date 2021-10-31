@@ -85,8 +85,8 @@ public class cart extends AppCompatActivity implements cartProductInterface {
                     Intent intent = new Intent(cart.this, payment.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("totalAmount",totalAmount);
-
                     startActivity(intent);
+                    finish();
 
                 }
 

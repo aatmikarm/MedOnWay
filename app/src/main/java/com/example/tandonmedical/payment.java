@@ -3,6 +3,7 @@ package com.example.tandonmedical;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -138,6 +139,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
 
                     updateUserProductStatus();
                     finish();
+                    startActivity(new Intent(getApplicationContext(), orders.class));
 
                 }
 
@@ -148,97 +150,37 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     private void updateUserProductStatus() {
-
-        final ArrayList<productModelList> productModelLists = new ArrayList<>();
-
         mDb.collection("users").document(currentUserUid).collection("orders")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-
                     for (QueryDocumentSnapshot document : task.getResult()) {
-
-                        productModelList productModelList = new productModelList();
-
-                        productModelList.setName((String) document.get("name"));
-                        productModelList.setImageUrl((String) document.get("imageUrl"));
-                        productModelList.setPrice((String) document.get("price"));
-                        productModelList.setDiscount((String) document.get("discount"));
-                        productModelList.setMrp((String) document.get("mrp"));
-                        productModelList.setCategory((String) document.get("category"));
-                        productModelList.setProductId((String) document.get("productId"));
-                        productModelList.setSellerId((String) document.get("sellerId"));
-                        productModelList.setDescription((String) document.get("description"));
-
-                        productModelLists.add(productModelList);
-
-
-                        //update detail of status
                         Map<String, Object> updateUserInfo = new HashMap<>();
                         updateUserInfo.put("status", "on the way");
-
-
                         mDb.collection("users").document(currentUserUid)
                                 .collection("orders").document((String) document.get("productId"))
                                 .update(updateUserInfo);
-
-
-                    }
-
-                }
-            }
-        });
-
-
-
-    }
-
-    private void updateSellerProductStatus() {
-
-        final ArrayList<productModelList> productModelLists = new ArrayList<>();
-
-        mDb.collection("seller").document(currentUserUid).collection("orders")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-
-                        productModelList productModelList = new productModelList();
-
-                        productModelList.setName((String) document.get("name"));
-                        productModelList.setImageUrl((String) document.get("imageUrl"));
-                        productModelList.setPrice((String) document.get("price"));
-                        productModelList.setDiscount((String) document.get("discount"));
-                        productModelList.setMrp((String) document.get("mrp"));
-                        productModelList.setCategory((String) document.get("category"));
-                        productModelList.setProductId((String) document.get("productId"));
-                        productModelList.setSellerId((String) document.get("sellerId"));
-                        productModelList.setDescription((String) document.get("description"));
-
-                        productModelLists.add(productModelList);
-
-
-                        //update detail of status
-                        Map<String, Object> updateUserInfo = new HashMap<>();
-                        updateUserInfo.put("status", "on the way");
-
-
-                        mDb.collection("users").document(currentUserUid)
+                        Map<String, Object> updateSellerInfo = new HashMap<>();
+                        updateSellerInfo.put("name", (String) document.get("name"));
+                        updateSellerInfo.put("userId", currentUserUid);
+                        updateSellerInfo.put("imageUrl", (String) document.get("imageUrl"));
+                        updateSellerInfo.put("mrp", (String) document.get("mrp"));
+                        updateSellerInfo.put("price", (String) document.get("price"));
+                        updateSellerInfo.put("discount", (String) document.get("discount"));
+                        updateSellerInfo.put("description", (String) document.get("description"));
+                        updateSellerInfo.put("productId", (String) document.get("productId"));
+                        updateSellerInfo.put("category", (String) document.get("category"));
+                        updateSellerInfo.put("sellerId", (String) document.get("sellerId"));
+                        updateSellerInfo.put("quantity", "1");
+                        updateSellerInfo.put("status", "on the way");
+                        mDb.collection("seller").document((String) document.get("sellerId"))
                                 .collection("orders").document((String) document.get("productId"))
-                                .update(updateUserInfo);
-
-
+                                .set(updateSellerInfo);
                     }
-
                 }
             }
         });
-
-
-
     }
 
     @Override

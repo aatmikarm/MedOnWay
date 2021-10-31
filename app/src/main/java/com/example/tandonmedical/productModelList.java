@@ -11,6 +11,16 @@ public class productModelList {
     String quantity;
     String seller;
     String sellerId;
+    String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     String status;
 
     public String getBoughtTimes() {

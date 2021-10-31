@@ -149,7 +149,7 @@ public class productDetails extends AppCompatActivity {
                             case "delivered": {
                                 Map<String, Object> order = new HashMap<>();
                                 order.put("name", name);
-                                order.put("currentUserUid", currentUserUid);
+                                order.put("userId", currentUserUid);
                                 order.put("imageUrl", imageUrl);
                                 order.put("mrp", mrp);
                                 order.put("price", price);
@@ -174,7 +174,7 @@ public class productDetails extends AppCompatActivity {
                             case "in cart": {
                                 Map<String, Object> order = new HashMap<>();
                                 order.put("name", name);
-                                order.put("currentUserUid", currentUserUid);
+                                order.put("userId", currentUserUid);
                                 order.put("imageUrl", imageUrl);
                                 order.put("mrp", mrp);
                                 order.put("price", price);
@@ -198,7 +198,7 @@ public class productDetails extends AppCompatActivity {
                             case "on the way": {
                                 Map<String, Object> order = new HashMap<>();
                                 order.put("name", name);
-                                order.put("currentUserUid", currentUserUid);
+                                order.put("userId", currentUserUid);
                                 order.put("imageUrl", imageUrl);
                                 order.put("mrp", mrp);
                                 order.put("price", price);
@@ -225,7 +225,7 @@ public class productDetails extends AppCompatActivity {
                         Toast.makeText(productDetails.this, "not bought", Toast.LENGTH_SHORT).show();
                         Map<String, Object> order = new HashMap<>();
                         order.put("name", name);
-                        order.put("currentUserUid", currentUserUid);
+                        order.put("userId", currentUserUid);
                         order.put("imageUrl", imageUrl);
                         order.put("mrp", mrp);
                         order.put("price", price);
