@@ -119,7 +119,8 @@ public class orders extends AppCompatActivity implements ordersProductInterface 
         Intent intent = new Intent(getApplicationContext(), productStatus.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("sellerId", productModelLists.get(position).getSellerId());
-
+        intent.putExtra("productId", productModelLists.get(position).getProductId());
+        intent.putExtra("seller", productModelLists.get(position).getSeller());
         startActivity(intent);
 
 

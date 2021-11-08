@@ -61,6 +61,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -155,15 +156,19 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    int otp = generateRandomOTP();
                     for (QueryDocumentSnapshot document : task.getResult()) {
+                        Toast.makeText(payment.this, String.valueOf(otp), Toast.LENGTH_SHORT).show();
                         Map<String, Object> updateUserInfo = new HashMap<>();
                         updateUserInfo.put("status", "on the way");
+                        updateUserInfo.put("otp", String.valueOf(otp));
                         mDb.collection("users").document(currentUserUid)
                                 .collection("orders").document((String) document.get("productId"))
                                 .update(updateUserInfo);
                         Map<String, Object> updateSellerInfo = new HashMap<>();
                         updateSellerInfo.put("name", (String) document.get("name"));
                         updateSellerInfo.put("userId", currentUserUid);
+                        updateSellerInfo.put("otp", String.valueOf(otp));
                         updateSellerInfo.put("imageUrl", (String) document.get("imageUrl"));
                         updateSellerInfo.put("mrp", (String) document.get("mrp"));
                         updateSellerInfo.put("price", (String) document.get("price"));
@@ -183,14 +188,29 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
         });
     }
 
+    int range = 9;  // to generate a single number with this range, by default its 0..9
+    int length = 4; // by default length is 4
+    public int generateRandomOTP() {
+        int randomOTP;
+        SecureRandom secureRandom = new SecureRandom();
+        String s = "";
+        for (int i = 0; i < length; i++) {
+            int number = secureRandom.nextInt(range);
+            if (number == 0 && i == 0) { // to prevent the Zero to be the first number as then it will reduce the length of generated pin to three or even more if the second or third number came as zeros
+                i = -1;
+                continue;
+            }
+            s = s + number;
+        }
+        randomOTP = Integer.parseInt(s);
+        return randomOTP;
+    }
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-
         mMap = googleMap;
-
         MapStyleOptions mapStyleOptions = MapStyleOptions.loadRawResourceStyle(this, R.raw.maps_style);
         mMap.setMapStyle(mapStyleOptions);
-
         enableMyLocationIfPermitted();
         setCameraView();
         setUserCurrentLocationOnMap();

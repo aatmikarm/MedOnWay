@@ -64,27 +64,21 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class productStatus extends AppCompatActivity implements OnMapReadyCallback {
 
-    private TextView productStatus_deliveryPersonName_tv;
-    private TextView productStaus_arrivalTime;
-    private ImageView productStatus_deliveryPerson_iv , productStatus_back_iv;
+    private TextView productStatus_deliveryPersonName_tv, productStaus_arrivalTime, userProductOTP_tv,productStatusView_tv;
+    private ImageView productStatus_deliveryPerson_iv, productStatus_back_iv;
     private CardView productStatus_deliveryPersonCall;
-    private String seller, sellerId, sellerPhone, productId;
+    private String currentUserUid, seller, sellerId, sellerPhone, productId, distanceBetweenUserAndSeller;
     String userDefaultImageUrl = "https://firebasestorage.googleapis.com/v0/b/test1photographer.appspot.com/o/default%2FuserDefault.png?alt=media&token=0f495f89-caa3-4bcb-b278-97548eb77490";
 
-    //firebase
     private FirebaseFirestore mDb;
-    private String currentUserUid;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
 
-    //maps
     private GoogleMap map;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
-    private GeoPoint sellerGeoPoint;
-    private GeoPoint userGeoPoint;
-    private String distanceBetweenUserAndSeller;
+    private GeoPoint sellerGeoPoint, userGeoPoint;
     private Handler handler1;
     private Runnable runnable1;
 
@@ -111,6 +105,8 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
         productStatus_deliveryPerson_iv = findViewById(R.id.productStatus_deliveryPerson_iv);
         productStatus_back_iv = findViewById(R.id.productStatus_back_iv);
         productStatus_deliveryPersonCall = findViewById(R.id.productStatus_deliveryPersonCall);
+        userProductOTP_tv = findViewById(R.id.userProductOTP_tv);
+        productStatusView_tv = findViewById(R.id.productStatusView_tv);
 
         productStatus_deliveryPersonCall.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +142,32 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
                 handler1.postDelayed(this, 10000);
             }
         }, 5000);
+
+        showOTP();
+
+    }
+
+    private void showOTP() {
+        mDb.collection("users")
+                .document(currentUserUid)
+                .collection("orders")
+                .document(productId)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        userProductOTP_tv.setText((String) document.get("otp").toString());
+                        productStatusView_tv.setText((String) document.get("status").toString());
+                    } else {
+                        Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "failed ", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private String convertSecondsToTime(double timeInSeconds) {
