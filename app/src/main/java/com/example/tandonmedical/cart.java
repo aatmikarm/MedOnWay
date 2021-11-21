@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,14 +31,14 @@ public class cart extends AppCompatActivity implements cartProductInterface {
 
     private RecyclerView cartProductRecyclerView;
     private String currentUserUid;
-    private TextView cartTotalAmount;
+    private TextView cartTotalAmount, cart_cart_tv;
+    private ImageView cart_cart_iv;
     private CardView cart_buy_cv;
-
+    private ProgressBar cart_pb;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
     private ArrayList<productModelList> productModelLists;
-
     float totalAmount = 0;
 
     @Override
@@ -45,7 +47,6 @@ public class cart extends AppCompatActivity implements cartProductInterface {
         setContentView(R.layout.activity_cart);
         getSupportActionBar().hide();
 
-
         firebaseAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -53,64 +54,52 @@ public class cart extends AppCompatActivity implements cartProductInterface {
 
         cartTotalAmount = findViewById(R.id.cartTotalAmount);
         cart_buy_cv = findViewById(R.id.cart_buy_cv);
+        cart_cart_tv = findViewById(R.id.cart_cart_tv);
+        cart_cart_iv = findViewById(R.id.cart_cart_iv);
+        cart_pb = findViewById(R.id.cart_pb);
 
         productModelLists = getCartProducts();
-
-
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-
+                cart_pb.setVisibility(View.GONE);
                 cartProductRecyclerView = findViewById(R.id.cart_list_recycler_view);
                 cartProductAdapter cartProductAdapter = new cartProductAdapter(getApplicationContext(), productModelLists, cart.this);
                 cartProductRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
                 cartProductRecyclerView.setAdapter(cartProductAdapter);
-
             }
         }, 3000);
-
 
         cart_buy_cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(totalAmount==0){
-
+                if (totalAmount == 0) {
                     Toast.makeText(cart.this, "CART IS EMPTY", Toast.LENGTH_SHORT).show();
-
-                }
-                else if(totalAmount !=0 ){
+                } else if (totalAmount != 0) {
                     Intent intent = new Intent(cart.this, payment.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("totalAmount",totalAmount);
+                    intent.putExtra("totalAmount", totalAmount);
                     startActivity(intent);
                     finish();
-
                 }
-
             }
         });
-
     }
 
-
     private ArrayList<productModelList> getCartProducts() {
-
         final ArrayList<productModelList> productModelLists = new ArrayList<>();
-
         mDb.collection("users").document(currentUserUid).collection("orders")
-                .whereEqualTo("status","in cart")
+                .whereEqualTo("status", "in cart")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                   
                     for (QueryDocumentSnapshot document : task.getResult()) {
-
+                        cart_cart_iv.setVisibility(View.GONE);
+                        cart_cart_tv.setVisibility(View.GONE);
                         productModelList productModelList = new productModelList();
-
                         productModelList.setName((String) document.get("name"));
                         productModelList.setImageUrl((String) document.get("imageUrl"));
                         productModelList.setPrice((String) document.get("price"));
@@ -118,41 +107,36 @@ public class cart extends AppCompatActivity implements cartProductInterface {
                         productModelList.setMrp((String) document.get("mrp"));
                         productModelList.setCategory((String) document.get("category"));
                         productModelList.setProductId((String) document.get("productId"));
+                        productModelList.setProductOrderId((String) document.get("productOrderId"));
                         productModelList.setSeller((String) document.get("seller"));
                         productModelList.setSellerId((String) document.get("sellerId"));
                         productModelList.setDescription((String) document.get("description"));
-
                         productModelLists.add(productModelList);
-                        totalAmount = totalAmount + Float.parseFloat((String) document.get("price"));;
-
+                        totalAmount = totalAmount + Float.parseFloat((String) document.get("price"));
                     }
-
                     cartTotalAmount.setText(String.valueOf(totalAmount));
-
                 }
             }
         });
-
         return productModelLists;
-
     }
 
     @Override
     public void removeProductFromCart(int position) {
-
         mDb.collection("users").document(currentUserUid).collection("orders")
-                .document(productModelLists.get(position).getProductId().toString()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                .document(productModelLists.get(position).getProductOrderId().toString()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(cart.this, productModelLists.get(position).getName().toString() + " Removed from The Cart", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
+
     @Override
     public void productQuantityMinus(int position) {
         Toast.makeText(cart.this, "minus", Toast.LENGTH_SHORT).show();
     }
+
     @Override
     public void productQuantityPlus(int position) {
         Toast.makeText(cart.this, "plus", Toast.LENGTH_SHORT).show();

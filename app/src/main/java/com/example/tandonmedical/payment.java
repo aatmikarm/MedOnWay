@@ -152,7 +152,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
 
     private void updateUserProductStatus() {
         mDb.collection("users").document(currentUserUid).collection("orders")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .whereEqualTo("status","in cart").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -163,7 +163,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                         updateUserInfo.put("status", "on the way");
                         updateUserInfo.put("otp", String.valueOf(otp));
                         mDb.collection("users").document(currentUserUid)
-                                .collection("orders").document((String) document.get("productId"))
+                                .collection("orders").document((String) document.get("productOrderId"))
                                 .update(updateUserInfo);
                         Map<String, Object> updateSellerInfo = new HashMap<>();
                         updateSellerInfo.put("name", (String) document.get("name"));
@@ -175,12 +175,13 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                         updateSellerInfo.put("discount", (String) document.get("discount"));
                         updateSellerInfo.put("description", (String) document.get("description"));
                         updateSellerInfo.put("productId", (String) document.get("productId"));
+                        updateSellerInfo.put("productOrderId", (String) document.get("productOrderId"));
                         updateSellerInfo.put("category", (String) document.get("category"));
                         updateSellerInfo.put("sellerId", (String) document.get("sellerId"));
                         updateSellerInfo.put("quantity", "1");
                         updateSellerInfo.put("status", "on the way");
                         mDb.collection("seller").document((String) document.get("sellerId"))
-                                .collection("orders").document((String) document.get("productId"))
+                                .collection("orders").document((String) document.get("productOrderId"))
                                 .set(updateSellerInfo);
                     }
                 }

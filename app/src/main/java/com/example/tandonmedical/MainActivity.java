@@ -47,12 +47,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView productRecyclerView, doctorRecyclerView, categoriesRecyclerView;
     private String currentUserUid;
     private CardView cart_cardView, orders_cardView;
-
     private FusedLocationProviderClient fusedLocationClient;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
-
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
@@ -60,13 +58,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         firebaseAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         currentUserUid = firebaseAuth.getUid();
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         username_tv = findViewById(R.id.username_tv);
@@ -80,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         mDb.collection("users").document(currentUserUid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
@@ -93,16 +87,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
         final ArrayList<productModelList> productModelLists = getAllProducts();
         final ArrayList<doctorsModelList> doctorsModelLists = getAllDoctors();
         final ArrayList<categoriesModelList> categoriesModelLists = getAllCategories();
-
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 productRecyclerView = findViewById(R.id.product_list_recycler_view);
                 productAdapter productAdapter = new productAdapter(getApplicationContext(), productModelLists);
                 productRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -117,8 +108,6 @@ public class MainActivity extends AppCompatActivity {
                 categoriesAdapter categoriesAdapter = new categoriesAdapter(getApplicationContext(), categoriesModelLists);
                 categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
                 categoriesRecyclerView.setAdapter(categoriesAdapter);
-
-
             }
         }, 3000);
 
@@ -139,14 +128,12 @@ public class MainActivity extends AppCompatActivity {
         user_profile_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), com.example.tandonmedical.profile.class));
+                startActivity(new Intent(getApplicationContext(), profile.class));
             }
         });
-
     }
 
     private void updateUserLocationOnFirebase() {
-
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -158,10 +145,8 @@ public class MainActivity extends AppCompatActivity {
             fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
-
                     Location location = task.getResult();
                     if (location != null) {
-                        Toast.makeText(MainActivity.this, "location = "+location.getLatitude(), Toast.LENGTH_SHORT).show();
                         GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                         Map<String, Object> updateUserLocation = new HashMap<>();
                         updateUserLocation.put("geo_point", geoPoint);
@@ -170,23 +155,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-
     }
 
 
     private ArrayList<productModelList> getAllProducts() {
-
         final ArrayList<productModelList> productModelLists = new ArrayList<>();
-
         mDb.collection("products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    //it performs a for loop to get each seperate user details and location
                     for (QueryDocumentSnapshot document : task.getResult()) {
-
                         productModelList productModelList = new productModelList();
-
                         productModelList.setName((String) document.get("name"));
                         productModelList.setImageUrl((String) document.get("imageUrl"));
                         productModelList.setPrice((String) document.get("price"));
@@ -197,70 +176,52 @@ public class MainActivity extends AppCompatActivity {
                         productModelList.setSeller((String) document.get("seller"));
                         productModelList.setProductId((String) document.get("productId"));
                         productModelList.setDescription((String) document.get("description"));
-
                         productModelLists.add(productModelList);
-
                     }
                 }
             }
         });
-
         return productModelLists;
     }
 
-
     private ArrayList<doctorsModelList> getAllDoctors() {
-
         final ArrayList<doctorsModelList> doctorsModelLists = new ArrayList<>();
-
         mDb.collection("doctors").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    //it performs a for loop to get each seperate user details and location
                     for (QueryDocumentSnapshot document : task.getResult()) {
-
                         doctorsModelList doctorsModelList = new doctorsModelList();
-
                         doctorsModelList.setName((String) document.get("name"));
                         doctorsModelList.setImageUrl((String) document.get("image"));
                         doctorsModelLists.add(doctorsModelList);
-
                     }
                 }
             }
         });
-
         return doctorsModelLists;
     }
 
     private ArrayList<categoriesModelList> getAllCategories() {
-
         final ArrayList<categoriesModelList> categoriesModelLists = new ArrayList<>();
-
         mDb.collection("categories").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     //it performs a for loop to get each seperate user details and location
                     for (QueryDocumentSnapshot document : task.getResult()) {
-
                         categoriesModelList categoriesModelList = new categoriesModelList();
-
                         categoriesModelList.setName((String) document.get("name"));
                         categoriesModelList.setImageUrl((String) document.get("image"));
                         categoriesModelLists.add(categoriesModelList);
-
                     }
                 }
             }
         });
-
         return categoriesModelLists;
     }
 
     private void setCurrentUserImage() {
-
         StorageReference ref = mStorageRef.child("images/" + currentUserUid).child("profilepic.jpg");
         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -269,5 +230,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 }

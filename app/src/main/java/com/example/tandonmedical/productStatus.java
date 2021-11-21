@@ -64,10 +64,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class productStatus extends AppCompatActivity implements OnMapReadyCallback {
 
-    private TextView productStatus_deliveryPersonName_tv, productStaus_arrivalTime, userProductOTP_tv,productStatusView_tv;
+    private TextView productStatus_deliveryPersonName_tv, productStaus_arrivalTime, userProductOTP_tv, productStatusView_tv;
     private ImageView productStatus_deliveryPerson_iv, productStatus_back_iv;
     private CardView productStatus_deliveryPersonCall;
-    private String currentUserUid, seller, sellerId, sellerPhone, productId, distanceBetweenUserAndSeller;
+    private String currentUserUid, seller, sellerId, sellerPhone, productId, productOrderId, distanceBetweenUserAndSeller;
     String userDefaultImageUrl = "https://firebasestorage.googleapis.com/v0/b/test1photographer.appspot.com/o/default%2FuserDefault.png?alt=media&token=0f495f89-caa3-4bcb-b278-97548eb77490";
 
     private FirebaseFirestore mDb;
@@ -96,6 +96,7 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
 
         if (getIntent().getExtras() != null) {
             this.productId = (String) getIntent().getExtras().get("productId");
+            this.productOrderId = (String) getIntent().getExtras().get("productOrderId");
             this.sellerId = (String) getIntent().getExtras().get("sellerId");
             this.seller = (String) getIntent().getExtras().get("seller");
         }
@@ -151,7 +152,7 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
         mDb.collection("users")
                 .document(currentUserUid)
                 .collection("orders")
-                .document(productId)
+                .document(productOrderId)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

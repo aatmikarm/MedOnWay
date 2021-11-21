@@ -2,6 +2,7 @@ package com.example.tandonmedical;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,13 @@ public class ordersProductAdapter extends RecyclerView.Adapter<ordersProductAdap
         holder.productMrp.setText("Rs. " + productModelList.get(position).mrp + ".00");
         holder.productDiscount.setText(productModelList.get(position).discount + "% OFF");
         holder.productMrp.setPaintFlags(holder.productMrp.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
+        if(productModelList.get(position).status.equals("delivered")){
+            holder.order_status_cv.setCardBackgroundColor(Color.parseColor("#EAEDED"));
+            holder.order_status_tv.setTextColor(Color.BLACK);
+        }
+        if(productModelList.get(position).status.equals("on the way")){
+            holder.order_status_cv.setCardBackgroundColor(Color.parseColor("#FFED2F65"));
+        }
     }
 
     @Override
