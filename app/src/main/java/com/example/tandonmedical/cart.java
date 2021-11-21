@@ -59,6 +59,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
         cart_pb = findViewById(R.id.cart_pb);
 
         productModelLists = getCartProducts();
+        updateTotalAmount();
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -83,6 +84,27 @@ public class cart extends AppCompatActivity implements cartProductInterface {
                     intent.putExtra("totalAmount", totalAmount);
                     startActivity(intent);
                     finish();
+                }
+            }
+        });
+    }
+
+    private void updateTotalAmount() {
+        totalAmount = 0;
+        mDb.collection("users").document(currentUserUid).collection("orders")
+                .whereEqualTo("status", "in cart")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        totalAmount = totalAmount + Float.parseFloat((String) document.get("price"));
+                    }
+                    cartTotalAmount.setText(String.valueOf(totalAmount));
+                    if(totalAmount == 0){
+                        cart_cart_iv.setVisibility(View.VISIBLE);
+                        cart_cart_tv.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });
@@ -113,9 +135,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
                         productModelList.setProductQuantity((String) document.get("productQuantity"));
                         productModelList.setDescription((String) document.get("description"));
                         productModelLists.add(productModelList);
-                        totalAmount = totalAmount + Float.parseFloat((String) document.get("price"));
                     }
-                    cartTotalAmount.setText(String.valueOf(totalAmount));
                 }
             }
         });
@@ -129,6 +149,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(cart.this, " Removed from The Cart", Toast.LENGTH_SHORT).show();
+                updateTotalAmount();
             }
         });
     }
