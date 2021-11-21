@@ -44,6 +44,7 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
         holder.productPrice.setText("Rs. " + productModelList.get(position).price + ".00");
         holder.productMrp.setText("Rs. " + productModelList.get(position).mrp + ".00");
         holder.productDiscount.setText(productModelList.get(position).discount + "% OFF");
+        holder.cartProduct_quantity_tv.setText(productModelList.get(position).productQuantity);
         holder.productMrp.setPaintFlags(holder.productMrp.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
     }
@@ -80,7 +81,13 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
                 @Override
                 public void onClick(View v) {
                     cartProductInterface.removeProductFromCart(getAdapterPosition());
-                    if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+                    productModelList.remove(getAdapterPosition());
+                    notifyItemRemoved(getAdapterPosition());
+                    notifyItemRangeChanged(getAdapterPosition(), productModelList.size());
+                    if (getAdapterPosition() == RecyclerView.NO_POSITION) {
+                        return;
+                    }
+
                 }
             });
             cartProduct_minus_cv.setOnClickListener(new View.OnClickListener() {
@@ -99,4 +106,5 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
             });
         }
     }
+
 }

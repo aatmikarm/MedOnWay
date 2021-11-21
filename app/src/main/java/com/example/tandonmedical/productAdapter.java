@@ -87,10 +87,7 @@ public class productAdapter extends RecyclerView.Adapter<productAdapter.ItemView
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         ImageView productImage;
-        TextView productName;
-        TextView productPrice;
-        TextView productMrp;
-        TextView productDiscount;
+        TextView productName,productPrice,productMrp,productDiscount;
         ConstraintLayout productContainer;
 
         ItemViewHolder(View itemView) {

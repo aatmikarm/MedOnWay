@@ -29,14 +29,15 @@ import java.util.Map;
 public class productDetails extends AppCompatActivity {
 
     private TextView productDetails_category_tv, productDetails_productName_tv, profile_no_of_prescriptions, productDetails_productDescription_tv;
-    private String checkToLoop, currentUserUid, category, productId, description, discount, imageUrl, mrp, name, price, sellerId, seller, productUserStatus, dateandtimepattern = "ssmmHHddMMyyyy";
+    private String checkToLoop, currentUserUid, category, productId, description, discount, imageUrl, mrp, name, price, sellerId, seller, productUserStatus,
+                   dateandtimepattern = "ssmmHHddMMyyyy";
     private TextView productDetails_productRating_tv, productDetails_discount_tv, productDetails_mrp_tv, productDetails_price_tv, productDetails_quantity_tv;
     private CardView productDetails_minus_cv, productDetails_plus_cv, productDetails_quantity_cv, productDetails_addToCart_cv;
     private ImageView productDetails_image_iv, productDetail_back_iv, productDetail_cart_iv;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
-    int productQuantity = 1;
+    private int productQuantity = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,107 +135,6 @@ public class productDetails extends AppCompatActivity {
 
     }
 
-    private void checkProductStatusOld() {
-        mDb.collection("users").document(currentUserUid).collection("orders")
-                .document(productId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        productUserStatus = document.get("status").toString();
-                        SimpleDateFormat sdf = new SimpleDateFormat(dateandtimepattern);
-                        final String productOrderId = sdf.format(new Date());
-                        switch (productUserStatus) {
-                            case "delivered": {
-                                Map<String, Object> order = new HashMap<>();
-                                order.put("name", name);
-                                order.put("userId", currentUserUid);
-                                order.put("imageUrl", imageUrl);
-                                order.put("mrp", mrp);
-                                order.put("price", price);
-                                order.put("discount", discount);
-                                order.put("description", description);
-                                order.put("productId", productId);
-                                order.put("productOrderId", productOrderId);
-                                order.put("category", category);
-                                order.put("sellerId", sellerId);
-                                order.put("seller", seller);
-                                //in the cart product status
-                                order.put("status", "in cart");
-                                order.put("quantity", "1");
-                                order.put("boughtTimes", "2");
-                                mDb.collection("users").document(currentUserUid)
-                                        .collection("orders").document(productOrderId)
-                                        .set(order);
-                                Toast.makeText(productDetails.this, "Added to cart", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(), cart.class));
-                                finish();
-                                break;
-                            }
-                            case "in cart": {
-                                startActivity(new Intent(getApplicationContext(), cart.class));
-                                finish();
-                                break;
-                            }
-                            case "on the way": {
-                                Map<String, Object> order = new HashMap<>();
-                                order.put("name", name);
-                                order.put("userId", currentUserUid);
-                                order.put("imageUrl", imageUrl);
-                                order.put("mrp", mrp);
-                                order.put("price", price);
-                                order.put("discount", discount);
-                                order.put("description", description);
-                                order.put("productId", productId);
-                                order.put("category", category);
-                                order.put("sellerId", sellerId);
-                                order.put("seller", seller);
-                                //in the cart product status
-                                order.put("status", "in cart");
-                                order.put("quantity", "1");
-                                mDb.collection("users").document(currentUserUid)
-                                        .collection("orders").document(productId)
-                                        .update(order);
-                                Toast.makeText(productDetails.this, "Added to cart", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(), cart.class));
-                                finish();
-                                break;
-                            }
-                        }
-
-                    } else {
-                        Toast.makeText(productDetails.this, "not bought", Toast.LENGTH_SHORT).show();
-                        Map<String, Object> order = new HashMap<>();
-                        order.put("name", name);
-                        order.put("userId", currentUserUid);
-                        order.put("imageUrl", imageUrl);
-                        order.put("mrp", mrp);
-                        order.put("price", price);
-                        order.put("discount", discount);
-                        order.put("description", description);
-                        order.put("productId", productId);
-                        order.put("category", category);
-                        order.put("sellerId", sellerId);
-                        order.put("seller", seller);
-                        //in the cart product status
-                        order.put("status", "in cart");
-                        order.put("quantity", "1");
-                        mDb.collection("users").document(currentUserUid)
-                                .collection("orders").document(productId)
-                                .set(order);
-                        Toast.makeText(productDetails.this, "Added to cart", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(), cart.class));
-                        finish();
-                    }
-                } else {
-                    Toast.makeText(productDetails.this, "failed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
     private void addProductToCart() {
         SimpleDateFormat sdf = new SimpleDateFormat(dateandtimepattern);
         final String productOrderId = sdf.format(new Date());
@@ -251,6 +151,7 @@ public class productDetails extends AppCompatActivity {
         order.put("productId", productId);
         order.put("productOrderId", productOrderId);
         order.put("seller", seller);
+        order.put("productQuantity", String.valueOf(productQuantity));
         order.put("status", "in cart");
         mDb.collection("users").document(currentUserUid)
                 .collection("orders").document(productOrderId)

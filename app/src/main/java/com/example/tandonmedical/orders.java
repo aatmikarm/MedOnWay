@@ -96,6 +96,8 @@ public class orders extends AppCompatActivity implements ordersProductInterface 
                         productModelList.setCategory((String) document.get("category"));
                         productModelList.setProductId((String) document.get("productId"));
                         productModelList.setProductOrderId((String) document.get("productOrderId"));
+                        productModelList.setProductQuantity((String) document.get("productQuantity"));
+                        productModelList.setProductOrderPlacedTime((String) document.get("productOrderPlacedTime"));
                         productModelList.setDescription((String) document.get("description"));
                         productModelList.setStatus((String) document.get("status"));
                         productModelLists.add(productModelList);
@@ -124,6 +126,8 @@ public class orders extends AppCompatActivity implements ordersProductInterface 
                         productModelList.setCategory((String) document.get("category"));
                         productModelList.setProductId((String) document.get("productId"));
                         productModelList.setProductOrderId((String) document.get("productOrderId"));
+                        productModelList.setProductQuantity((String) document.get("productQuantity"));
+                        productModelList.setProductOrderPlacedTime((String) document.get("productOrderPlacedTime"));
                         productModelList.setDescription((String) document.get("description"));
                         productModelList.setStatus((String) document.get("status"));
                         productModelLists.add(productModelList);

@@ -8,6 +8,24 @@ public class productModelList {
     String category;
     String productId;
     String productOrderId;
+    String productOrderPlacedTime;
+    String productQuantity;
+
+    public String getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(String productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public String getProductOrderPlacedTime() {
+        return productOrderPlacedTime;
+    }
+
+    public void setProductOrderPlacedTime(String productOrderPlacedTime) {
+        this.productOrderPlacedTime = productOrderPlacedTime;
+    }
 
     public String getProductOrderId() {
         return productOrderId;

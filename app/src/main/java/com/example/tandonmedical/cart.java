@@ -110,6 +110,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
                         productModelList.setProductOrderId((String) document.get("productOrderId"));
                         productModelList.setSeller((String) document.get("seller"));
                         productModelList.setSellerId((String) document.get("sellerId"));
+                        productModelList.setProductQuantity((String) document.get("productQuantity"));
                         productModelList.setDescription((String) document.get("description"));
                         productModelLists.add(productModelList);
                         totalAmount = totalAmount + Float.parseFloat((String) document.get("price"));
@@ -127,7 +128,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
                 .document(productModelLists.get(position).getProductOrderId().toString()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(cart.this, productModelLists.get(position).getName().toString() + " Removed from The Cart", Toast.LENGTH_SHORT).show();
+                Toast.makeText(cart.this, " Removed from The Cart", Toast.LENGTH_SHORT).show();
             }
         });
     }

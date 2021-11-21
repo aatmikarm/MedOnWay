@@ -62,6 +62,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -73,23 +74,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class payment extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-
     User currentUser;
-
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private GoogleMap mMap;
     private FusedLocationProviderClient mfusedLocationProviderClient;
     private LatLngBounds mMapBoundary;
-
     private EditText payment_address_et;
     private TextView paymentActivity_totalPayment;
     private CardView onlinePayment_cv, CASH_ON_DELIVERY_cv, payment_confirm_cv;
-
     private Float totalAmount;
-
-    private String currentUserUid;
-    private String productId;
+    private String currentUserUid,productId, dateandtimepattern = "ssmmHHddMMyyyy";
     private productModelList productModelLists;
 
     GeoPoint currentUserGeoPoints;
@@ -158,9 +153,11 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                 if (task.isSuccessful()) {
                     int otp = generateRandomOTP();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Toast.makeText(payment.this, String.valueOf(otp), Toast.LENGTH_SHORT).show();
+                        SimpleDateFormat sdf = new SimpleDateFormat(dateandtimepattern);
+                        final String productOrderPlacedTime = sdf.format(new Date());
                         Map<String, Object> updateUserInfo = new HashMap<>();
                         updateUserInfo.put("status", "on the way");
+                        updateUserInfo.put("productOrderPlacedTime", productOrderPlacedTime);
                         updateUserInfo.put("otp", String.valueOf(otp));
                         mDb.collection("users").document(currentUserUid)
                                 .collection("orders").document((String) document.get("productOrderId"))
