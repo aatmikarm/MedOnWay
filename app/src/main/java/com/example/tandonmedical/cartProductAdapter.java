@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -22,23 +23,19 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
     private cartProductInterface cartProductInterface;
 
     public cartProductAdapter(Context context, ArrayList<productModelList> productModelList, com.example.tandonmedical.cartProductInterface cartProductInterface) {
-
         this.context = context;
         this.productModelList = productModelList;
         this.cartProductInterface = cartProductInterface;
-
     }
 
     @Override
     public cartProductAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_rv_product, parent, false);
         return new cartProductAdapter.ItemViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(cartProductAdapter.ItemViewHolder holder, int position) {
-
         Glide.with(context).load(productModelList.get(position).getImageUrl()).into(holder.productImage);
         holder.productName.setText(productModelList.get(position).name);
         holder.productPrice.setText("Rs. " + productModelList.get(position).price + ".00");
@@ -46,7 +43,6 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
         holder.productDiscount.setText(productModelList.get(position).discount + "% OFF");
         holder.cartProduct_quantity_tv.setText(productModelList.get(position).productQuantity);
         holder.productMrp.setPaintFlags(holder.productMrp.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
     }
 
     @Override
@@ -55,7 +51,6 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-
         ImageView productImage;
         TextView productName;
         TextView productPrice;
@@ -95,6 +90,15 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
                 public void onClick(View v) {
                     cartProductInterface.productQuantityMinus(getAdapterPosition());
                     if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+                    int currentQuantity = Integer.parseInt(cartProduct_quantity_tv.getText().toString());
+                    if (currentQuantity == 1) {
+                        Toast.makeText(context, "Least Quantity Limit", Toast.LENGTH_SHORT).show();
+                        cartProduct_quantity_tv.setText(String.valueOf(currentQuantity));
+                    }
+                    if (currentQuantity > 1) {
+                        currentQuantity--;
+                        cartProduct_quantity_tv.setText(String.valueOf(currentQuantity));
+                    }
                 }
             });
             cartProduct_plus_cv.setOnClickListener(new View.OnClickListener() {
@@ -102,9 +106,16 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
                 public void onClick(View v) {
                     cartProductInterface.productQuantityPlus(getAdapterPosition());
                     if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+                    int currentQuantity = Integer.parseInt(cartProduct_quantity_tv.getText().toString());
+                    if (currentQuantity < 5) {
+                        currentQuantity++;
+                        cartProduct_quantity_tv.setText(String.valueOf(currentQuantity));
+                    }
+                    if (currentQuantity == 5) {
+                        Toast.makeText(context, "Max Quantity Limit", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
     }
-
 }

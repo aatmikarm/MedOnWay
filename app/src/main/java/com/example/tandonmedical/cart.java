@@ -157,6 +157,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
     @Override
     public void productQuantityMinus(int position) {
         Toast.makeText(cart.this, "minus", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
