@@ -49,7 +49,7 @@ public class ordersProductAdapter extends RecyclerView.Adapter<ordersProductAdap
         holder.productPrice.setText("Rs. " + productModelList.get(position).price + ".00");
         holder.productMrp.setText("Rs. " + productModelList.get(position).mrp + ".00");
         holder.productDiscount.setText(productModelList.get(position).discount + "% OFF");
-        holder.order_quantity_tv.setText("Quantity "+productModelList.get(position).productQuantity);
+        holder.order_quantity_tv.setText(productModelList.get(position).productQuantity);
 
         try {
             String oldstring = productModelList.get(position).productOrderPlacedTime;

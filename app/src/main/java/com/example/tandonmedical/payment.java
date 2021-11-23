@@ -175,7 +175,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                         updateSellerInfo.put("productOrderId", (String) document.get("productOrderId"));
                         updateSellerInfo.put("category", (String) document.get("category"));
                         updateSellerInfo.put("sellerId", (String) document.get("sellerId"));
-                        updateSellerInfo.put("quantity", "1");
+                        updateSellerInfo.put("productQuantity", (String) document.get("productQuantity"));
                         updateSellerInfo.put("status", "on the way");
                         mDb.collection("seller").document((String) document.get("sellerId"))
                                 .collection("orders").document((String) document.get("productOrderId"))

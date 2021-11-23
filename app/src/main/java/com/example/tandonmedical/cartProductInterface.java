@@ -1,9 +1,7 @@
 package com.example.tandonmedical;
 
 public interface cartProductInterface {
-
-    void productQuantityMinus(int position);
-    void productQuantityPlus(int position);
+    void productQuantityChange(int position, int currentQuantity);
     void removeProductFromCart(int position);
 
 }

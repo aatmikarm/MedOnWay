@@ -26,6 +26,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class cart extends AppCompatActivity implements cartProductInterface {
 
@@ -98,10 +100,10 @@ public class cart extends AppCompatActivity implements cartProductInterface {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        totalAmount = totalAmount + Float.parseFloat((String) document.get("price"));
+                        totalAmount = totalAmount + (Float.parseFloat((String) document.get("price")) * Float.parseFloat((String) document.get("productQuantity")));
                     }
                     cartTotalAmount.setText(String.valueOf(totalAmount));
-                    if(totalAmount == 0){
+                    if (totalAmount == 0) {
                         cart_cart_iv.setVisibility(View.VISIBLE);
                         cart_cart_tv.setVisibility(View.VISIBLE);
                     }
@@ -155,14 +157,13 @@ public class cart extends AppCompatActivity implements cartProductInterface {
     }
 
     @Override
-    public void productQuantityMinus(int position) {
-        Toast.makeText(cart.this, "minus", Toast.LENGTH_SHORT).show();
-
-    }
-
-    @Override
-    public void productQuantityPlus(int position) {
-        Toast.makeText(cart.this, "plus", Toast.LENGTH_SHORT).show();
+    public void productQuantityChange(int position, int currentQuantity) {
+        Map<String, Object> order = new HashMap<>();
+        order.put("productQuantity", String.valueOf(currentQuantity));
+        mDb.collection("users").document(currentUserUid)
+                .collection("orders").document(productModelLists.get(position).getProductOrderId())
+                .update(order);
+        updateTotalAmount();
     }
 
 }
