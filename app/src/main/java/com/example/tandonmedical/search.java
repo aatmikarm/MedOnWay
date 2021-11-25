@@ -53,7 +53,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
 
         searchProductRV = findViewById(R.id.search_rv);
 
-        searchProductRV.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        searchProductRV.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
         productModelLists = new ArrayList<>();
         searchProductAdapter = new searchProductAdapter(getApplicationContext(), productModelLists, search.this);
@@ -87,7 +87,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
     private void searchProduct(String type) {
         if (!type.isEmpty()) {
             // this search will work for exact words only
-            mDb.collection("products").whereEqualTo("name", type).get()
+            mDb.collection("products").whereEqualTo("category", type).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -97,7 +97,6 @@ public class search extends AppCompatActivity implements searchProductInterface 
 
                                 for (DocumentSnapshot doc : task.getResult().getDocuments()) {
                                     productModelList productModelList = new productModelList();
-                                    Toast.makeText(search.this, "hahahahahhahahaha", Toast.LENGTH_LONG).show();
                                     productModelList.setName((String) doc.get("name"));
                                     productModelList.setImageUrl((String) doc.get("imageUrl"));
                                     productModelList.setPrice((String) doc.get("price"));
