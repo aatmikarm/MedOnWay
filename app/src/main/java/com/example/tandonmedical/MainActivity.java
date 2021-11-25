@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView username_tv;
     private RecyclerView productRecyclerView, doctorRecyclerView, categoriesRecyclerView;
     private String currentUserUid;
-    private CardView cart_cardView, orders_cardView;
+    private CardView cart_cardView, orders_cardView,search_cv;
     private FusedLocationProviderClient fusedLocationClient;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         cart_cardView = findViewById(R.id.cart_cardView);
         orders_cardView = findViewById(R.id.orders_cardView);
         user_profile_iv = findViewById(R.id.user_profile_iv);
+        search_cv = findViewById(R.id.search_cv);
 
         setCurrentUserImage();
         updateUserLocationOnFirebase();
@@ -115,6 +116,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), cart.class));
+            }
+        });
+
+        search_cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), search.class));
             }
         });
 

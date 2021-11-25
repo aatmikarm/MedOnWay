@@ -27,7 +27,6 @@ import java.util.ArrayList;
 public class orders extends AppCompatActivity implements ordersProductInterface {
 
     private RecyclerView ordersProductRecyclerView;
-    private String currentUserUid;
     private TextView order_cart_tv;
     private ImageView orders_back_iv,order_cart_iv;
     private ProgressBar order_pb;
@@ -36,6 +35,7 @@ public class orders extends AppCompatActivity implements ordersProductInterface 
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
+    private String currentUserUid;
     private ArrayList<productModelList> productModelLists;
 
     @Override
