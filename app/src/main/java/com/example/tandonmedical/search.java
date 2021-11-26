@@ -87,6 +87,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
     private void searchProduct(String type) {
         if (!type.isEmpty()) {
             // this search will work for exact words only
+            type = type.toLowerCase();
             mDb.collection("products").orderBy("name").startAt(type).endAt(type+"\uf8ff").get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
