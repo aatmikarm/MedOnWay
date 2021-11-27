@@ -17,7 +17,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -72,11 +71,15 @@ public class search extends AppCompatActivity implements searchProductInterface 
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().isEmpty()) {
+                String search = s.toString();
+                String[] tags = search.split(" ");
+                if (search.isEmpty()) {
                     productModelLists.clear();
                     searchProductAdapter.notifyDataSetChanged();
                 } else {
-                    searchProduct(s.toString());
+                    for (String tag : tags) {
+                        searchProduct(tag);
+                    }
                 }
             }
         });
@@ -84,11 +87,12 @@ public class search extends AppCompatActivity implements searchProductInterface 
 
     }
 
-    private void searchProduct(String type) {
-        if (!type.isEmpty()) {
+    private void searchProduct(String tag) {
+        if (!tag.isEmpty()) {
             // this search will work for exact words only
-            type = type.toLowerCase();
-            mDb.collection("products").orderBy("name").startAt(type).endAt(type+"\uf8ff").get()
+            //.orderBy("tags").startAt(tag).endAt(tag + "\uf8ff")
+            tag = tag.toLowerCase();
+            mDb.collection("products").whereArrayContains("tags", tag).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -111,6 +115,9 @@ public class search extends AppCompatActivity implements searchProductInterface 
                                     productModelLists.add(productModelList);
                                     searchProductAdapter.notifyDataSetChanged();
                                 }
+                            } else {
+                                String error = task.getException().getMessage();
+                                Toast.makeText(search.this, error, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
