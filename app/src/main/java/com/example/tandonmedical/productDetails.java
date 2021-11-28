@@ -8,15 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -28,10 +25,11 @@ import java.util.Map;
 
 public class productDetails extends AppCompatActivity {
 
+    private FragmentManager ratingfragmentManager;
     private TextView productDetails_category_tv, productDetails_productName_tv, profile_no_of_prescriptions, productDetails_productDescription_tv;
     private String checkToLoop, currentUserUid, category, productId, description, discount, imageUrl, mrp, name, price, sellerId, seller, productUserStatus,
-                   dateandtimepattern = "ssmmHHddMMyyyy";
-    private TextView productDetails_productRating_tv, productDetails_discount_tv, productDetails_mrp_tv, productDetails_price_tv, productDetails_quantity_tv;
+            dateandtimepattern = "ssmmHHddMMyyyy";
+    private TextView productDetails_discount_tv, productDetails_mrp_tv, productDetails_price_tv, productDetails_quantity_tv;
     private CardView productDetails_minus_cv, productDetails_plus_cv, productDetails_quantity_cv, productDetails_addToCart_cv;
     private ImageView productDetails_image_iv, productDetail_back_iv, productDetail_cart_iv;
     private FirebaseFirestore mDb;
@@ -53,7 +51,6 @@ public class productDetails extends AppCompatActivity {
         productDetails_discount_tv = findViewById(R.id.productDetails_discount_tv);
         productDetails_quantity_tv = findViewById(R.id.productDetails_quantity_tv);
         productDetails_productDescription_tv = findViewById(R.id.productDetails_productDescription_tv);
-        productDetails_productRating_tv = findViewById(R.id.productDetails_productRating_tv);
         productDetails_addToCart_cv = findViewById(R.id.productDetails_addToCart_cv);
         productDetails_minus_cv = findViewById(R.id.productDetails_minus_cv);
         productDetails_plus_cv = findViewById(R.id.productDetails_plus_cv);
@@ -87,6 +84,19 @@ public class productDetails extends AppCompatActivity {
         productDetails_discount_tv.setText("GET " + discount + "% OFF");
         productDetails_productDescription_tv.setText(description);
         Glide.with(this).load(imageUrl).into(productDetails_image_iv);
+
+        if (savedInstanceState == null) {
+
+            ratingFragment ratingFragment = new ratingFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("productName", "product name is this");
+            ratingFragment.setArguments(bundle);
+            ratingfragmentManager = getSupportFragmentManager();
+            ratingfragmentManager.beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.rating_fcv, ratingFragment.class, bundle)
+                    .commit();
+        }
 
         productDetails_minus_cv.setOnClickListener(new View.OnClickListener() {
             @Override

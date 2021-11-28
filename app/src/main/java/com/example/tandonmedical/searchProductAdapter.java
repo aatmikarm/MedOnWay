@@ -71,12 +71,7 @@ public class searchProductAdapter extends RecyclerView.Adapter<searchProductAdap
             productContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     searchProductInterface.searchProductOnClickInterface(getAdapterPosition());
-
-                    // remove product from the display list
-                    //if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
-
                 }
             });
 

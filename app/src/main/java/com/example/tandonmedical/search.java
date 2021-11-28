@@ -1,8 +1,10 @@
 package com.example.tandonmedical;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -48,7 +50,6 @@ public class search extends AppCompatActivity implements searchProductInterface 
         currentUserUid = firebaseAuth.getUid();
         search_et = findViewById(R.id.search_et);
         search_back_iv = findViewById(R.id.search_back_iv);
-        search_back_iv = findViewById(R.id.search_back_iv);
 
         searchProductRV = findViewById(R.id.search_rv);
 
@@ -81,6 +82,12 @@ public class search extends AppCompatActivity implements searchProductInterface 
                         searchProduct(tag);
                     }
                 }
+            }
+        });
+        search_back_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -126,6 +133,18 @@ public class search extends AppCompatActivity implements searchProductInterface 
 
     @Override
     public void searchProductOnClickInterface(int position) {
-
+        Intent intent = new Intent(getApplicationContext(), productDetails.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("sellerId", productModelLists.get(position).getSellerId());
+        intent.putExtra("productId", productModelLists.get(position).getProductId());
+        intent.putExtra("seller", productModelLists.get(position).getSeller());
+        intent.putExtra("mrp", productModelLists.get(position).getMrp());
+        intent.putExtra("name", productModelLists.get(position).getName());
+        intent.putExtra("price", productModelLists.get(position).getPrice());
+        intent.putExtra("description", productModelLists.get(position).getDescription());
+        intent.putExtra("discount", productModelLists.get(position).getDiscount());
+        intent.putExtra("imageUrl", productModelLists.get(position).getImageUrl());
+        intent.putExtra("category", productModelLists.get(position).getCategory());
+        startActivity(intent);
     }
 }
