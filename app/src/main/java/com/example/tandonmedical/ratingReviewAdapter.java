@@ -1,0 +1,72 @@
+package com.example.tandonmedical;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+public class ratingReviewAdapter extends RecyclerView.Adapter<ratingReviewAdapter.ItemViewHolder> {
+    private Context context;
+    private ArrayList<ratingReviewModelList> ratingReviewModelList;
+
+    public ratingReviewAdapter(Context context, ArrayList<ratingReviewModelList> ratingReviewModelList) {
+
+        this.context = context;
+        this.ratingReviewModelList = ratingReviewModelList;
+
+
+    }
+
+    @Override
+    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rating_and_review_rv, parent, false);
+        return new ItemViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(ItemViewHolder holder, int position) {
+
+//        Glide.with(context).load(ratingReviewModelList.get(position).getImageUrl()).into(holder.user_profile_iv);
+//        holder.productName.setText(productModelList.get(position).name);
+
+        holder.user_profile_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Rating", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return ratingReviewModelList.size();
+    }
+
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
+
+        ImageView user_profile_iv;
+        TextView rating_and_review_tv, rating_and_review_star_tv, rating_and_review_user_name_tv, rating_and_review_time_tv;
+        RatingBar rating_and_review_star_rb;
+
+        ItemViewHolder(View itemView) {
+            super(itemView);
+            user_profile_iv = itemView.findViewById(R.id.user_profile_iv);
+            rating_and_review_tv = itemView.findViewById(R.id.rating_and_review_tv);
+            rating_and_review_star_tv = itemView.findViewById(R.id.rating_and_review_star_tv);
+            rating_and_review_user_name_tv = itemView.findViewById(R.id.rating_and_review_user_name_tv);
+            rating_and_review_time_tv = itemView.findViewById(R.id.rating_and_review_time_tv);
+            rating_and_review_star_rb = itemView.findViewById(R.id.rating_and_review_star_rb);
+        }
+    }
+}

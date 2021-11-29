@@ -89,7 +89,7 @@ public class productDetails extends AppCompatActivity {
 
             ratingFragment ratingFragment = new ratingFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("productName", "product name is this");
+            bundle.putString("productId", productId);
             ratingFragment.setArguments(bundle);
             ratingfragmentManager = getSupportFragmentManager();
             ratingfragmentManager.beginTransaction()

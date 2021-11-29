@@ -29,7 +29,6 @@ public class search extends AppCompatActivity implements searchProductInterface 
 
     private EditText search_et;
     private ImageView search_back_iv;
-    private RecyclerView search_rv;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;

@@ -6,10 +6,11 @@
     android:layout_height="wrap_content"
     android:background="@drawable/rectangular_border"
     android:padding="10dp"
+    android:id="@+id/rating_frag_full_cl"
     tools:context=".ratingFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/con1"
+        android:id="@+id/rating_frag_cl"
         android:layout_width="150dp"
         android:layout_height="150dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -83,11 +84,11 @@
         android:id="@+id/con2"
         android:layout_width="0dp"
         android:layout_height="150dp"
-        app:layout_constraintBottom_toBottomOf="@+id/con1"
+        app:layout_constraintBottom_toBottomOf="@+id/rating_frag_cl"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/con1"
-        app:layout_constraintTop_toTopOf="@+id/con1"
+        app:layout_constraintStart_toEndOf="@+id/rating_frag_cl"
+        app:layout_constraintTop_toTopOf="@+id/rating_frag_cl"
         app:layout_constraintVertical_bias="1.0">
 
         <TextView

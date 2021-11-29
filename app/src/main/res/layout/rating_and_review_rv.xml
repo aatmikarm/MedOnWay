@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
@@ -17,35 +18,31 @@
         android:padding="10dp">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/search_discount_card_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="#8BC34A"
-            app:cardCornerRadius="10dp"
+            android:id="@+id/rating_and_review_rv_user_iv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/search_discount_text_view"
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="15% OFF"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:textStyle="bold" />
+                android:background="@drawable/circular_border"
+                android:elevation="50dp" />
+
+            <ImageView
+                android:id="@+id/user_profile_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/user_ic"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop" />
 
 
         </androidx.cardview.widget.CardView>
-
-
-        <ImageView
-            android:id="@+id/rating_and_review_rv_user_iv"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/rating_and_review_tv"
@@ -55,14 +52,14 @@
             android:ellipsize="end"
             android:ems="12"
             android:maxLines="2"
-            android:text="name"
+            android:text="Nice Product"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/rating_and_review_rv_user_iv"
-            app:layout_constraintTop_toTopOf="@+id/rating_and_review_rv_user_iv" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/search_rating_cv"
@@ -74,8 +71,12 @@
             app:layout_constraintTop_toBottomOf="@+id/rating_and_review_tv">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/rating_and_review_user_name_tv"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintTop_toBottomOf="@+id/rating_and_review_tv">
 
                 <RatingBar
                     android:id="@+id/rating_and_review_star_rb"
@@ -111,9 +112,10 @@
             android:id="@+id/rating_and_review_user_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="MRP"
+            android:text="Aatmik Mishra"
             android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/search_rating_cv"
             app:layout_constraintTop_toBottomOf="@+id/search_rating_cv" />
 
@@ -125,7 +127,7 @@
             android:layout_marginLeft="10dp"
             android:foregroundGravity="center"
             android:gravity="center"
-            android:text="Rs. 280.00"
+            android:text="Oct, 2021"
             android:textColor="#AAAAAA"
             android:textSize="14sp"
             android:textStyle="normal"
@@ -133,62 +135,5 @@
             app:layout_constraintStart_toEndOf="@+id/rating_and_review_user_name_tv"
             app:layout_constraintTop_toTopOf="@+id/rating_and_review_user_name_tv" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Best Price"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="@+id/rating_and_review_user_name_tv"
-            app:layout_constraintTop_toBottomOf="@+id/rating_and_review_user_name_tv" />
-
-        <TextView
-            android:id="@+id/search_product_discounted_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:text="Rs. 238.00"
-            android:textColor="@color/teal_700"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/textView3"
-            app:layout_constraintStart_toEndOf="@+id/textView3"
-            app:layout_constraintTop_toTopOf="@+id/textView3" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/search_add_to_cart_cv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:backgroundTint="@color/teal_700"
-            app:cardCornerRadius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/search_product_discounted_price"
-            app:layout_constraintStart_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/search_add_to_cart_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:foregroundGravity="center"
-                    android:gravity="center"
-                    android:text="ADD TO CART"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
