@@ -18,8 +18,8 @@ import com.google.firebase.storage.StorageReference;
 public class ratingFragment extends Fragment {
 
     private String productName, currentUserUid;
-    private RatingBar search_rating_rb;
-    private TextView search_rating_tv, rating_review_tv, review_5_tv, review_4_tv, review_3_tv, review_2_tv, review_1_tv;
+    private RatingBar rating_frag_rb;
+    private TextView rating_frag_tv, rating_review_tv, review_5_tv, review_4_tv, review_3_tv, review_2_tv, review_1_tv;
     private ProgressBar rating_5_pb, rating_4_pb, rating_3_pb, rating_2_pb, rating_1_pb;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;

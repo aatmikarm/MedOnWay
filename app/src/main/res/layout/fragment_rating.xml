@@ -17,12 +17,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/search_rating_cv"
+            android:id="@+id/rating_frag_cv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             app:cardCornerRadius="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/rating_review_tv"
+            app:layout_constraintBottom_toTopOf="@+id/rating_frag_review_tv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content">
 
                 <RatingBar
-                    android:id="@+id/search_rating_rb"
+                    android:id="@+id/rating_frag_rb"
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,22 +47,22 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/search_rating_tv"
+                    android:id="@+id/rating_frag_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:text="4.5"
                     android:textColor="#8BC34A"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/search_rating_rb"
+                    app:layout_constraintBottom_toBottomOf="@+id/rating_frag_rb"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/search_rating_rb"
-                    app:layout_constraintTop_toTopOf="@+id/search_rating_rb" />
+                    app:layout_constraintStart_toEndOf="@+id/rating_frag_rb"
+                    app:layout_constraintTop_toTopOf="@+id/rating_frag_rb" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/rating_review_tv"
+            android:id="@+id/rating_frag_review_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -73,9 +73,9 @@
             android:textSize="14sp"
             android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/search_rating_cv"
-            app:layout_constraintStart_toStartOf="@+id/search_rating_cv"
-            app:layout_constraintTop_toBottomOf="@+id/search_rating_cv" />
+            app:layout_constraintEnd_toEndOf="@+id/rating_frag_cv"
+            app:layout_constraintStart_toStartOf="@+id/rating_frag_cv"
+            app:layout_constraintTop_toBottomOf="@+id/rating_frag_cv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -105,7 +105,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/textView7"
-            app:layout_constraintEnd_toStartOf="@+id/rating_5_pb"
+            app:layout_constraintEnd_toStartOf="@+id/rating_frag_5_pb"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -125,7 +125,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/textView13"
-            app:layout_constraintEnd_toStartOf="@+id/rating_4_pb"
+            app:layout_constraintEnd_toStartOf="@+id/rating_frag_4_pb"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -145,7 +145,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/textView14"
-            app:layout_constraintEnd_toStartOf="@+id/rating_3_pb"
+            app:layout_constraintEnd_toStartOf="@+id/rating_frag_3_pb"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -165,7 +165,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/textView16"
-            app:layout_constraintEnd_toStartOf="@+id/rating_2_pb"
+            app:layout_constraintEnd_toStartOf="@+id/rating_frag_2_pb"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView13" />
@@ -185,13 +185,13 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/rating_1_pb"
+            app:layout_constraintEnd_toStartOf="@+id/rating_frag_1_pb"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
         <ProgressBar
-            android:id="@+id/rating_5_pb"
+            android:id="@+id/rating_frag_5_pb"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -200,13 +200,13 @@
             android:progress="90"
             android:progressDrawable="@drawable/rounded_pb"
             app:layout_constraintBottom_toBottomOf="@+id/textView6"
-            app:layout_constraintEnd_toStartOf="@+id/review_5_tv"
+            app:layout_constraintEnd_toStartOf="@+id/review_frag_5_tv"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView6"
             app:layout_constraintTop_toTopOf="@+id/textView6" />
 
         <ProgressBar
-            android:id="@+id/rating_4_pb"
+            android:id="@+id/rating_frag_4_pb"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -215,13 +215,13 @@
             android:progress="70"
             android:progressDrawable="@drawable/rounded_pb"
             app:layout_constraintBottom_toBottomOf="@+id/textView7"
-            app:layout_constraintEnd_toStartOf="@+id/review_4_tv"
+            app:layout_constraintEnd_toStartOf="@+id/review_frag_4_tv"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView7"
             app:layout_constraintTop_toTopOf="@+id/textView7" />
 
         <ProgressBar
-            android:id="@+id/rating_3_pb"
+            android:id="@+id/rating_frag_3_pb"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -230,13 +230,13 @@
             android:progress="50"
             android:progressDrawable="@drawable/rounded_pb"
             app:layout_constraintBottom_toBottomOf="@+id/textView13"
-            app:layout_constraintEnd_toStartOf="@+id/review_3_tv"
+            app:layout_constraintEnd_toStartOf="@+id/review_frag_3_tv"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView13"
             app:layout_constraintTop_toTopOf="@+id/textView13" />
 
         <ProgressBar
-            android:id="@+id/rating_2_pb"
+            android:id="@+id/rating_frag_2_pb"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -245,13 +245,13 @@
             android:progress="30"
             android:progressDrawable="@drawable/rounded_pb"
             app:layout_constraintBottom_toBottomOf="@+id/textView14"
-            app:layout_constraintEnd_toStartOf="@+id/review_2_tv"
+            app:layout_constraintEnd_toStartOf="@+id/review_frag_2_tv"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView14"
             app:layout_constraintTop_toTopOf="@+id/textView14" />
 
         <ProgressBar
-            android:id="@+id/rating_1_pb"
+            android:id="@+id/rating_frag_1_pb"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -260,13 +260,13 @@
             android:progress="10"
             android:progressDrawable="@drawable/rounded_pb"
             app:layout_constraintBottom_toBottomOf="@+id/textView16"
-            app:layout_constraintEnd_toStartOf="@+id/review_1_tv"
+            app:layout_constraintEnd_toStartOf="@+id/review_frag_1_tv"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView16"
             app:layout_constraintTop_toTopOf="@+id/textView16" />
 
         <TextView
-            android:id="@+id/review_5_tv"
+            android:id="@+id/review_frag_5_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -277,14 +277,14 @@
             android:textColor="#AAAAAA"
             android:textSize="14sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="@+id/rating_5_pb"
+            app:layout_constraintBottom_toBottomOf="@+id/rating_frag_5_pb"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/rating_5_pb"
-            app:layout_constraintTop_toTopOf="@+id/rating_5_pb" />
+            app:layout_constraintStart_toEndOf="@+id/rating_frag_5_pb"
+            app:layout_constraintTop_toTopOf="@+id/rating_frag_5_pb" />
 
         <TextView
-            android:id="@+id/review_4_tv"
+            android:id="@+id/review_frag_4_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -295,14 +295,14 @@
             android:textColor="#AAAAAA"
             android:textSize="14sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="@+id/rating_4_pb"
+            app:layout_constraintBottom_toBottomOf="@+id/rating_frag_4_pb"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/rating_4_pb"
-            app:layout_constraintTop_toTopOf="@+id/rating_4_pb" />
+            app:layout_constraintStart_toEndOf="@+id/rating_frag_4_pb"
+            app:layout_constraintTop_toTopOf="@+id/rating_frag_4_pb" />
 
         <TextView
-            android:id="@+id/review_3_tv"
+            android:id="@+id/review_frag_3_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -313,14 +313,14 @@
             android:textColor="#AAAAAA"
             android:textSize="14sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="@+id/rating_3_pb"
+            app:layout_constraintBottom_toBottomOf="@+id/rating_frag_3_pb"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/rating_3_pb"
-            app:layout_constraintTop_toTopOf="@+id/rating_3_pb" />
+            app:layout_constraintStart_toEndOf="@+id/rating_frag_3_pb"
+            app:layout_constraintTop_toTopOf="@+id/rating_frag_3_pb" />
 
         <TextView
-            android:id="@+id/review_2_tv"
+            android:id="@+id/review_frag_2_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -331,14 +331,14 @@
             android:textColor="#AAAAAA"
             android:textSize="14sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="@+id/rating_2_pb"
+            app:layout_constraintBottom_toBottomOf="@+id/rating_frag_2_pb"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/rating_2_pb"
-            app:layout_constraintTop_toTopOf="@+id/rating_2_pb" />
+            app:layout_constraintStart_toEndOf="@+id/rating_frag_2_pb"
+            app:layout_constraintTop_toTopOf="@+id/rating_frag_2_pb" />
 
         <TextView
-            android:id="@+id/review_1_tv"
+            android:id="@+id/review_frag_1_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -349,11 +349,11 @@
             android:textColor="#AAAAAA"
             android:textSize="14sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="@+id/rating_1_pb"
+            app:layout_constraintBottom_toBottomOf="@+id/rating_frag_1_pb"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/rating_1_pb"
-            app:layout_constraintTop_toTopOf="@+id/rating_1_pb" />
+            app:layout_constraintStart_toEndOf="@+id/rating_frag_1_pb"
+            app:layout_constraintTop_toTopOf="@+id/rating_frag_1_pb" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
