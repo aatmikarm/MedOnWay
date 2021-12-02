@@ -70,10 +70,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:isIndicator="true"
-            android:numStars="5"
             android:progressTint="#8BC34A"
-            android:rating="4"
+            android:rating="4.5"
             android:stepSize="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView11"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
@@ -96,12 +94,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:background="@drawable/roundedittext"
             android:drawableLeft="@drawable/ic_star"
             android:drawablePadding="10dp"
-            android:padding="10dp"
-            android:background="@drawable/roundedittext"
             android:drawableTint="@color/black"
             android:hint="Comment"
+            android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
@@ -133,6 +131,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

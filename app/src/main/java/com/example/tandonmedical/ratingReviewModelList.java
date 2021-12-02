@@ -1,14 +1,13 @@
 package com.example.tandonmedical;
 
 public class ratingReviewModelList {
-    String userId;
-    String imageUrl;
-    String name;
     String productId;
-    String productOrderId;
+    String userId;
     String time;
     String rating;
     String review;
+    String imageUrl;
+    String name;
 
     public String getUserId() {
         return userId;
@@ -40,14 +39,6 @@ public class ratingReviewModelList {
 
     public void setProductId(String productId) {
         this.productId = productId;
-    }
-
-    public String getProductOrderId() {
-        return productOrderId;
-    }
-
-    public void setProductOrderId(String productOrderId) {
-        this.productOrderId = productOrderId;
     }
 
     public String getTime() {

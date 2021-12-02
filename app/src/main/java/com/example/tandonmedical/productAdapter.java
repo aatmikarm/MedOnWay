@@ -1,7 +1,5 @@
 package com.example.tandonmedical;
 
-import static androidx.core.content.res.TypedArrayUtils.getText;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -10,9 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,17 +56,16 @@ public class productAdapter extends RecyclerView.Adapter<productAdapter.ItemView
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("category", productModelList.get(position).getCategory());
                 intent.putExtra("productId", productModelList.get(position).getProductId());
-
                 intent.putExtra("description", productModelList.get(position).getDescription());
                 intent.putExtra("discount", productModelList.get(position).getDiscount());
                 intent.putExtra("imageUrl", productModelList.get(position).getImageUrl());
-
                 intent.putExtra("mrp", productModelList.get(position).getMrp());
                 intent.putExtra("name", productModelList.get(position).getName());
                 intent.putExtra("price", productModelList.get(position).getPrice());
-
                 intent.putExtra("sellerId", productModelList.get(position).getSellerId());
                 intent.putExtra("seller", productModelList.get(position).getSeller());
+                intent.putExtra("rating", productModelList.get(position).getRating());
+                intent.putExtra("review", productModelList.get(position).getReview());
                 context.startActivity(intent);
 
             }
@@ -87,7 +82,7 @@ public class productAdapter extends RecyclerView.Adapter<productAdapter.ItemView
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         ImageView productImage;
-        TextView productName,productPrice,productMrp,productDiscount;
+        TextView productName, productPrice, productMrp, productDiscount;
         ConstraintLayout productContainer;
 
         ItemViewHolder(View itemView) {

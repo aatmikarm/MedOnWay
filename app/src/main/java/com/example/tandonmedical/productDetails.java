@@ -27,8 +27,7 @@ public class productDetails extends AppCompatActivity {
 
     private FragmentManager ratingfragmentManager;
     private TextView productDetails_category_tv, productDetails_productName_tv, profile_no_of_prescriptions, productDetails_productDescription_tv;
-    private String checkToLoop, currentUserUid, category, productId, description, discount, imageUrl, mrp, name, price, sellerId, seller, productUserStatus,
-            dateandtimepattern = "ssmmHHddMMyyyy";
+    private String checkToLoop, currentUserUid, category, productId, description, discount, imageUrl, mrp, name, price, sellerId, seller, productUserStatus,rating,review;
     private TextView productDetails_discount_tv, productDetails_mrp_tv, productDetails_price_tv, productDetails_quantity_tv;
     private CardView productDetails_minus_cv, productDetails_plus_cv, productDetails_quantity_cv, productDetails_addToCart_cv;
     private ImageView productDetails_image_iv, productDetail_back_iv, productDetail_cart_iv;
@@ -74,6 +73,8 @@ public class productDetails extends AppCompatActivity {
             this.price = (String) getIntent().getExtras().get("price");
             this.sellerId = (String) getIntent().getExtras().get("sellerId");
             this.seller = (String) getIntent().getExtras().get("seller");
+            this.rating = (String) getIntent().getExtras().get("rating");
+            this.review = (String) getIntent().getExtras().get("review");
         }
 
         productDetails_productName_tv.setText(name);
@@ -86,7 +87,6 @@ public class productDetails extends AppCompatActivity {
         Glide.with(this).load(imageUrl).into(productDetails_image_iv);
 
         if (savedInstanceState == null) {
-
             ratingFragment ratingFragment = new ratingFragment();
             Bundle bundle = new Bundle();
             bundle.putString("productId", productId);
@@ -146,7 +146,7 @@ public class productDetails extends AppCompatActivity {
     }
 
     private void addProductToCart() {
-        SimpleDateFormat sdf = new SimpleDateFormat(dateandtimepattern);
+        SimpleDateFormat sdf = new SimpleDateFormat("ssmmHHddMMyyyy");
         final String productOrderId = sdf.format(new Date());
         Map<String, Object> order = new HashMap<>();
         order.put("name", name);
@@ -161,6 +161,8 @@ public class productDetails extends AppCompatActivity {
         order.put("productId", productId);
         order.put("productOrderId", productOrderId);
         order.put("seller", seller);
+        order.put("rating", rating);
+        order.put("review", review);
         order.put("productQuantity", String.valueOf(productQuantity));
         order.put("status", "in cart");
         mDb.collection("users").document(currentUserUid)

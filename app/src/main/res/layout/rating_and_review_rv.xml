@@ -35,8 +35,8 @@
 
             <ImageView
                 android:id="@+id/user_profile_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@drawable/user_ic"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop" />

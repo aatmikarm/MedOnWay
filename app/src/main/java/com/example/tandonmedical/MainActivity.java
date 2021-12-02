@@ -184,6 +184,8 @@ public class MainActivity extends AppCompatActivity {
                         productModelList.setSeller((String) document.get("seller"));
                         productModelList.setProductId((String) document.get("productId"));
                         productModelList.setDescription((String) document.get("description"));
+                        productModelList.setRating((String) document.get("rating"));
+                        productModelList.setReview((String) document.get("review"));
                         productModelLists.add(productModelList);
                     }
                 }

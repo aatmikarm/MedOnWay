@@ -13,15 +13,20 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 public class ratingFragment extends Fragment {
 
     private ConstraintLayout rating_frag_full_cl;
-    private String productId, currentUserUid;
+    private String productId, currentUserUid, rating, review;
+    private int numberOfRatings, fiveStar, fourStar, threeStar, twoStar, oneStar;
     private RatingBar rating_frag_rb;
     private TextView rating_frag_tv, rating_frag_review_tv, review_frag_5_tv,
             review_frag_4_tv, review_frag_3_tv, review_frag_2_tv, review_frag_1_tv;
@@ -72,10 +77,57 @@ public class ratingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
+        getRatingAndReview();
         rating_frag_full_cl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), rating.class));
+                Intent intent = new Intent(getContext(), rating.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("productId", productId);
+                v.getContext().startActivity(intent);
+            }
+        });
+
+    }
+
+    private void getRatingAndReview() {
+        numberOfRatings = 0;
+        fiveStar = 0;
+        fourStar = 0;
+        threeStar = 0;
+        twoStar = 0;
+        oneStar = 0;
+        mDb.collection("products").document(productId).collection("rating")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        float productRating = Float.parseFloat((String) document.get("rating"));
+                        if (productRating <= 1 && productRating >= 0) {
+                            oneStar = oneStar + 1;
+                        }
+                        if (productRating <= 2 && productRating >= 1) {
+                            twoStar = twoStar + 1;
+                        }
+                        if (productRating <= 3 && productRating >= 2) {
+                            threeStar = threeStar + 1;
+                        }
+                        if (productRating <= 4 && productRating >= 3) {
+                            fourStar = fourStar + 1;
+                        }
+                        if (productRating <= 5 && productRating >= 4) {
+                            fiveStar = fiveStar + 1;
+                        }
+                        numberOfRatings = numberOfRatings + 1;
+                    }
+                    rating_frag_review_tv.setText(numberOfRatings + " Ratings and " + numberOfRatings + " Reviews");
+                    review_frag_1_tv.setText(String.valueOf(oneStar));
+                    review_frag_2_tv.setText(String.valueOf(twoStar));
+                    review_frag_3_tv.setText(String.valueOf(threeStar));
+                    review_frag_4_tv.setText(String.valueOf(fourStar));
+                    review_frag_5_tv.setText(String.valueOf(fiveStar));
+                }
             }
         });
 

@@ -179,6 +179,10 @@ public class profile extends AppCompatActivity {
                 ImageView imageView;
                 imageView = findViewById(R.id.profile_iv);
                 Glide.with(getApplicationContext()).load(uri).into(imageView);
+
+                Map<String, Object> userImageUrl = new HashMap<>();
+                userImageUrl.put("imageUrl", uri.toString());
+                mDb.collection("users").document(currentUserUid).update(userImageUrl);
             }
         });
     }

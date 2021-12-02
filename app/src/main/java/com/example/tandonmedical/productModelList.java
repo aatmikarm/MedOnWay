@@ -10,6 +10,33 @@ public class productModelList {
     String productOrderId;
     String productOrderPlacedTime;
     String productQuantity;
+    String description;
+    String quantity;
+    String seller;
+    String sellerId;
+    String userId;
+    String status;
+    String boughtTimes;
+    String discount;
+    String id;
+    String rating;
+    String review;
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
+    }
 
     public String getProductQuantity() {
         return productQuantity;
@@ -35,11 +62,6 @@ public class productModelList {
         this.productOrderId = productOrderId;
     }
 
-    String description;
-    String quantity;
-    String seller;
-    String sellerId;
-    String userId;
 
     public String getUserId() {
         return userId;
@@ -49,7 +71,6 @@ public class productModelList {
         this.userId = userId;
     }
 
-    String status;
 
     public String getBoughtTimes() {
         return boughtTimes;
@@ -59,7 +80,6 @@ public class productModelList {
         this.boughtTimes = boughtTimes;
     }
 
-    String boughtTimes;
 
     public String getSeller() {
         return seller;
@@ -125,7 +145,6 @@ public class productModelList {
         this.mrp = mrp;
     }
 
-    String discount;
 
     public String getDiscount() {
         return discount;
@@ -135,8 +154,6 @@ public class productModelList {
         this.discount = discount;
     }
 
-
-    String id;
 
     public String getId() {
         return id;
