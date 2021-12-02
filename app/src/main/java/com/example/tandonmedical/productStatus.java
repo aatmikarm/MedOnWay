@@ -33,6 +33,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -67,6 +68,7 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
     private TextView productStatus_deliveryPersonName_tv, productStaus_arrivalTime, userProductOTP_tv, productStatusView_tv;
     private ImageView productStatus_deliveryPerson_iv, productStatus_back_iv;
     private CardView productStatus_deliveryPersonCall;
+    private FragmentManager ratingfragmentManager;
     private String currentUserUid, seller, sellerId, sellerPhone, productId, productOrderId, distanceBetweenUserAndSeller;
     String userDefaultImageUrl = "https://firebasestorage.googleapis.com/v0/b/test1photographer.appspot.com/o/default%2FuserDefault.png?alt=media&token=0f495f89-caa3-4bcb-b278-97548eb77490";
 
@@ -108,6 +110,18 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
         productStatus_deliveryPersonCall = findViewById(R.id.productStatus_deliveryPersonCall);
         userProductOTP_tv = findViewById(R.id.userProductOTP_tv);
         productStatusView_tv = findViewById(R.id.productStatusView_tv);
+
+        if (savedInstanceState == null) {
+            ratingFragment ratingFragment = new ratingFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("productId", productId);
+            ratingFragment.setArguments(bundle);
+            ratingfragmentManager = getSupportFragmentManager();
+            ratingfragmentManager.beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.productStatus_rating_fcv, ratingFragment.class, bundle)
+                    .commit();
+        }
 
         productStatus_deliveryPersonCall.setOnClickListener(new View.OnClickListener() {
             @Override

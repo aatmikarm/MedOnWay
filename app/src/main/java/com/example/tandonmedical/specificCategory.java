@@ -1,15 +1,14 @@
 package com.example.tandonmedical;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 
 public class specificCategory extends AppCompatActivity {
 
-    private String category,imageUrl;
+    private String category, imageUrl;
     private ImageView backBtn;
     private TextView Category_name_tv;
     private RecyclerView productRecyclerView;
@@ -64,7 +63,7 @@ public class specificCategory extends AppCompatActivity {
 
                 productRecyclerView = findViewById(R.id.specific_category_rv);
                 productAdapter productAdapter = new productAdapter(getApplicationContext(), productModelLists);
-                productRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+                productRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
                 productRecyclerView.setAdapter(productAdapter);
 
             }
@@ -76,7 +75,7 @@ public class specificCategory extends AppCompatActivity {
 
         final ArrayList<productModelList> productModelLists = new ArrayList<>();
 
-        mDb.collection("products").whereEqualTo("category",category).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        mDb.collection("products").whereEqualTo("category", category).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -102,7 +101,6 @@ public class specificCategory extends AppCompatActivity {
 
         return productModelLists;
     }
-
 
 
 }
