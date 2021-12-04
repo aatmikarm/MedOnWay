@@ -134,16 +134,19 @@ public class ratingFragment extends Fragment {
                     review_frag_4_tv.setText(String.valueOf(fourStar));
                     review_frag_5_tv.setText(String.valueOf(fiveStar));
 
-                    if(numberOfRatings!=0){
-                        rating_frag_1_pb.setProgress((oneStar*100)/numberOfRatings);
-                        rating_frag_2_pb.setProgress((twoStar*100)/numberOfRatings);
-                        rating_frag_3_pb.setProgress((threeStar*100)/numberOfRatings);
-                        rating_frag_4_pb.setProgress((fourStar*100)/numberOfRatings);
-                        rating_frag_5_pb.setProgress((fiveStar*100)/numberOfRatings);
+                    if (numberOfRatings != 0) {
+                        rating_frag_1_pb.setProgress((oneStar * 100) / numberOfRatings);
+                        rating_frag_2_pb.setProgress((twoStar * 100) / numberOfRatings);
+                        rating_frag_3_pb.setProgress((threeStar * 100) / numberOfRatings);
+                        rating_frag_4_pb.setProgress((fourStar * 100) / numberOfRatings);
+                        rating_frag_5_pb.setProgress((fiveStar * 100) / numberOfRatings);
+
+                        //calculate average rating
+                        float totalRatings = ((5 * fiveStar) + (4 * fourStar) + (3 * threeStar) + (2 * twoStar) + (1 * oneStar));
+                        float averageRatings = totalRatings / numberOfRatings;
+                        rating_frag_tv.setText(String.valueOf(averageRatings));
+                        rating_frag_rb.setRating(averageRatings);
                     }
-
-
-
 
 
                     String[] star = {
