@@ -142,30 +142,27 @@ public class ratingFragment extends Fragment {
                         rating_frag_5_pb.setProgress((fiveStar * 100) / numberOfRatings);
 
                         //calculate average rating
-                        float totalRatings = ((5 * fiveStar) + (4 * fourStar) + (3 * threeStar) + (2 * twoStar) + (1 * oneStar));
-                        float averageRatings = totalRatings / numberOfRatings;
-                        rating_frag_tv.setText(String.valueOf(averageRatings));
-                        rating_frag_rb.setRating(averageRatings);
+                        float avgRating = ((5 * fiveStar) + (4 * fourStar) + (3 * threeStar) + (2 * twoStar) + (1 * oneStar)) / numberOfRatings;
+                        rating_frag_tv.setText(String.valueOf(avgRating));
+                        rating_frag_rb.setRating(avgRating);
+
+                        String[] star = {
+                                String.valueOf(oneStar),
+                                String.valueOf(twoStar),
+                                String.valueOf(threeStar),
+                                String.valueOf(fourStar),
+                                String.valueOf(fiveStar)
+                        };
+                        List<String> stars = Arrays.asList(star);
+                        Map<String, Object> updateIndividualRating = new HashMap<>();
+                        updateIndividualRating.put("rating", String.valueOf(numberOfRatings));
+                        updateIndividualRating.put("review", String.valueOf(numberOfRatings));
+                        updateIndividualRating.put("avgRating", String.valueOf(avgRating));
+                        updateIndividualRating.put("stars", stars);
+                        mDb.collection("products").document(productId).update(updateIndividualRating);
                     }
-
-
-                    String[] star = {
-                            String.valueOf(oneStar),
-                            String.valueOf(twoStar),
-                            String.valueOf(threeStar),
-                            String.valueOf(fourStar),
-                            String.valueOf(fiveStar)
-                    };
-                    List<String> stars = Arrays.asList(star);
-                    Map<String, Object> updateIndividualRating = new HashMap<>();
-                    updateIndividualRating.put("rating", String.valueOf(numberOfRatings));
-                    updateIndividualRating.put("review", String.valueOf(numberOfRatings));
-                    updateIndividualRating.put("stars", stars);
-                    mDb.collection("products").document(productId).update(updateIndividualRating);
                 }
             }
         });
-
     }
-
 }
