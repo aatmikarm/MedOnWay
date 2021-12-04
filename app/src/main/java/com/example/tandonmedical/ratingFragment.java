@@ -22,6 +22,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class ratingFragment extends Fragment {
 
     private ConstraintLayout rating_frag_full_cl;
@@ -120,6 +125,7 @@ public class ratingFragment extends Fragment {
                             fiveStar = fiveStar + 1;
                         }
                         numberOfRatings = numberOfRatings + 1;
+
                     }
                     rating_frag_review_tv.setText(numberOfRatings + " Ratings and " + numberOfRatings + " Reviews");
                     review_frag_1_tv.setText(String.valueOf(oneStar));
@@ -127,6 +133,32 @@ public class ratingFragment extends Fragment {
                     review_frag_3_tv.setText(String.valueOf(threeStar));
                     review_frag_4_tv.setText(String.valueOf(fourStar));
                     review_frag_5_tv.setText(String.valueOf(fiveStar));
+
+                    if(numberOfRatings!=0){
+                        rating_frag_1_pb.setProgress((oneStar*100)/numberOfRatings);
+                        rating_frag_2_pb.setProgress((twoStar*100)/numberOfRatings);
+                        rating_frag_3_pb.setProgress((threeStar*100)/numberOfRatings);
+                        rating_frag_4_pb.setProgress((fourStar*100)/numberOfRatings);
+                        rating_frag_5_pb.setProgress((fiveStar*100)/numberOfRatings);
+                    }
+
+
+
+
+
+                    String[] star = {
+                            String.valueOf(oneStar),
+                            String.valueOf(twoStar),
+                            String.valueOf(threeStar),
+                            String.valueOf(fourStar),
+                            String.valueOf(fiveStar)
+                    };
+                    List<String> stars = Arrays.asList(star);
+                    Map<String, Object> updateIndividualRating = new HashMap<>();
+                    updateIndividualRating.put("rating", String.valueOf(numberOfRatings));
+                    updateIndividualRating.put("review", String.valueOf(numberOfRatings));
+                    updateIndividualRating.put("stars", stars);
+                    mDb.collection("products").document(productId).update(updateIndividualRating);
                 }
             }
         });
