@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -29,18 +30,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class rating extends AppCompatActivity {
 
-    private EditText search_et;
+    private EditText new_rating_review_et;
     private RatingBar new_rating_rb;
-    private TextView new_rating_review_tv;
     private CardView rating_and_review_upload_cv;
     private ImageView rating_back_iv, new_rating_review_upload_product_iv;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
-    private String currentUserUid, productId, rating, review, imageUrl, name;
+    private String currentUserUid, productId, rating, review, imageUrl, name, userToken;
     private RecyclerView rating_and_review_rv;
     private ratingReviewAdapter ratingReviewAdapter;
     private ArrayList<ratingReviewModelList> ratingReviewModelLists;
@@ -55,10 +56,24 @@ public class rating extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
         currentUserUid = firebaseAuth.getUid();
 
+        //firebase cloud messeging
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful()) {
+                            userToken = Objects.requireNonNull(task.getResult().toString());
+                        }
+                    }
+                });
+
+
         rating_back_iv = findViewById(R.id.rating_back_iv);
         new_rating_review_upload_product_iv = findViewById(R.id.new_rating_review_upload_product_iv);
         new_rating_rb = findViewById(R.id.new_rating_rb);
-        new_rating_review_tv = findViewById(R.id.new_rating_review_tv);
+        new_rating_review_et = findViewById(R.id.new_rating_review_et);
         rating_and_review_rv = findViewById(R.id.rating_and_review_rv);
         rating_and_review_upload_cv = findViewById(R.id.rating_and_review_upload_cv);
 
@@ -93,7 +108,16 @@ public class rating extends AppCompatActivity {
         rating_and_review_upload_cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadRatingAndReview();
+                if (!new_rating_review_et.getText().toString().isEmpty()) {
+                    uploadRatingAndReview();
+                    FcmNotificationsSender notificationsSender = new FcmNotificationsSender(userToken,
+                            new_rating_review_et.getText().toString(),
+                            new_rating_review_et.getText().toString(),
+                            getApplicationContext(), rating.this);
+                    notificationsSender.SendNotifications();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Enter Review", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -107,12 +131,11 @@ public class rating extends AppCompatActivity {
         uploadRatingAndReview.put("userId", currentUserUid);
         uploadRatingAndReview.put("time", time);
         uploadRatingAndReview.put("rating", String.valueOf(new_rating_rb.getRating()));
-        uploadRatingAndReview.put("review", new_rating_review_tv.getText().toString());
+        uploadRatingAndReview.put("review", new_rating_review_et.getText().toString());
         uploadRatingAndReview.put("imageUrl", imageUrl);
         uploadRatingAndReview.put("name", name);
         mDb.collection("products").document(productId)
                 .collection("rating").document().set(uploadRatingAndReview);
-
 
 
         ratingReviewModelList ratingReviewModelList = new ratingReviewModelList();

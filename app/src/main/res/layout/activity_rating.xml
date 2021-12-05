@@ -90,7 +90,7 @@
             app:layout_constraintTop_toBottomOf="@+id/new_rating_rb" />
 
         <EditText
-            android:id="@+id/new_rating_review_tv"
+            android:id="@+id/new_rating_review_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -111,8 +111,8 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/camera_ic"
             android:backgroundTint="@color/teal_700"
-            app:layout_constraintStart_toStartOf="@+id/new_rating_review_tv"
-            app:layout_constraintTop_toBottomOf="@+id/new_rating_review_tv" />
+            app:layout_constraintStart_toStartOf="@+id/new_rating_review_et"
+            app:layout_constraintTop_toBottomOf="@+id/new_rating_review_et" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -143,7 +143,7 @@
             android:backgroundTint="@color/teal_700"
             app:cardCornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="@+id/new_rating_review_upload_product_iv"
-            app:layout_constraintEnd_toEndOf="@+id/new_rating_review_tv"
+            app:layout_constraintEnd_toEndOf="@+id/new_rating_review_et"
             app:layout_constraintStart_toEndOf="@+id/new_rating_review_upload_product_iv"
             app:layout_constraintTop_toTopOf="@+id/new_rating_review_upload_product_iv">
 
