@@ -1,6 +1,5 @@
 package com.example.tandonmedical;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -15,9 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -69,7 +66,7 @@ public class rating extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             this.productId = (String) getIntent().getExtras().get("productId");
         }
-
+        rating_and_review_upload_cv.setVisibility(View.GONE);
         rating_and_review_rv.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
         ratingReviewModelLists = new ArrayList<>();
@@ -80,6 +77,7 @@ public class rating extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                rating_and_review_upload_cv.setVisibility(View.VISIBLE);
                 ratingReviewAdapter = new ratingReviewAdapter(getApplicationContext(), ratingReviewModelLists);
                 rating_and_review_rv.setAdapter(ratingReviewAdapter);
             }
@@ -114,6 +112,19 @@ public class rating extends AppCompatActivity {
         uploadRatingAndReview.put("name", name);
         mDb.collection("products").document(productId)
                 .collection("rating").document().set(uploadRatingAndReview);
+
+
+
+        ratingReviewModelList ratingReviewModelList = new ratingReviewModelList();
+        ratingReviewModelList.setName(name);
+        ratingReviewModelList.setImageUrl(imageUrl);
+        ratingReviewModelList.setProductId(productId);
+        ratingReviewModelList.setRating(String.valueOf(new_rating_rb.getRating()));
+        ratingReviewModelList.setReview(review);
+        ratingReviewModelList.setTime(String.valueOf(time));
+        ratingReviewModelList.setUserId(currentUserUid);
+        ratingReviewModelLists.add(ratingReviewModelList);
+        ratingReviewAdapter.notifyDataSetChanged();
     }
 
     private void getCurrentUserDetails() {

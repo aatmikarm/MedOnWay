@@ -95,6 +95,12 @@ public class ratingFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getRatingAndReview();
+    }
+
     private void getRatingAndReview() {
         numberOfRatings = 0;
         fiveStar = 0;
