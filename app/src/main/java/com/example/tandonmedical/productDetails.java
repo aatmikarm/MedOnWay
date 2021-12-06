@@ -27,7 +27,7 @@ public class productDetails extends AppCompatActivity {
 
     private FragmentManager ratingfragmentManager;
     private TextView productDetails_category_tv, productDetails_productName_tv, profile_no_of_prescriptions, productDetails_productDescription_tv;
-    private String checkToLoop, currentUserUid, category, productId, description, discount, imageUrl, mrp, name, price, sellerId, seller, productUserStatus,rating,review;
+    private String sellerToken,checkToLoop, currentUserUid, category, productId, description, discount, imageUrl, mrp, name, price, sellerId, seller, productUserStatus,rating,review;
     private TextView productDetails_discount_tv, productDetails_mrp_tv, productDetails_price_tv, productDetails_quantity_tv;
     private CardView productDetails_minus_cv, productDetails_plus_cv, productDetails_quantity_cv, productDetails_addToCart_cv;
     private ImageView productDetails_image_iv, productDetail_back_iv, productDetail_cart_iv;
@@ -75,6 +75,7 @@ public class productDetails extends AppCompatActivity {
             this.seller = (String) getIntent().getExtras().get("seller");
             this.rating = (String) getIntent().getExtras().get("rating");
             this.review = (String) getIntent().getExtras().get("review");
+            this.sellerToken = (String) getIntent().getExtras().get("sellerToken");
         }
 
         productDetails_productName_tv.setText(name);
@@ -158,6 +159,7 @@ public class productDetails extends AppCompatActivity {
         order.put("imageUrl", imageUrl);
         order.put("userId", currentUserUid);
         order.put("sellerId", sellerId);
+        order.put("sellerToken", sellerToken);
         order.put("productId", productId);
         order.put("productOrderId", productOrderId);
         order.put("seller", seller);

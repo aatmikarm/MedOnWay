@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView username_tv;
     private RecyclerView productRecyclerView, doctorRecyclerView, categoriesRecyclerView;
     private String currentUserUid;
-    private CardView cart_cardView, orders_cardView,search_cv;
+    private CardView cart_cardView, orders_cardView, search_cv;
     private FusedLocationProviderClient fusedLocationClient;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
                         productModelList.setDescription((String) document.get("description"));
                         productModelList.setRating((String) document.get("rating"));
                         productModelList.setReview((String) document.get("review"));
+                        productModelList.setSellerToken((String) document.get("sellerToken"));
                         productModelLists.add(productModelList);
                     }
                 }

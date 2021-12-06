@@ -21,6 +21,15 @@ public class productModelList {
     String id;
     String rating;
     String review;
+    String sellerToken;
+
+    public String getSellerToken() {
+        return sellerToken;
+    }
+
+    public void setSellerToken(String sellerToken) {
+        this.sellerToken = sellerToken;
+    }
 
     public String getRating() {
         return rating;

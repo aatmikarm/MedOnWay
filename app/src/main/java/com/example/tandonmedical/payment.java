@@ -58,6 +58,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -84,13 +85,13 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
     private TextView paymentActivity_totalPayment;
     private CardView onlinePayment_cv, CASH_ON_DELIVERY_cv, payment_confirm_cv;
     private Float totalAmount;
-    private String currentUserUid,productId, dateandtimepattern = "ssmmHHddMMyyyy";
+    private String currentUserUid, productId, sellerToken;
     private productModelList productModelLists;
 
     GeoPoint currentUserGeoPoints;
     private StorageReference mStorageRef;
     List<Marker> allMapMarkers = new ArrayList<Marker>();
-    String userDefaultImageUrl = "https://firebasestorage.googleapis.com/v0/b/test1photographer.appspot.com/o/default%2FuserDefault.png?alt=media&token=0f495f89-caa3-4bcb-b278-97548eb77490";
+    String defaultImageUrl = "https://firebasestorage.googleapis.com/v0/b/tandon-medical-8ee54.appspot.com/o/tandon%20medical.png?alt=media&token=72ebb684-c837-4a66-b282-6bfa03a7c69a";
 
 
     @Override
@@ -98,12 +99,13 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
         getSupportActionBar().hide();
-
         mfusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         firebaseAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         currentUserUid = firebaseAuth.getUid();
+        //firebase cloud messeging
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.paymentMap);
@@ -132,7 +134,6 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                     finish();
 
                 } else if (totalAmount != 0) {
-
                     updateUserProductStatus();
                     finish();
                     startActivity(new Intent(getApplicationContext(), orders.class));
@@ -147,13 +148,13 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
 
     private void updateUserProductStatus() {
         mDb.collection("users").document(currentUserUid).collection("orders")
-                .whereEqualTo("status","in cart").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .whereEqualTo("status", "in cart").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     int otp = generateRandomOTP();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        SimpleDateFormat sdf = new SimpleDateFormat(dateandtimepattern);
+                        SimpleDateFormat sdf = new SimpleDateFormat("ssmmHHddMMyyyy");
                         final String productOrderPlacedTime = sdf.format(new Date());
                         Map<String, Object> updateUserInfo = new HashMap<>();
                         updateUserInfo.put("status", "on the way");
@@ -178,9 +179,19 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                         updateSellerInfo.put("productQuantity", (String) document.get("productQuantity"));
                         updateSellerInfo.put("productOrderPlacedTime", productOrderPlacedTime);
                         updateSellerInfo.put("status", "on the way");
+
                         mDb.collection("seller").document((String) document.get("sellerId"))
                                 .collection("orders").document((String) document.get("productOrderId"))
                                 .set(updateSellerInfo);
+
+                        //send seller a notification message
+                        sellerToken = (String) document.get("sellerToken");
+                        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(sellerToken,
+                                "Order By " + currentUserUid,
+                                (String) document.get("productQuantity") + " " + (String) document.get("name"),
+                                getApplicationContext(), payment.this);
+                        notificationsSender.SendNotifications();
+                        Toast.makeText(payment.this, sellerToken, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -189,6 +200,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
 
     int range = 9;  // to generate a single number with this range, by default its 0..9
     int length = 4; // by default length is 4
+
     public int generateRandomOTP() {
         int randomOTP;
         SecureRandom secureRandom = new SecureRandom();
@@ -323,7 +335,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                                     public void onFailure(@NonNull Exception e) {
                                         Glide.with(payment.this)
                                                 .asBitmap()
-                                                .load(userDefaultImageUrl)
+                                                .load(defaultImageUrl)
                                                 .into(new CustomTarget<Bitmap>() {
                                                     @Override
                                                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
