@@ -1,6 +1,7 @@
 package com.example.tandonmedical;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,19 @@ public class doctorsAdapter extends RecyclerView.Adapter<doctorsAdapter.ItemView
 
         Glide.with(context).load(doctorsModelLists.get(position).getImageUrl()).into(holder.doctorImage);
         holder.doctorName.setText(doctorsModelLists.get(position).name);
+        holder.doctorImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(context, "url = "+proRecyclerViewListModels.get(position).getImageUrl(), Toast.LENGTH_LONG).show();
+                //add(position , proRecyclerViewListModels.get(1));
+                //remove(position);
+                Intent intent = new Intent(context, doctorDetails.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("doctorName", "doctorName");
+                context.startActivity(intent);
+
+            }
+        });
     }
 
     @Override
