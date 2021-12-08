@@ -46,7 +46,8 @@ public class doctorsAdapter extends RecyclerView.Adapter<doctorsAdapter.ItemView
                 //remove(position);
                 Intent intent = new Intent(context, doctorDetails.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("doctorName", "doctorName");
+                intent.putExtra("name", doctorsModelLists.get(position).getName());
+                intent.putExtra("doctorId", doctorsModelLists.get(position).getDoctorId());
                 context.startActivity(intent);
 
             }
