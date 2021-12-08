@@ -87,7 +87,7 @@ public class doctorDetails extends AppCompatActivity {
             this.tag = (String) getIntent().getExtras().get("tag");
             this.sign = (String) getIntent().getExtras().get("sign");
             this.geo_point = (GeoPoint) getIntent().getExtras().get("geo_point");
-            //Toast.makeText(getApplicationContext(), doctorId, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), doctorId, Toast.LENGTH_SHORT).show();
         }
         getDoctorDetails();
 
