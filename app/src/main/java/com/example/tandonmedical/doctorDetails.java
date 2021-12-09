@@ -16,6 +16,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,16 +75,17 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
             education, hospital, degree, timing, fee, tag, sign;
     private GeoPoint geo_point;
     private TextView doctorDetails_doctorName_tv, doctorDetails_category_tv, rating_and_review_star_tv,
-            doctor_education, doctor_hospital, doctor_degree, doctor_fee;
+            doctor_education, doctor_hospital, doctor_degree, doctor_fee, doctor_detail_eta_tv;
     private ImageView doctor_profile_iv, doctorDetail_back_iv;
     private RatingBar rating_and_review_star_rb;
     private CardView doctorDetails_appointment_cv;
     private GoogleMap map;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private GeoPoint sellerGeoPoint, userGeoPoint;
+    private GeoPoint doctorGeoPoint, userGeoPoint;
     String userDefaultImageUrl = "https://firebasestorage.googleapis.com/v0/b/test1photographer.appspot.com/o/default%2FuserDefault.png?alt=media&token=0f495f89-caa3-4bcb-b278-97548eb77490";
-
+    private Handler handler1;
+    private Runnable runnable1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +109,7 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
         doctor_fee = findViewById(R.id.doctor_fee);
         doctorDetails_appointment_cv = findViewById(R.id.doctorDetails_appointment_cv);
         doctorDetail_back_iv = findViewById(R.id.doctorDetail_back_iv);
+        doctor_detail_eta_tv = findViewById(R.id.doctor_detail_eta_tv);
 
         if (getIntent().getExtras() != null) {
             this.name = (String) getIntent().getExtras().get("name");
@@ -139,7 +142,20 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
         mapFragment.getMapAsync(this);
         setDoctorLocationOnMap();
         getDoctorDetails();
-
+        handler1 = new Handler();
+        handler1.postDelayed(runnable1 = new Runnable() {
+            @Override
+            public void run() {
+                if (userGeoPoint != null && doctorGeoPoint != null) {
+                    double distance = distanceBetweenUserAndSeller(userGeoPoint.getLatitude(), userGeoPoint.getLongitude(),
+                            doctorGeoPoint.getLatitude(), doctorGeoPoint.getLongitude());
+                    // 5 is 5meter per second speed and 60 is seconds conversion
+                    double timeInSeconds = (distance / 5);
+                    doctor_detail_eta_tv.setText(convertSecondsToTime(timeInSeconds) + " Min");
+                }
+                handler1.postDelayed(this, 10000);
+            }
+        }, 5000);
         doctorDetail_back_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,14 +215,13 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
                 public void onComplete(@NonNull Task<Location> task) {
                     Location location = task.getResult();
                     if (location != null) {
-                        Toast.makeText(doctorDetails.this, "location = " + location.getLatitude(), Toast.LENGTH_SHORT).show();
                         map.setMyLocationEnabled(true);
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15.0f));
                         GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                         Map<String, Object> updateUserLocation = new HashMap<>();
                         updateUserLocation.put("geo_point", geoPoint);
-                        mDb.collection("doctors").document(currentUserUid).update(updateUserLocation);
-                        mDb.collection("doctors").document(currentUserUid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        mDb.collection("users").document(currentUserUid).update(updateUserLocation);
+                        mDb.collection("users").document(currentUserUid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()) {
@@ -302,7 +317,7 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
                                                             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                                                                 Bitmap bitmap = getCircularBitmap(resource);
                                                                 GeoPoint geoPoint = (GeoPoint) document.get("geo_point");
-                                                                sellerGeoPoint = geoPoint;
+                                                                doctorGeoPoint = geoPoint;
                                                                 double lat = geoPoint.getLatitude();
                                                                 double lng = geoPoint.getLongitude();
                                                                 LatLng latLng = new LatLng(lat, lng);
@@ -332,7 +347,7 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
                                                             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                                                                 Bitmap bitmap = getCircularBitmap(resource);
                                                                 GeoPoint geoPoint = (GeoPoint) document.get("geo_point");
-                                                                sellerGeoPoint = geoPoint;
+                                                                doctorGeoPoint = geoPoint;
                                                                 double lat = geoPoint.getLatitude();
                                                                 double lng = geoPoint.getLongitude();
                                                                 LatLng latLng = new LatLng(lat, lng);
@@ -364,6 +379,25 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
                 }
             });
         }
+    }
+
+    private String convertSecondsToTime(double timeInSeconds) {
+        int hours = (int) (timeInSeconds / 3600);
+        int minutes = (int) ((timeInSeconds % 3600) / 60);
+        int seconds = (int) (timeInSeconds % 60);
+        String timeString = String.format("%02d:%02d", hours, minutes);
+        return timeString;
+    }
+
+    private double distanceBetweenUserAndSeller(double lat1, double lon1, double lat2, double lon2) {
+        Location startPoint = new Location("locationA");
+        startPoint.setLatitude(lat1);
+        startPoint.setLongitude(lon1);
+        Location endPoint = new Location("locationA");
+        endPoint.setLatitude(lat2);
+        endPoint.setLongitude(lon2);
+        double distance = startPoint.distanceTo(endPoint);
+        return distance;
     }
 
     public static Bitmap getCircularBitmap(Bitmap bitmap) {
