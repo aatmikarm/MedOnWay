@@ -228,6 +228,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/profile_email_til"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:hint="Email Address">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/profile_email_tiet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <EditText
                     android:id="@+id/profileName_et"
                     android:layout_width="match_parent"
@@ -235,7 +249,7 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/roundedittext"
                     android:hint="Name"
-                    android:padding="5dp" />
+                    android:padding="10dp" />
 
                 <EditText
                     android:id="@+id/profileEmail_et"
@@ -243,18 +257,24 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:background="@drawable/roundedittext"
+                    android:drawableTint="@color/teal_700"
+                    android:drawableLeft="@drawable/email_ic"
+                    android:drawablePadding="10dp"
                     android:editable="false"
                     android:hint="Email Address"
-                    android:padding="5dp" />
+                    android:padding="10dp" />
 
                 <EditText
                     android:id="@+id/profilePhone_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:drawableLeft="@drawable/ic_call"
+                    android:drawableTint="@color/teal_700"
+                    android:drawablePadding="10dp"
                     android:background="@drawable/roundedittext"
                     android:hint="Phone Number"
-                    android:padding="5dp" />
+                    android:padding="10dp" />
 
                 <EditText
                     android:id="@+id/profileBio_et"
@@ -263,7 +283,7 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/roundedittext"
                     android:hint="Bio"
-                    android:padding="5dp" />
+                    android:padding="10dp" />
 
 
             </LinearLayout>

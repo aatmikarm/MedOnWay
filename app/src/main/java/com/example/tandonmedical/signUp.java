@@ -122,6 +122,7 @@ public class signUp extends AppCompatActivity {
                             user.put("password", signupPassword);
                             user.put("bio", "");
                             user.put("userToken", userToken);
+                            user.put("type", "user");
                             user.put("CurrentDateAndTime", CurrentDateAndTime);
 
                             mDb.collection("users").document(uid).set(user);

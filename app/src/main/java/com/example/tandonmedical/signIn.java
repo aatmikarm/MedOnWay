@@ -12,12 +12,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class signIn extends AppCompatActivity {
 
@@ -26,17 +27,16 @@ public class signIn extends AppCompatActivity {
     private ImageView signin_iv;
     private ProgressBar signin_progressBar;
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         getSupportActionBar().hide();
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() != null) {
-            startActivity(new Intent(signIn.this, MainActivity.class));
-            finish();
+            verifyUserType();
         }
         signin_Email_et = (EditText) findViewById(R.id.signin_Email_et);
         signin_Password_et = (EditText) findViewById(R.id.signin_Password_et);
@@ -70,12 +70,10 @@ public class signIn extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 signin_progressBar.setVisibility(View.GONE);
-                                if (task.isSuccessful()) {
-                                    Intent intent = new Intent(signIn.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
+                                if (!task.isSuccessful()) {
                                     Toast.makeText(signIn.this, "check your email and password or sign up", Toast.LENGTH_LONG).show();
+                                } else {
+                                    verifyUserType();
                                 }
                             }
                         });
@@ -93,6 +91,39 @@ public class signIn extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(signIn.this, resetPassword.class));
+            }
+        });
+    }
+
+    private void verifyUserType() {
+        mDb = FirebaseFirestore.getInstance();
+        mDb.collection("users").document(firebaseAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String type = document.get("type").toString();
+                        if (type != null && type.equals("user")) {
+                            //checkIfEmailVerified();
+                            signin_progressBar.setVisibility(View.GONE);
+                            Intent intent = new Intent(signIn.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            signin_progressBar.setVisibility(View.GONE);
+                            Toast.makeText(signIn.this, "You are not authorized to access this application!",
+                                    Toast.LENGTH_SHORT).show();
+                            FirebaseAuth.getInstance().signOut();
+                        }
+                    } else {
+                        signin_progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "You are not authorized to access this application!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    signin_progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "failed ", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

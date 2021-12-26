@@ -12,17 +12,19 @@
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/cart_add_ic.xml" value="0.173" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/defaultdot.xml" value="0.176" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/dotselector.xml" value="0.1615" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/email_ic.xml" value="0.1695" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/lock_ic.xml" value="0.1695" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/rounded_pb.xml" value="0.174" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/selecteddot.xml" value="0.1615" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_cart.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_doctor_details.xml" value="0.152" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_doctor_details.xml" value="0.264" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_orders.xml" value="0.2" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_pay_and_loc.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_payment.xml" value="0.2" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_product_details.xml" value="0.264" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_product_status.xml" value="0.176" />
-        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_profile.xml" value="0.264" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_profile.xml" value="0.144" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_rating.xml" value="0.2" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_reset_password.xml" value="0.3625" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_search.xml" value="0.264" />
@@ -47,5 +49,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.144" />
+      </ProjectState>
+    </option>
   </component>
 </project>
