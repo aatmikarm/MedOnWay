@@ -37,7 +37,7 @@
                 android:layout_height="25dp"
                 android:layout_gravity="center"
                 android:background="@drawable/cart"
-                android:backgroundTint="@color/teal_700" />
+                android:backgroundTint="@color/light" />
 
 
         </androidx.cardview.widget.CardView>
@@ -64,7 +64,7 @@
                 android:layout_height="25dp"
                 android:layout_gravity="center"
                 android:background="@drawable/ic_baseline_notifications_none_24"
-                android:backgroundTint="@color/teal_700" />
+                android:backgroundTint="@color/light" />
 
 
         </androidx.cardview.widget.CardView>
@@ -91,7 +91,7 @@
                 android:layout_height="25dp"
                 android:layout_gravity="center"
                 android:background="@drawable/search_ic"
-                android:backgroundTint="@color/teal_700" />
+                android:backgroundTint="@color/light" />
 
 
         </androidx.cardview.widget.CardView>
@@ -127,7 +127,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="User Name"
-            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

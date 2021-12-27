@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">tandon medical</string>
+    <string name="app_name">Med On Way</string>
     <string name="title_activity_pay_and_loc">payAndLoc</string>
     <string name="google_direction_api_key">AIzaSyAZRiGplfBvqc477emClGrI3Z16EV-A0ig</string>
     <!-- TODO: Remove or change this placeholder text -->

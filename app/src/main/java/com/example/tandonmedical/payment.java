@@ -122,7 +122,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
         payment_confirm_cv = findViewById(R.id.payment_confirm_cv);
 
         paymentActivity_totalPayment.setText(String.valueOf(totalAmount));
-        //Toast.makeText(payment.this, String.valueOf(paymentAmount), Toast.LENGTH_SHORT).show();
+
 
         payment_confirm_cv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +145,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
 
 
     }
+
 
     private void updateUserProductStatus() {
         mDb.collection("users").document(currentUserUid).collection("orders")

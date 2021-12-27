@@ -22,7 +22,7 @@
             android:layout_height="30dp"
             android:layout_margin="10dp"
             android:background="@drawable/ic_backicon"
-            android:backgroundTint="@color/purple_200"
+            android:backgroundTint="@color/light"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PAYMENT"
-            android:textColor="@color/purple_200"
+            android:textColor="@color/light"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -135,7 +135,6 @@
                             android:layout_gravity="center"
                             android:layout_margin="5dp"
                             android:text="ONLINE PAYMENT"
-                            android:textColor="@color/black"
                             android:textSize="10sp"
                             android:textStyle="bold" />
 
@@ -171,7 +170,6 @@
                             android:layout_gravity="center"
                             android:layout_margin="5dp"
                             android:text="CASH ON DELIVERY"
-                            android:textColor="@color/black"
                             android:textSize="10sp"
                             android:textStyle="bold" />
 
@@ -205,14 +203,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:src="@drawable/ic_location_black_24dp" />
+                        android:src="@drawable/ic_location_black_24dp"
+                        android:tint="@color/light"/>
 
                     <EditText
                         android:id="@+id/payment_address_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        app:backgroundTint="@color/purple_200"
+                        app:backgroundTint="@color/light"
                         android:hint="ENTER YOUR ADDRESS HERE"/>
 
 
@@ -230,7 +229,6 @@
         android:id="@+id/con3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -250,7 +248,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="TOTAL AMOUNT"
-            android:textColor="@color/black"
+            android:textColor="@color/light"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -261,7 +259,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:backgroundTint="@color/teal_700"
+            android:backgroundTint="@color/light"
             app:cardCornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -276,7 +274,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="CONFIRM"
-                    android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -66,7 +66,7 @@ public class ordersProductAdapter extends RecyclerView.Adapter<ordersProductAdap
             holder.order_status_tv.setTextColor(Color.BLACK);
         }
         if (productModelList.get(position).status.equals("on the way")) {
-            holder.order_status_cv.setCardBackgroundColor(Color.parseColor("#FFED2F65"));
+            holder.order_status_cv.setCardBackgroundColor(Color.parseColor("#FFBB86FC"));
         }
     }
 

@@ -29,8 +29,7 @@
             android:padding="3dp"
             android:textSize="10sp"
             android:textStyle="bold"
-            android:background="@drawable/black_round_corner"
-            android:textColor="@color/white"/>
+            android:background="@drawable/round_color_gradient"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/main_profile_cardView"

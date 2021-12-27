@@ -22,7 +22,7 @@
             android:layout_height="30dp"
             android:layout_margin="10dp"
             android:background="@drawable/ic_backicon"
-            android:backgroundTint="@color/purple_200"
+            android:backgroundTint="@color/light"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ORDERS"
-            android:textColor="@color/purple_200"
+            android:textColor="@color/light"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -60,7 +60,7 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminateTint="@color/teal_700"
+            android:indeterminateTint="@color/light"
             app:layout_constraintBottom_toTopOf="@+id/order_cart_iv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="No Orders"
-            android:textColor="@color/teal_700"
+            android:textColor="@color/light"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/order_cart_iv"
@@ -85,8 +85,7 @@
             app:layout_constraintEnd_toEndOf="@+id/orders_list_recycler_view"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/orders_list_recycler_view"
-            app:srcCompat="@drawable/cart_add_ic"
-            app:tint="#E91E63" />
+            app:srcCompat="@drawable/cart_add_ic"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/orders_list_recycler_view"

@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
 
     <application
         android:allowBackup="true"
@@ -46,15 +48,13 @@
         <activity
             android:name=".profile"
             tools:ignore="ExtraText">
-            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".cart" />
         <activity
             android:name=".orders"
             android:launchMode="singleTop" />
         <activity
-            android:name=".splashScreen"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".splashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -65,8 +65,7 @@
         <activity android:name=".signUp" />
         <activity android:name=".signIn" />
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".MainActivity"/>
 
         <service
             android:name=".FirebaseMessagingService"
