@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TandonMedical">
+        android:theme="@style/Theme.medonway">
         <activity
             android:name=".doctorDetails"
             android:exported="true" />

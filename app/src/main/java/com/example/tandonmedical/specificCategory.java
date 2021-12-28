@@ -38,7 +38,7 @@ public class specificCategory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_category);
 
-        getSupportActionBar().hide();
+      
 
 
         firebaseAuth = FirebaseAuth.getInstance();

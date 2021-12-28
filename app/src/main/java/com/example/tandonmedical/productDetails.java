@@ -40,7 +40,7 @@ public class productDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
-        getSupportActionBar().hide();
+      
 
         productDetails_productName_tv = findViewById(R.id.productDetails_productName_tv);
         productDetails_category_tv = findViewById(R.id.productDetails_category_tv);

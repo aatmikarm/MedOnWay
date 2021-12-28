@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".payment">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con1"
         android:layout_width="match_parent"
@@ -42,7 +41,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -70,10 +68,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -93,25 +88,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/onlinePayment_cv"
                     android:layout_width="wrap_content"
-                    android:layout_height="100dp"
-                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:layout_weight="1"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="10dp">
 
@@ -119,15 +111,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:orientation="vertical">
-
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
                         <androidx.appcompat.widget.AppCompatImageView
-
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/tandonmedicalicon" />
+                            android:src="@drawable/onlinepayment" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -137,17 +128,15 @@
                             android:text="ONLINE PAYMENT"
                             android:textSize="10sp"
                             android:textStyle="bold" />
-
-
                     </LinearLayout>
-
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/CASH_ON_DELIVERY_cv"
+                    android:id="@+id/cashOnDelivery_cv"
                     android:layout_width="wrap_content"
-                    android:layout_height="100dp"
-                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:layout_weight="1"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="10dp">
 
@@ -155,14 +144,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:orientation="vertical">
-
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/tandonmedicalicon" />
+                            android:src="@drawable/cashondelivery" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -173,11 +162,8 @@
                             android:textSize="10sp"
                             android:textStyle="bold" />
 
-
                     </LinearLayout>
-
                 </androidx.cardview.widget.CardView>
-
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -204,25 +190,18 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:src="@drawable/ic_location_black_24dp"
-                        android:tint="@color/light"/>
+                        android:tint="@color/light" />
 
                     <EditText
                         android:id="@+id/payment_address_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        app:backgroundTint="@color/light"
-                        android:hint="ENTER YOUR ADDRESS HERE"/>
-
-
+                        android:hint="ENTER YOUR ADDRESS HERE"
+                        app:backgroundTint="@color/light" />
                 </LinearLayout>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -280,9 +259,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -68,6 +71,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -83,7 +87,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
     private LatLngBounds mMapBoundary;
     private EditText payment_address_et;
     private TextView paymentActivity_totalPayment;
-    private CardView onlinePayment_cv, CASH_ON_DELIVERY_cv, payment_confirm_cv;
+    private CardView onlinePayment_cv, cashOnDelivery_cv, payment_confirm_cv;
     private Float totalAmount;
     private String currentUserUid, productId, sellerToken;
     private productModelList productModelLists;
@@ -98,13 +102,13 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
-        getSupportActionBar().hide();
+
         mfusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         firebaseAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         currentUserUid = firebaseAuth.getUid();
-        //firebase cloud messeging
+
         FirebaseMessaging.getInstance().subscribeToTopic("all");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -120,9 +124,9 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
         payment_address_et = findViewById(R.id.payment_address_et);
         paymentActivity_totalPayment = findViewById(R.id.paymentActivity_totalPayment);
         payment_confirm_cv = findViewById(R.id.payment_confirm_cv);
-
+        onlinePayment_cv = findViewById(R.id.onlinePayment_cv);
+        cashOnDelivery_cv = findViewById(R.id.cashOnDelivery_cv);
         paymentActivity_totalPayment.setText(String.valueOf(totalAmount));
-
 
         payment_confirm_cv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,10 +146,46 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
 
             }
         });
-
-
+        cashOnDelivery_cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cashOnDelivery_cv.setCardBackgroundColor(Color.argb(255, 237, 47, 101));
+                onlinePayment_cv.setCardBackgroundColor(Color.WHITE);
+            }
+        });
+        onlinePayment_cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onlinePayment_cv.setCardBackgroundColor(Color.argb(255, 237, 47, 101));
+                cashOnDelivery_cv.setCardBackgroundColor(Color.WHITE);
+            }
+        });
     }
 
+    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                strAdd = strReturnedAddress.toString();
+                //Toast.makeText(payment.this, "My Current loction address"+ strReturnedAddress.toString(), Toast.LENGTH_SHORT).show();
+                payment_address_et.setText(strReturnedAddress.toString());
+            } else {
+                //Toast.makeText(payment.this, "No Address returned!", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            //Toast.makeText(payment.this, "Cannot Get Address", Toast.LENGTH_SHORT).show();
+        }
+        return strAdd;
+    }
 
     private void updateUserProductStatus() {
         mDb.collection("users").document(currentUserUid).collection("orders")
@@ -327,8 +367,6 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                                                     public void onLoadCleared(@Nullable Drawable placeholder) {
                                                     }
                                                 });
-
-
                                     }
 
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -375,39 +413,31 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
 
                             }
                         });
-
                         updateLocationAndTimeInFirestore(geoPoint, timestamp);
                     }
                 }
             });
         }
-
     }
 
 
     public static Bitmap getCircularBitmap(Bitmap bitmap) {
         Bitmap output;
-
         if (bitmap.getWidth() > bitmap.getHeight()) {
             output = Bitmap.createBitmap(bitmap.getHeight(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         } else {
             output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getWidth(), Bitmap.Config.ARGB_8888);
         }
-
         Canvas canvas = new Canvas(output);
-
         final int color = 0xff424242;
         final Paint paint = new Paint();
         final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
         float r = 0;
-
         if (bitmap.getWidth() > bitmap.getHeight()) {
             r = bitmap.getHeight() / 2;
         } else {
             r = bitmap.getWidth() / 2;
         }
-
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(color);
@@ -418,19 +448,14 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     public Bitmap createCustomMarkerForUser(Context context, Bitmap resource) {
-
         View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.custom_user_marker_layout, null);
         final CircleImageView markerImage = (CircleImageView) marker.findViewById(R.id.user_dp);
-
         RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), resource);
-
         roundedBitmapDrawable.setCornerRadius(50.0f);
         roundedBitmapDrawable.setAntiAlias(true);
         markerImage.setImageDrawable(roundedBitmapDrawable);
         //markerImage.setImageResource(resource);
-
-
         //TextView txt_name = (TextView) marker.findViewById(R.id.name);
         //txt_name.setText(_name);
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -446,7 +471,6 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
         return bitmap;
     }
 
-
     private void updateLocationAndTimeInFirestore(GeoPoint geoPoint, Date timestamp) {
         final String uid = firebaseAuth.getUid();
         Map<String, Object> locationAndTime = new HashMap<>();
@@ -456,11 +480,10 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
         // set() delet data and write new user data
         //whereas update only change exixting data and dont delet everything
         mDb.collection("users").document(uid).update(locationAndTime);
-
+        getCompleteAddressString(geoPoint.getLatitude(), geoPoint.getLongitude());
     }
 
     public static Bitmap createCustomMarker(Context context, @DrawableRes int resource) {
-
         View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.custom_user_marker_layout, null);
         CircleImageView markerImage = (CircleImageView) marker.findViewById(R.id.user_dp);
@@ -481,7 +504,6 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     public static double distanceBetweenTwoCoordinates(double lat1, double lon1, double lat2, double lon2) {
-
         // The math module contains a function
         // named toRadians which converts from
         // degrees to radians.
@@ -489,23 +511,17 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
         lon2 = Math.toRadians(lon2);
         lat1 = Math.toRadians(lat1);
         lat2 = Math.toRadians(lat2);
-
         // Haversine formula
         double dlon = lon2 - lon1;
         double dlat = lat2 - lat1;
         double a = Math.pow(Math.sin(dlat / 2), 2)
                 + Math.cos(lat1) * Math.cos(lat2)
                 * Math.pow(Math.sin(dlon / 2), 2);
-
         double c = 2 * Math.asin(Math.sqrt(a));
-
         // Radius of earth in kilometers. Use 3956
         // for miles
         double r = 6371;
-
         // calculate the result in KM
         return (c * r);
     }
-
-
 }
