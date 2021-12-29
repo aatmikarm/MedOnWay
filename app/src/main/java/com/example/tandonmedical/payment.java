@@ -85,7 +85,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     private FusedLocationProviderClient mfusedLocationProviderClient;
     private LatLngBounds mMapBoundary;
-    private EditText payment_address_et;
+    private EditText paymentAddress_et;
     private TextView paymentActivity_totalPayment;
     private CardView onlinePayment_cv, cashOnDelivery_cv, payment_confirm_cv;
     private Float totalAmount;
@@ -121,7 +121,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
             this.productId = (String) getIntent().getExtras().get("productId");
         }
 
-        payment_address_et = findViewById(R.id.payment_address_et);
+        paymentAddress_et = findViewById(R.id.paymentAddress_et);
         paymentActivity_totalPayment = findViewById(R.id.paymentActivity_totalPayment);
         payment_confirm_cv = findViewById(R.id.payment_confirm_cv);
         onlinePayment_cv = findViewById(R.id.onlinePayment_cv);
@@ -176,7 +176,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                 }
                 strAdd = strReturnedAddress.toString();
                 //Toast.makeText(payment.this, "My Current loction address"+ strReturnedAddress.toString(), Toast.LENGTH_SHORT).show();
-                payment_address_et.setText(strReturnedAddress.toString());
+                paymentAddress_et.setText(strReturnedAddress.toString());
             } else {
                 //Toast.makeText(payment.this, "No Address returned!", Toast.LENGTH_SHORT).show();
             }

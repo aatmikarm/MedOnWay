@@ -38,7 +38,7 @@ public class profile extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 77;
 
     private TextView profileName_tv, profile_no_of_orders, profile_no_of_prescriptions;
-    private EditText profileName_et, profileEmail_et, profilePhone_et, profileBio_et;
+    private EditText profileName_et, profileEmail_et, profilePhone_et, profileAddress_et;
     private ImageView logOut_iv, profileBack_iv, profile_iv;
     private CardView profileUpload_cv;
 
@@ -63,7 +63,7 @@ public class profile extends AppCompatActivity {
         profileEmail_et = findViewById(R.id.profileEmail_et);
         profileName_et = findViewById(R.id.profileName_et);
         profilePhone_et = findViewById(R.id.profilePhone_et);
-        profileBio_et = findViewById(R.id.profileBio_et);
+        profileAddress_et = findViewById(R.id.profileAddress_et);
 
         logOut_iv = findViewById(R.id.logOut_iv);
         profile_no_of_orders = findViewById(R.id.profile_no_of_orders);
@@ -89,7 +89,7 @@ public class profile extends AppCompatActivity {
                         profileName_et.setText(document.get("name").toString());
                         profileEmail_et.setText(document.get("email").toString());
                         profilePhone_et.setText(document.get("phone").toString());
-                        profileBio_et.setText(document.get("bio").toString());
+                        profileAddress_et.setText(document.get("bio").toString());
 
 
                     } else {
@@ -137,7 +137,7 @@ public class profile extends AppCompatActivity {
                         Map<String, Object> updateUserInfo = new HashMap<>();
                         updateUserInfo.put("name", profileName_et.getText().toString());
                         updateUserInfo.put("phone", profilePhone_et.getText().toString());
-                        updateUserInfo.put("bio", profileBio_et.getText().toString());
+                        updateUserInfo.put("bio", profileAddress_et.getText().toString());
 
                         mDb.collection("users").document(currentUserUid).update(updateUserInfo);
                         profileName_tv.setText(profileName_et.getText().toString());

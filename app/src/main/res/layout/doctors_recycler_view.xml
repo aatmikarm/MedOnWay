@@ -43,7 +43,7 @@
                 android:id="@+id/rv_doctor_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@mipmap/tandon_medical"
+                android:background="@drawable/medfullicon"
                 android:scaleType="centerCrop"/>
 
         </androidx.cardview.widget.CardView>

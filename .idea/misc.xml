@@ -7,6 +7,8 @@
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable-v24/half_white_transparent.xml" value="0.1695" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable-v24/ic_baseline_notifications_none_24.xml" value="0.3828125" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable-v24/ic_logout.xml" value="0.3828125" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable-v24/ic_menu_camera.xml" value="0.2615" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable-v24/ic_verified.xml" value="0.2615" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable-v24/onesde_rounded_corners.xml" value="0.3828125" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable-v24/roundedittext.xml" value="0.3828125" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/black_round_corner.xml" value="0.1215" />
@@ -16,7 +18,9 @@
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/defaultdot.xml" value="0.176" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/dotselector.xml" value="0.1615" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/email_ic.xml" value="0.1695" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2615" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/lock_ic.xml" value="0.1695" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/medicon_background.xml" value="0.2615" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/rectangular_border.xml" value="0.1215" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/rounded_pb.xml" value="0.174" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/selecteddot.xml" value="0.1615" />
@@ -28,7 +32,7 @@
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_payment.xml" value="0.264" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_product_details.xml" value="0.264" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_product_status.xml" value="0.176" />
-        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_profile.xml" value="0.144" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_profile.xml" value="0.2" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_rating.xml" value="0.2" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_reset_password.xml" value="0.3625" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_search.xml" value="0.264" />
@@ -46,6 +50,8 @@
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/recycler_view_product.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/search_rv_product.xml" value="0.264" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.155" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2615" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/mipmap-anydpi-v26/medicon_round.xml" value="0.2615" />
       </map>
     </option>
   </component>

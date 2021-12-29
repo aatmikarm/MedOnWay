@@ -75,32 +75,27 @@
             app:layout_constraintStart_toStartOf="@+id/textView11"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Review this product"
-            android:textAllCaps="false"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/new_rating_rb"
-            app:layout_constraintTop_toBottomOf="@+id/new_rating_rb" />
-
-        <EditText
-            android:id="@+id/new_rating_review_et"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/new_rating_review_tiet"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/roundedittext"
-            android:drawableLeft="@drawable/ic_star"
-            android:drawablePadding="10dp"
-            android:drawableTint="@color/light"
             android:hint="Comment"
-            android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+            app:layout_constraintTop_toBottomOf="@+id/new_rating_rb">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/new_rating_review_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/roundedittext"
+                android:drawableLeft="@drawable/ic_star"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/light"
+                android:inputType="textPersonName"
+                android:padding="10dp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
             android:id="@+id/new_rating_review_upload_product_iv"
@@ -109,8 +104,8 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/camera_ic"
             android:backgroundTint="@color/light"
-            app:layout_constraintStart_toStartOf="@+id/new_rating_review_et"
-            app:layout_constraintTop_toBottomOf="@+id/new_rating_review_et" />
+            app:layout_constraintStart_toStartOf="@+id/new_rating_review_tiet"
+            app:layout_constraintTop_toBottomOf="@+id/new_rating_review_tiet" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -141,7 +136,7 @@
             android:backgroundTint="@color/light"
             app:cardCornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="@+id/new_rating_review_upload_product_iv"
-            app:layout_constraintEnd_toEndOf="@+id/new_rating_review_et"
+            app:layout_constraintEnd_toEndOf="@+id/new_rating_review_tiet"
             app:layout_constraintStart_toEndOf="@+id/new_rating_review_upload_product_iv"
             app:layout_constraintTop_toTopOf="@+id/new_rating_review_upload_product_iv">
 

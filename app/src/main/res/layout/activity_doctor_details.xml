@@ -109,7 +109,7 @@
                             android:id="@+id/doctor_profile_iv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/tandonmedicalicon"
+                            android:background="@drawable/medfullicon"
                             android:scaleType="centerCrop" />
                     </androidx.cardview.widget.CardView>
 

@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_userdp"/>
+                android:src="@drawable/ic_userdp" />
 
         </androidx.cardview.widget.CardView>
 
@@ -229,60 +229,84 @@
                     android:id="@+id/profile_email_til"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:hint="Email Address">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/profile_email_tiet"
+                        android:id="@+id/profileEmail_et"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/roundedittext"
+                        android:drawableLeft="@drawable/email_ic"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="@color/light"
+                        android:editable="false"
+                        android:hint="Email Address"
+                        android:padding="10dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/profileName_et"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/profile_phone_til"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/roundedittext"
-                    android:hint="Name"
-                    android:padding="10dp" />
+                    android:hint="Phone Number">
 
-                <EditText
-                    android:id="@+id/profileEmail_et"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/profilePhone_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/roundedittext"
+                        android:drawableLeft="@drawable/ic_call"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="@color/light"
+                        android:hint="Phone Number"
+                        android:inputType="phone"
+                        android:padding="10dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/profile_name_til"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/roundedittext"
-                    android:drawableTint="@color/light"
-                    android:drawableLeft="@drawable/email_ic"
-                    android:drawablePadding="10dp"
-                    android:editable="false"
-                    android:hint="Email Address"
-                    android:padding="10dp" />
+                    android:hint="Name">
 
-                <EditText
-                    android:id="@+id/profilePhone_et"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/profileName_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/roundedittext"
+                        android:drawableLeft="@drawable/user_ic"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="@color/light"
+                        android:hint="Name"
+                        android:inputType="textPersonName"
+                        android:padding="10dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/profile_address_til"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:drawableLeft="@drawable/ic_call"
-                    android:drawableTint="@color/light"
-                    android:drawablePadding="10dp"
-                    android:background="@drawable/roundedittext"
-                    android:hint="Phone Number"
-                    android:padding="10dp" />
+                    android:hint="Address">
 
-                <EditText
-                    android:id="@+id/profileBio_et"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/roundedittext"
-                    android:hint="Bio"
-                    android:padding="10dp" />
-
-
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/profileAddress_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/roundedittext"
+                        android:drawableLeft="@drawable/ic_location_black_24dp"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="@color/light"
+                        android:hint="Address"
+                        android:padding="10dp" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
 
