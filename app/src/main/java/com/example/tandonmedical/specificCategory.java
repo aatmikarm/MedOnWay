@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,7 +64,8 @@ public class specificCategory extends AppCompatActivity {
 
                 productRecyclerView = findViewById(R.id.specific_category_rv);
                 productAdapter productAdapter = new productAdapter(getApplicationContext(), productModelLists);
-                productRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+               // productRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                productRecyclerView.setLayoutManager(new GridLayoutManager(specificCategory.this, 2));
                 productRecyclerView.setAdapter(productAdapter);
 
             }

@@ -38,8 +38,6 @@
                 android:layout_gravity="center"
                 android:background="@drawable/cart"
                 android:backgroundTint="@color/light" />
-
-
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -65,8 +63,6 @@
                 android:layout_gravity="center"
                 android:background="@drawable/ic_baseline_notifications_none_24"
                 android:backgroundTint="@color/light" />
-
-
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -92,9 +88,8 @@
                 android:layout_gravity="center"
                 android:background="@drawable/search_ic"
                 android:backgroundTint="@color/light" />
-
-
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/profile_image_cardView"
             android:layout_width="50dp"
@@ -115,10 +110,8 @@
                 android:id="@+id/user_profile_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                android:background="@drawable/medfullicon" />
-
-
+                android:background="@drawable/medfullicon"
+                android:scaleType="centerCrop" />
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -132,7 +125,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/profile_image_cardView"
             app:layout_constraintTop_toTopOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
@@ -164,7 +156,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chooseYourCategory" />
 
-
             <TextView
                 android:id="@+id/Product"
                 android:layout_width="wrap_content"
@@ -187,11 +178,7 @@
                     android:id="@+id/product_list_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-
-
             </FrameLayout>
-
-
 
             <TextView
                 android:id="@+id/Doctor"
@@ -212,15 +199,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/Doctor" />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </ScrollView>
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

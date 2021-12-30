@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView productRecyclerView, doctorRecyclerView, categoriesRecyclerView;
     private String currentUserUid;
     private CardView cart_cardView, orders_cardView, search_cv;
+    private TextView Product;
     private FusedLocationProviderClient fusedLocationClient;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-      
+
         firebaseAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         orders_cardView = findViewById(R.id.orders_cardView);
         user_profile_iv = findViewById(R.id.user_profile_iv);
         search_cv = findViewById(R.id.search_cv);
+        Product = findViewById(R.id.Product);
 
         setCurrentUserImage();
         updateUserLocationOnFirebase();
@@ -117,6 +120,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), cart.class));
+            }
+        });
+        Product.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), allProducts.class));
             }
         });
 
