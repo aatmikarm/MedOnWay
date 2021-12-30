@@ -82,7 +82,6 @@ public class ratingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
-        getRatingAndReview();
         rating_frag_full_cl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,19 +114,19 @@ public class ratingFragment extends Fragment {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         float productRating = Float.parseFloat((String) document.get("rating"));
-                        if (productRating <= 1 && productRating >= 0) {
+                        if (productRating <= 1) {
                             oneStar = oneStar + 1;
                         }
-                        if (productRating <= 2 && productRating >= 1) {
+                        if (productRating <= 2 && productRating > 1 ) {
                             twoStar = twoStar + 1;
                         }
-                        if (productRating <= 3 && productRating >= 2) {
+                        if (productRating <= 3 && productRating > 2 ) {
                             threeStar = threeStar + 1;
                         }
-                        if (productRating <= 4 && productRating >= 3) {
+                        if (productRating <= 4 && productRating > 3 ) {
                             fourStar = fourStar + 1;
                         }
-                        if (productRating <= 5 && productRating >= 4) {
+                        if (productRating <= 5 && productRating > 4 ) {
                             fiveStar = fiveStar + 1;
                         }
                         numberOfRatings = numberOfRatings + 1;
