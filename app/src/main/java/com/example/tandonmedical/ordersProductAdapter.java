@@ -54,7 +54,7 @@ public class ordersProductAdapter extends RecyclerView.Adapter<ordersProductAdap
         try {
             String oldstring = productModelList.get(position).productOrderPlacedTime;
             Date date = new SimpleDateFormat("ssmmHHddMMyyyy").parse(oldstring);
-            String newstring = new SimpleDateFormat("EEE, d MMM yyyy hh:mm:ss aaa").format(date);
+            String newstring = new SimpleDateFormat("d MMM yyyy hh:mm aaa").format(date);
             holder.order_date_time_tv.setText(newstring);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -80,7 +80,7 @@ public class ordersProductAdapter extends RecyclerView.Adapter<ordersProductAdap
         ImageView productImage;
         TextView productName, productPrice, productMrp, productDiscount, order_status_tv, order_date_time_tv, order_quantity_tv;
         ConstraintLayout productContainer;
-        CardView order_status_cv;
+        CardView order_status_cv,order_cancel_cv;
 
         ItemViewHolder(View itemView) {
             super(itemView);
@@ -92,6 +92,7 @@ public class ordersProductAdapter extends RecyclerView.Adapter<ordersProductAdap
             productContainer = itemView.findViewById(R.id.orders_product_container);
             productDiscount = itemView.findViewById(R.id.orders_discount_text_view);
             order_status_cv = itemView.findViewById(R.id.order_status_cv);
+            order_cancel_cv = itemView.findViewById(R.id.order_cancel_cv);
             order_status_tv = itemView.findViewById(R.id.order_status_tv);
             order_date_time_tv = itemView.findViewById(R.id.order_date_time_tv);
             order_quantity_tv = itemView.findViewById(R.id.order_quantity_tv);
@@ -104,6 +105,20 @@ public class ordersProductAdapter extends RecyclerView.Adapter<ordersProductAdap
 
                     // remove product from the display list
                     //if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+
+                }
+            });
+
+            order_cancel_cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ordersProductInterface.cancelProductFromOrders(getAdapterPosition());
+                    productModelList.remove(getAdapterPosition());
+                    notifyItemRemoved(getAdapterPosition());
+                    notifyItemRangeChanged(getAdapterPosition(), productModelList.size());
+                    if (getAdapterPosition() == RecyclerView.NO_POSITION) {
+                        return;
+                    }
 
                 }
             });

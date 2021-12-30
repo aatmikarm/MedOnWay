@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,7 +30,7 @@ public class orders extends AppCompatActivity implements ordersProductInterface 
 
     private RecyclerView ordersProductRecyclerView;
     private TextView order_cart_tv;
-    private ImageView orders_back_iv,order_cart_iv;
+    private ImageView orders_back_iv, order_cart_iv;
     private ProgressBar order_pb;
     private String sellerId;
     private String seller;
@@ -42,7 +44,7 @@ public class orders extends AppCompatActivity implements ordersProductInterface 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
-      
+
 
         firebaseAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
@@ -74,6 +76,7 @@ public class orders extends AppCompatActivity implements ordersProductInterface 
             }
         });
     }
+
     private ArrayList<productModelList> getOrdersProducts() {
         final ArrayList<productModelList> productModelLists = new ArrayList<>();
         mDb.collection("users").document(currentUserUid).collection("orders")
@@ -148,5 +151,23 @@ public class orders extends AppCompatActivity implements ordersProductInterface 
         intent.putExtra("productOrderId", productModelLists.get(position).getProductOrderId());
         intent.putExtra("seller", productModelLists.get(position).getSeller());
         startActivity(intent);
+    }
+
+    @Override
+    public void cancelProductFromOrders(int position) {
+        mDb.collection("users").document(currentUserUid).collection("orders")
+                .document(productModelLists.get(position).getProductOrderId().toString()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(orders.this, "Product Canceled", Toast.LENGTH_SHORT).show();
+            }
+        });
+        mDb.collection("seller").document(productModelLists.get(position).getSellerId().toString()).collection("orders")
+                .document(productModelLists.get(position).getProductOrderId().toString()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                //Toast.makeText(orders.this, "Product Canceled", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
