@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.medOnWay">
         <activity
+            android:name=".allDoctors"
+            android:exported="true" />
+        <activity
             android:name=".allProducts"
             android:exported="true" />
         <activity
@@ -49,7 +52,7 @@
         <activity android:name=".productDetails" />
         <activity
             android:name=".profile"
-            tools:ignore="ExtraText"></activity>
+            tools:ignore="ExtraText" />
         <activity android:name=".cart" />
         <activity
             android:name=".orders"

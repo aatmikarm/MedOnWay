@@ -24,7 +24,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class allProducts extends AppCompatActivity implements searchProductInterface {
+public class allDoctors extends AppCompatActivity {
 
     private EditText products_et;
     private ImageView products_back_iv;
@@ -39,8 +39,7 @@ public class allProducts extends AppCompatActivity implements searchProductInter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_products);
-
+        setContentView(R.layout.activity_all_doctors);
         firebaseAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();

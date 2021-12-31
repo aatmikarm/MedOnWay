@@ -52,6 +52,7 @@ public class searchProductAdapter extends RecyclerView.Adapter<searchProductAdap
         return productModelList.size();
     }
 
+
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         ImageView productImage;
@@ -78,4 +79,10 @@ public class searchProductAdapter extends RecyclerView.Adapter<searchProductAdap
 
         }
     }
+
+    public void filterList(ArrayList<productModelList> filteredList) {
+        productModelList = filteredList;
+        notifyDataSetChanged();
+    }
+
 }
