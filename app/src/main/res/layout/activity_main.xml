@@ -157,7 +157,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/chooseYourCategory" />
 
             <TextView
-                android:id="@+id/Product"
+                android:id="@+id/allProduct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -172,7 +172,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/Product">
+                app:layout_constraintTop_toBottomOf="@id/allProduct">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/product_list_recycler_view"
@@ -181,7 +181,7 @@
             </FrameLayout>
 
             <TextView
-                android:id="@+id/Doctor"
+                android:id="@+id/allDoctor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -198,7 +198,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Doctor" />
+                app:layout_constraintTop_toBottomOf="@+id/allDoctor" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
