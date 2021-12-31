@@ -18,6 +18,16 @@ public class productModelList {
     String status;
     String boughtTimes;
     String discount;
+    Boolean prescription;
+
+    public Boolean getPrescription() {
+        return prescription;
+    }
+
+    public void setPrescription(Boolean prescription) {
+        this.prescription = prescription;
+    }
+
     String id;
     String rating;
     String review;

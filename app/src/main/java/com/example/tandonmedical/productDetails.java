@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,9 +29,10 @@ public class productDetails extends AppCompatActivity {
     private FragmentManager ratingfragmentManager;
     private TextView productDetails_category_tv, productDetails_productName_tv, profile_no_of_prescriptions, productDetails_productDescription_tv;
     private String sellerToken,checkToLoop, currentUserUid, category, productId, description, discount, imageUrl, mrp, name, price, sellerId, seller, productUserStatus,rating,review;
-    private TextView productDetails_discount_tv, productDetails_mrp_tv, productDetails_price_tv, productDetails_quantity_tv;
+    private TextView productDetails_discount_tv, productDetails_mrp_tv, productDetails_price_tv, productDetails_quantity_tv,productDetails_prescription_tv;
     private CardView productDetails_minus_cv, productDetails_plus_cv, productDetails_quantity_cv, productDetails_addToCart_cv;
     private ImageView productDetails_image_iv, productDetail_back_iv, productDetail_cart_iv;
+    private Boolean prescription;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
@@ -50,6 +52,7 @@ public class productDetails extends AppCompatActivity {
         productDetails_discount_tv = findViewById(R.id.productDetails_discount_tv);
         productDetails_quantity_tv = findViewById(R.id.productDetails_quantity_tv);
         productDetails_productDescription_tv = findViewById(R.id.productDetails_productDescription_tv);
+        productDetails_prescription_tv = findViewById(R.id.productDetails_prescription_tv);
         productDetails_addToCart_cv = findViewById(R.id.productDetails_addToCart_cv);
         productDetails_minus_cv = findViewById(R.id.productDetails_minus_cv);
         productDetails_plus_cv = findViewById(R.id.productDetails_plus_cv);
@@ -66,6 +69,7 @@ public class productDetails extends AppCompatActivity {
             this.category = (String) getIntent().getExtras().get("category");
             this.productId = (String) getIntent().getExtras().get("productId");
             this.description = (String) getIntent().getExtras().get("description");
+            this.prescription = (Boolean) getIntent().getExtras().get("prescription");
             this.discount = (String) getIntent().getExtras().get("discount");
             this.imageUrl = (String) getIntent().getExtras().get("imageUrl");
             this.mrp = (String) getIntent().getExtras().get("mrp");
@@ -97,6 +101,13 @@ public class productDetails extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .add(R.id.rating_fcv, ratingFragment.class, bundle)
                     .commit();
+        }
+
+        if(prescription==true){
+            productDetails_prescription_tv.setVisibility(View.VISIBLE);
+        }
+        if(prescription==false){
+            productDetails_prescription_tv.setVisibility(View.INVISIBLE);
         }
 
         productDetails_minus_cv.setOnClickListener(new View.OnClickListener() {

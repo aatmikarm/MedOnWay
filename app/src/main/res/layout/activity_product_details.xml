@@ -114,6 +114,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/productDetails_productName_tv" />
 
+            <TextView
+                android:id="@+id/productDetails_prescription_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:maxLines="1"
+                android:textColor="@color/light"
+                android:text="Prescription Required"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/productDetails_category_tv"
+                app:layout_constraintTop_toBottomOf="@+id/productDetails_productName_tv" />
+
             <ImageView
                 android:id="@+id/productDetails_image_iv"
                 android:layout_width="match_parent"

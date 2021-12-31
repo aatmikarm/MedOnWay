@@ -57,6 +57,7 @@ public class productAdapter extends RecyclerView.Adapter<productAdapter.ItemView
                 intent.putExtra("category", productModelList.get(position).getCategory());
                 intent.putExtra("productId", productModelList.get(position).getProductId());
                 intent.putExtra("description", productModelList.get(position).getDescription());
+                intent.putExtra("prescription", productModelList.get(position).getPrescription());
                 intent.putExtra("discount", productModelList.get(position).getDiscount());
                 intent.putExtra("imageUrl", productModelList.get(position).getImageUrl());
                 intent.putExtra("mrp", productModelList.get(position).getMrp());

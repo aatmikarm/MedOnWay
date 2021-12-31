@@ -20,7 +20,7 @@ public class allDoctorsAdapter extends RecyclerView.Adapter<allDoctorsAdapter.It
     private Context context;
     private ArrayList<doctorsModelList> doctorsModelLists;
 
-    public allDoctorsAdapter(Context context , ArrayList<doctorsModelList> doctorsModelLists){
+    public allDoctorsAdapter(Context context, ArrayList<doctorsModelList> doctorsModelLists) {
 
         this.context = context;
         this.doctorsModelLists = doctorsModelLists;
@@ -30,7 +30,7 @@ public class allDoctorsAdapter extends RecyclerView.Adapter<allDoctorsAdapter.It
     @Override
     public allDoctorsAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.all_doctors_recycler_view,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.all_doctors_recycler_view, parent, false);
         return new ItemViewHolder(view);
     }
 
@@ -63,7 +63,7 @@ public class allDoctorsAdapter extends RecyclerView.Adapter<allDoctorsAdapter.It
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         ImageView allDoctors_profile_iv;
-        TextView  allDoctorsRV_name_tv,allDoctorsRV_category_tv,allDoctors_totalStars_tv;
+        TextView allDoctorsRV_name_tv, allDoctorsRV_category_tv, allDoctors_totalStars_tv;
         RatingBar allDoctors_star_rb;
 
         ItemViewHolder(View itemView) {
