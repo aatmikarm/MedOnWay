@@ -1,24 +1,32 @@
 package com.example.tandonmedical;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,8 +36,10 @@ public class productDetails extends AppCompatActivity {
 
     private FragmentManager ratingfragmentManager;
     private TextView productDetails_category_tv, productDetails_productName_tv, profile_no_of_prescriptions, productDetails_productDescription_tv;
-    private String sellerToken,checkToLoop, currentUserUid, category, productId, description, discount, imageUrl, mrp, name, price, sellerId, seller, productUserStatus,rating,review;
-    private TextView productDetails_discount_tv, productDetails_mrp_tv, productDetails_price_tv, productDetails_quantity_tv,productDetails_prescription_tv;
+    private String sellerToken, checkToLoop, currentUserUid, category, productId, description,
+            discount, imageUrl, mrp, name, price, sellerId, seller, productUserStatus,
+            prescriptionUrl,prescriptionId, rating, review;
+    private TextView productDetails_discount_tv, productDetails_mrp_tv, productDetails_price_tv, productDetails_quantity_tv, productDetails_prescription_tv;
     private CardView productDetails_minus_cv, productDetails_plus_cv, productDetails_quantity_cv, productDetails_addToCart_cv;
     private ImageView productDetails_image_iv, productDetail_back_iv, productDetail_cart_iv;
     private Boolean prescription;
@@ -37,12 +47,13 @@ public class productDetails extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
     private int productQuantity = 1;
+    private Uri filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
-      
+
 
         productDetails_productName_tv = findViewById(R.id.productDetails_productName_tv);
         productDetails_category_tv = findViewById(R.id.productDetails_category_tv);
@@ -103,10 +114,10 @@ public class productDetails extends AppCompatActivity {
                     .commit();
         }
 
-        if(prescription==true){
+        if (prescription == true) {
             productDetails_prescription_tv.setVisibility(View.VISIBLE);
         }
-        if(prescription==false){
+        if (prescription == false) {
             productDetails_prescription_tv.setVisibility(View.INVISIBLE);
         }
 
@@ -138,7 +149,13 @@ public class productDetails extends AppCompatActivity {
         productDetails_addToCart_cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addProductToCart();
+                if (prescription == true) {
+                    selectImage();
+                }
+                if (prescription == false) {
+                    addProductToCart();
+                }
+
             }
         });
         productDetail_back_iv.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +172,78 @@ public class productDetails extends AppCompatActivity {
         });
 
 
+    }
+
+    // Select Image method
+    private void selectImage() {   // select image from photos in galary funtion
+        // Defining Implicit Intent to mobile gallery
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Image from here..."), 77);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 77 && resultCode == RESULT_OK && data != null && data.getData() != null) {   // Get the Uri of data
+            filePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                //profile_iv.setImageBitmap(bitmap);
+                try {
+                    uploadPrescription();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void uploadPrescription() throws IOException {
+        if (filePath != null) {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading Prescription...");
+            progressDialog.show();
+            Uri file = filePath;
+            StorageReference tempRef = mStorageRef.child("prescription/" + file.getLastPathSegment());
+            UploadTask uploadTask = tempRef.putFile(file);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    tempRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            //setImageUrl(uri.toString());
+                            SimpleDateFormat sdf = new SimpleDateFormat("ssmmHHddMMyyyy");
+                            prescriptionId = sdf.format(new Date());
+                            prescriptionUrl = uri.toString();
+                            Map<String, Object> uploadNewPrescription = new HashMap<>();
+                            uploadNewPrescription.put("prescriptionId", prescriptionId);
+                            uploadNewPrescription.put("productId", productId);
+                            uploadNewPrescription.put("sellerId", sellerId);
+                            uploadNewPrescription.put("userId", currentUserUid);
+                            uploadNewPrescription.put("productName", name);
+                            uploadNewPrescription.put("imageUrl", uri.toString());
+                            mDb.collection("users").document(currentUserUid).collection("prescriptions")
+                                    .document(prescriptionId).set(uploadNewPrescription);
+                            progressDialog.dismiss();
+
+                            addProductToCart();
+                        }
+                    });
+                }
+            });
+        }
+        if (filePath == null) {
+            Toast.makeText(this, "Please Upload Prescription", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void addProductToCart() {
@@ -176,6 +265,8 @@ public class productDetails extends AppCompatActivity {
         order.put("seller", seller);
         order.put("rating", rating);
         order.put("review", review);
+        order.put("prescriptionUrl", prescriptionUrl);
+        order.put("prescriptionId", prescriptionId);
         order.put("productQuantity", String.valueOf(productQuantity));
         order.put("status", "in cart");
         mDb.collection("users").document(currentUserUid)
