@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ActionMode;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +33,7 @@ import java.util.ArrayList;
 public class search extends AppCompatActivity implements searchProductInterface {
 
     private EditText search_et;
-    private ImageView search_back_iv;
+    private ImageView search_back_iv,search_filter_iv;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
@@ -54,6 +56,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
         search_et = findViewById(R.id.search_et);
         search_back_iv = findViewById(R.id.search_back_iv);
         search_progress_bar = findViewById(R.id.search_progress_bar);
+        search_filter_iv = findViewById(R.id.search_filter_iv);
         searchProductRV = findViewById(R.id.search_rv);
 
         searchProductRV.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
@@ -113,8 +116,24 @@ public class search extends AppCompatActivity implements searchProductInterface 
                 finish();
             }
         });
+        search_filter_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (search.this,filter.class);
+                startActivityForResult(intent, 101);
+            }
+        });
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode ==101){
+            search_et .setText(data.getStringExtra("data"));
+        }
     }
 
     public void startAsyncTask(View v) {

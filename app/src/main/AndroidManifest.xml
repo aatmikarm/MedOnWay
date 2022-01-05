@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.medOnWay">
         <activity
+            android:name=".filter"
+            android:exported="true" />
+        <activity
             android:name=".allDoctors"
             android:exported="true" />
         <activity
