@@ -138,7 +138,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/productDetails_category_tv" />
 
             <TextView
-                android:id="@+id/rating_and_review_user_name_tv"
+                android:id="@+id/search_user_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
@@ -156,9 +156,9 @@
                 android:textColor="@color/light"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/rating_and_review_user_name_tv"
-                app:layout_constraintStart_toEndOf="@+id/rating_and_review_user_name_tv"
-                app:layout_constraintTop_toTopOf="@+id/rating_and_review_user_name_tv" />
+                app:layout_constraintBottom_toBottomOf="@+id/search_user_name_tv"
+                app:layout_constraintStart_toEndOf="@+id/search_user_name_tv"
+                app:layout_constraintTop_toTopOf="@+id/search_user_name_tv" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -168,7 +168,7 @@
                 android:layout_marginTop="1dp"
                 android:text="MRP"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rating_and_review_user_name_tv" />
+                app:layout_constraintTop_toBottomOf="@+id/search_user_name_tv" />
 
 
             <TextView

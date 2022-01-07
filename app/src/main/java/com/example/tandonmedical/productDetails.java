@@ -76,6 +76,7 @@ public class productDetails extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
         currentUserUid = firebaseAuth.getUid();
 
+
         if (getIntent().getExtras() != null) {
             this.category = (String) getIntent().getExtras().get("category");
             this.productId = (String) getIntent().getExtras().get("productId");

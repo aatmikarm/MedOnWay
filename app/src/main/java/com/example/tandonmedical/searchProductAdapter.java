@@ -62,10 +62,10 @@ public class searchProductAdapter extends RecyclerView.Adapter<searchProductAdap
         ItemViewHolder(View itemView) {
             super(itemView);
 
-            productName = itemView.findViewById(R.id.rating_and_review_tv);
-            productImage = itemView.findViewById(R.id.rating_and_review_rv_user_iv);
+            productName = itemView.findViewById(R.id.search_name);
+            productImage = itemView.findViewById(R.id.search_rv_user_iv);
             productPrice = itemView.findViewById(R.id.search_product_discounted_price);
-            productMrp = itemView.findViewById(R.id.rating_and_review_time_tv);
+            productMrp = itemView.findViewById(R.id.search_mrp_tv);
             productContainer = itemView.findViewById(R.id.search_product_container);
             productDiscount = itemView.findViewById(R.id.search_discount_text_view);
 

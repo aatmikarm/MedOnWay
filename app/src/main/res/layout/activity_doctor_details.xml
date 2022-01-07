@@ -152,7 +152,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/doctorDetails_category_tv">
 
                         <RatingBar
-                            android:id="@+id/rating_and_review_star_rb"
+                            android:id="@+id/search_star_rb"
                             style="?android:attr/ratingBarStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -166,17 +166,17 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/rating_and_review_star_tv"
+                            android:id="@+id/search_star_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:text="4.5"
                             android:textColor="#8BC34A"
                             android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="@+id/rating_and_review_star_rb"
+                            app:layout_constraintBottom_toBottomOf="@+id/search_star_rb"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/rating_and_review_star_rb"
-                            app:layout_constraintTop_toTopOf="@+id/rating_and_review_star_rb" />
+                            app:layout_constraintStart_toEndOf="@+id/search_star_rb"
+                            app:layout_constraintTop_toTopOf="@+id/search_star_rb" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

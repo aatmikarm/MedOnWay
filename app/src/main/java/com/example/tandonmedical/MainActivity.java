@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<productModelList> getAllProducts() {
         final ArrayList<productModelList> productModelLists = new ArrayList<>();
-        mDb.collection("products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        mDb.collection("products").orderBy("name").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {

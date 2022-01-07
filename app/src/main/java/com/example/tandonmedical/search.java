@@ -219,6 +219,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
                         productModelList.setSeller((String) document.get("seller"));
                         productModelList.setProductId((String) document.get("productId"));
                         productModelList.setDescription((String) document.get("description"));
+                        productModelList.setPrescription((Boolean) document.get("prescription"));
                         productModelList.setRating((String) document.get("rating"));
                         productModelList.setReview((String) document.get("review"));
                         productModelList.setSellerToken((String) document.get("sellerToken"));
@@ -289,6 +290,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
         intent.putExtra("name", productModelLists.get(position).getName());
         intent.putExtra("price", productModelLists.get(position).getPrice());
         intent.putExtra("description", productModelLists.get(position).getDescription());
+        intent.putExtra("prescription", productModelLists.get(position).getPrescription());
         intent.putExtra("discount", productModelLists.get(position).getDiscount());
         intent.putExtra("imageUrl", productModelLists.get(position).getImageUrl());
         intent.putExtra("category", productModelLists.get(position).getCategory());

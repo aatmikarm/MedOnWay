@@ -101,8 +101,8 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
         doctorDetails_doctorName_tv = findViewById(R.id.doctorDetails_doctorName_tv);
         doctor_profile_iv = findViewById(R.id.doctor_profile_iv);
         doctorDetails_category_tv = findViewById(R.id.doctorDetails_category_tv);
-        rating_and_review_star_rb = findViewById(R.id.rating_and_review_star_rb);
-        rating_and_review_star_tv = findViewById(R.id.rating_and_review_star_tv);
+        rating_and_review_star_rb = findViewById(R.id.search_star_rb);
+        rating_and_review_star_tv = findViewById(R.id.search_star_tv);
         doctor_education = findViewById(R.id.doctor_education);
         doctor_hospital = findViewById(R.id.doctor_hospital);
         doctor_degree = findViewById(R.id.doctor_degree);

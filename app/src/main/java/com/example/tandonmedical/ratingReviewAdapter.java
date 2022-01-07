@@ -82,11 +82,11 @@ public class ratingReviewAdapter extends RecyclerView.Adapter<ratingReviewAdapte
         ItemViewHolder(View itemView) {
             super(itemView);
             user_profile_iv = itemView.findViewById(R.id.user_profile_iv);
-            rating_and_review_tv = itemView.findViewById(R.id.rating_and_review_tv);
-            rating_and_review_star_tv = itemView.findViewById(R.id.rating_and_review_star_tv);
-            rating_and_review_user_name_tv = itemView.findViewById(R.id.rating_and_review_user_name_tv);
+            rating_and_review_tv = itemView.findViewById(R.id.search_name);
+            rating_and_review_star_tv = itemView.findViewById(R.id.search_star_tv);
+            rating_and_review_user_name_tv = itemView.findViewById(R.id.search_user_name_tv);
             rating_and_review_time_tv = itemView.findViewById(R.id.rating_and_review_time_tv);
-            rating_and_review_star_rb = itemView.findViewById(R.id.rating_and_review_star_rb);
+            rating_and_review_star_rb = itemView.findViewById(R.id.search_star_rb);
         }
     }
 }

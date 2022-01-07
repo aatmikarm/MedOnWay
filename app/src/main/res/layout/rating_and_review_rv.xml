@@ -45,7 +45,7 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/rating_and_review_tv"
+            android:id="@+id/search_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -66,19 +66,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:cardCornerRadius="10dp"
-            app:layout_constraintStart_toStartOf="@+id/rating_and_review_tv"
-            app:layout_constraintTop_toBottomOf="@+id/rating_and_review_tv">
+            app:layout_constraintStart_toStartOf="@+id/search_name"
+            app:layout_constraintTop_toBottomOf="@+id/search_name">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/rating_and_review_user_name_tv"
+                app:layout_constraintBottom_toTopOf="@+id/search_user_name_tv"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintTop_toBottomOf="@+id/rating_and_review_tv">
+                app:layout_constraintTop_toBottomOf="@+id/search_name">
 
                 <RatingBar
-                    android:id="@+id/rating_and_review_star_rb"
+                    android:id="@+id/search_star_rb"
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -93,22 +93,22 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/rating_and_review_star_tv"
+                    android:id="@+id/search_star_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:text="4.5"
                     android:textColor="@color/light"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/rating_and_review_star_rb"
+                    app:layout_constraintBottom_toBottomOf="@+id/search_star_rb"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/rating_and_review_star_rb"
-                    app:layout_constraintTop_toTopOf="@+id/rating_and_review_star_rb" />
+                    app:layout_constraintStart_toEndOf="@+id/search_star_rb"
+                    app:layout_constraintTop_toTopOf="@+id/search_star_rb" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/rating_and_review_user_name_tv"
+            android:id="@+id/search_user_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Aatmik Mishra"
@@ -129,9 +129,9 @@
             android:text="Oct, 2021"
             android:textSize="14sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="@+id/rating_and_review_user_name_tv"
-            app:layout_constraintStart_toEndOf="@+id/rating_and_review_user_name_tv"
-            app:layout_constraintTop_toTopOf="@+id/rating_and_review_user_name_tv" />
+            app:layout_constraintBottom_toBottomOf="@+id/search_user_name_tv"
+            app:layout_constraintStart_toEndOf="@+id/search_user_name_tv"
+            app:layout_constraintTop_toTopOf="@+id/search_user_name_tv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
