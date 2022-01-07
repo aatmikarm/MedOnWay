@@ -19,6 +19,15 @@ public class productModelList {
     String boughtTimes;
     String discount;
     Boolean prescription;
+    Float avgRating;
+
+    public Float getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(Float avgRating) {
+        this.avgRating = avgRating;
+    }
 
     public Boolean getPrescription() {
         return prescription;

@@ -1,11 +1,10 @@
 package com.example.tandonmedical;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.ActionMode;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,27 +20,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class search extends AppCompatActivity implements searchProductInterface {
 
     private EditText search_et;
-    private ImageView search_back_iv,search_filter_iv;
+    private ImageView search_back_iv, search_filter_iv;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
-    private String currentUserUid;
+    private String currentUserUid, filterData;
     private ProgressBar search_progress_bar;
     private RecyclerView searchProductRV;
     private searchProductAdapter searchProductAdapter;
     private ArrayList<productModelList> productModelLists;
+    private Handler handler;
 
 
     @Override
@@ -58,39 +58,18 @@ public class search extends AppCompatActivity implements searchProductInterface 
         search_progress_bar = findViewById(R.id.search_progress_bar);
         search_filter_iv = findViewById(R.id.search_filter_iv);
         searchProductRV = findViewById(R.id.search_rv);
-
         searchProductRV.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
         productModelLists = getAllProducts();
-        searchProductAdapter = new searchProductAdapter(getApplicationContext(), productModelLists, search.this);
-        searchProductRV.setAdapter(searchProductAdapter);
 
-//        search_et.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                String search = s.toString();
-//                String[] tags = search.split(" ");
-//                if (search.isEmpty()) {
-//                    productModelLists.clear();
-//                    searchProductAdapter.notifyDataSetChanged();
-//                } else {
-//                    for (String tag : tags) {
-//                        searchProduct(tag);
-//                    }
-//                }
-//            }
-//        });
-
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                searchProductAdapter = new searchProductAdapter(getApplicationContext(), productModelLists, search.this);
+                searchProductRV.setAdapter(searchProductAdapter);
+            }
+        }, 3000);
 
         search_et.addTextChangedListener(new TextWatcher() {
             @Override
@@ -106,6 +85,17 @@ public class search extends AppCompatActivity implements searchProductInterface 
             @Override
             public void afterTextChanged(Editable s) {
                 filter(s.toString());
+
+//                String search = s.toString();
+//                String[] tags = search.split(" ");
+//                if (search.isEmpty()) {
+//                    productModelLists.clear();
+//                    searchProductAdapter.notifyDataSetChanged();
+//                } else {
+//                    for (String tag : tags) {
+//                        searchProduct(tag);
+//                    }
+//                }
             }
         });
 
@@ -119,7 +109,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
         search_filter_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (search.this,filter.class);
+                Intent intent = new Intent(search.this, filter.class);
                 startActivityForResult(intent, 101);
             }
         });
@@ -128,76 +118,18 @@ public class search extends AppCompatActivity implements searchProductInterface 
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode ==101){
-            search_et .setText(data.getStringExtra("data"));
-        }
-    }
-
-    public void startAsyncTask(View v) {
-        ExampleAsyncTask task = new ExampleAsyncTask(this);
-        task.execute(10);
-    }
-
-    private static class ExampleAsyncTask extends AsyncTask<Integer, Integer, String> {
-        private WeakReference<search> activityWeakReference;
-
-        ExampleAsyncTask(search activity) {
-            activityWeakReference = new WeakReference<search>(activity);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            search activity = activityWeakReference.get();
-            if (activity == null || activity.isFinishing()) {
-                return;
-            }
-
-            activity.search_progress_bar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected String doInBackground(Integer... integers) {
-            for (int i = 0; i < integers[0]; i++) {
-                publishProgress((i * 100) / integers[0]);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return "Finished!";
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-
-            search activity = activityWeakReference.get();
-            if (activity == null || activity.isFinishing()) {
-                return;
-            }
-
-            activity.search_progress_bar.setProgress(values[0]);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            search activity = activityWeakReference.get();
-            if (activity == null || activity.isFinishing()) {
-                return;
-            }
-
-            Toast.makeText(activity, s, Toast.LENGTH_SHORT).show();
-            activity.search_progress_bar.setProgress(0);
-            activity.search_progress_bar.setVisibility(View.INVISIBLE);
+        if (resultCode == 101) {
+            filterData = data.getStringExtra("data");
+            search_et.setText(filterData);
         }
     }
 
@@ -222,6 +154,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
                         productModelList.setPrescription((Boolean) document.get("prescription"));
                         productModelList.setRating((String) document.get("rating"));
                         productModelList.setReview((String) document.get("review"));
+                        productModelList.setAvgRating(Float.parseFloat((String) document.get("avgRating")));
                         productModelList.setSellerToken((String) document.get("sellerToken"));
                         productModelLists.add(productModelList);
                     }
@@ -235,49 +168,50 @@ public class search extends AppCompatActivity implements searchProductInterface 
         ArrayList<productModelList> filteredList = new ArrayList<>();
 
         for (productModelList item : productModelLists) {
-            if (item.name.toLowerCase().contains(text.toLowerCase())) {
+            String searchRating = item.rating.toLowerCase();
+            if (!searchRating.isEmpty() && searchRating.contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
         }
         searchProductAdapter.filterList(filteredList);
     }
 
-//    private void searchProduct(String tag) {
-//        if (!tag.isEmpty()) {
-//            // this search will work for exact words only
-//            //.orderBy("tags").startAt(tag).endAt(tag + "\uf8ff")
-//            tag = tag.toLowerCase();
-//            mDb.collection("products").whereArrayContains("tags", tag).get()
-//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                            if (task.isSuccessful() && task.getResult() != null) {
-//                                productModelLists.clear();
-//                                searchProductAdapter.notifyDataSetChanged();
-//
-//                                for (DocumentSnapshot doc : task.getResult().getDocuments()) {
-//                                    productModelList productModelList = new productModelList();
-//                                    productModelList.setName((String) doc.get("name"));
-//                                    productModelList.setImageUrl((String) doc.get("imageUrl"));
-//                                    productModelList.setPrice((String) doc.get("price"));
-//                                    productModelList.setDiscount((String) doc.get("discount"));
-//                                    productModelList.setMrp((String) doc.get("mrp"));
-//                                    productModelList.setCategory((String) doc.get("category"));
-//                                    productModelList.setSellerId((String) doc.get("sellerId"));
-//                                    productModelList.setSeller((String) doc.get("seller"));
-//                                    productModelList.setProductId((String) doc.get("productId"));
-//                                    productModelList.setDescription((String) doc.get("description"));
-//                                    productModelLists.add(productModelList);
-//                                    searchProductAdapter.notifyDataSetChanged();
-//                                }
-//                            } else {
-//                                String error = task.getException().getMessage();
-//                                Toast.makeText(search.this, error, Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-//        }
-//    }
+    private void searchProduct(String tag) {
+        if (!tag.isEmpty()) {
+            // this search will work for exact words only
+            //.orderBy("tags").startAt(tag).endAt(tag + "\uf8ff")
+            tag = tag.toLowerCase();
+            mDb.collection("products").whereArrayContains("tags", tag).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful() && task.getResult() != null) {
+                                productModelLists.clear();
+                                searchProductAdapter.notifyDataSetChanged();
+
+                                for (DocumentSnapshot doc : task.getResult().getDocuments()) {
+                                    productModelList productModelList = new productModelList();
+                                    productModelList.setName((String) doc.get("name"));
+                                    productModelList.setImageUrl((String) doc.get("imageUrl"));
+                                    productModelList.setPrice((String) doc.get("price"));
+                                    productModelList.setDiscount((String) doc.get("discount"));
+                                    productModelList.setMrp((String) doc.get("mrp"));
+                                    productModelList.setCategory((String) doc.get("category"));
+                                    productModelList.setSellerId((String) doc.get("sellerId"));
+                                    productModelList.setSeller((String) doc.get("seller"));
+                                    productModelList.setProductId((String) doc.get("productId"));
+                                    productModelList.setDescription((String) doc.get("description"));
+                                    productModelLists.add(productModelList);
+                                    searchProductAdapter.notifyDataSetChanged();
+                                }
+                            } else {
+                                String error = task.getException().getMessage();
+                                Toast.makeText(search.this, error, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+    }
 
     @Override
     public void searchProductOnClickInterface(int position) {

@@ -162,7 +162,7 @@ public class ratingFragment extends Fragment {
                         Map<String, Object> updateIndividualRating = new HashMap<>();
                         updateIndividualRating.put("rating", String.valueOf(numberOfRatings));
                         updateIndividualRating.put("review", String.valueOf(numberOfRatings));
-                        updateIndividualRating.put("avgRating", String.valueOf(avgRating));
+                        updateIndividualRating.put("avgRating", avgRating);
                         updateIndividualRating.put("stars", stars);
                         mDb.collection("products").document(productId).update(updateIndividualRating);
                     }

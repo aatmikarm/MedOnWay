@@ -1,7 +1,6 @@
 package com.example.tandonmedical;
 
 import android.Manifest;
-import android.app.MediaRouteButton;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView productRecyclerView, doctorRecyclerView, categoriesRecyclerView;
     private String currentUserUid;
     private CardView cart_cardView, orders_cardView, search_cv;
-    private TextView allProduct,allDoctor;
+    private TextView allProduct, allDoctor;
     private FusedLocationProviderClient fusedLocationClient;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
@@ -97,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         final ArrayList<productModelList> productModelLists = getAllProducts();
         final ArrayList<doctorsModelList> doctorsModelLists = getAllDoctors();
         final ArrayList<categoriesModelList> categoriesModelLists = getAllCategories();
+
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override

@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,6 +43,9 @@ public class searchProductAdapter extends RecyclerView.Adapter<searchProductAdap
 
         Glide.with(context).load(productModelList.get(position).getImageUrl()).into(holder.productImage);
         holder.productName.setText(productModelList.get(position).name);
+
+        holder.search_star_tv.setText(productModelList.get(position).rating);
+        holder.search_star_rb.setRating(productModelList.get(position).avgRating);
         holder.productPrice.setText("Rs. " + productModelList.get(position).price + ".00");
         holder.productMrp.setText("Rs. " + productModelList.get(position).mrp + ".00");
         holder.productDiscount.setText(productModelList.get(position).discount + "% OFF");
@@ -56,8 +61,9 @@ public class searchProductAdapter extends RecyclerView.Adapter<searchProductAdap
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         ImageView productImage;
-        TextView productName, productPrice, productMrp, productDiscount;
+        TextView productName,search_star_tv, productPrice, productMrp, productDiscount;
         ConstraintLayout productContainer;
+        RatingBar search_star_rb;
 
         ItemViewHolder(View itemView) {
             super(itemView);
@@ -68,6 +74,8 @@ public class searchProductAdapter extends RecyclerView.Adapter<searchProductAdap
             productMrp = itemView.findViewById(R.id.search_mrp_tv);
             productContainer = itemView.findViewById(R.id.search_product_container);
             productDiscount = itemView.findViewById(R.id.search_discount_text_view);
+            search_star_tv = itemView.findViewById(R.id.search_star_tv);
+            search_star_rb = itemView.findViewById(R.id.search_star_rb);
 
             productContainer.setOnClickListener(new View.OnClickListener() {
                 @Override

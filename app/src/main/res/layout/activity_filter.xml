@@ -13,35 +13,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Sort By"
+        android:text="Rating"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/cgSort"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipTrending"
+            android:id="@+id/chipRating"
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Trending" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipNewArrival"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Arrival" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipBestSelling"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Best Selling" />
+            android:text="4" />
     </com.google.android.material.chip.ChipGroup>
 
     <TextView

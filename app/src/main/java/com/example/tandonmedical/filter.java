@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class filter extends AppCompatActivity {
 
-    private Chip chipTrending, chipNewArrival, chipBestSelling, chipHtoL, chipLtoH;
+    private Chip chipRating, chipHtoL, chipLtoH;
     private ChipGroup cgSort, cgPrice;
     private Button filter_apply;
 
@@ -26,9 +26,7 @@ public class filter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
 
-        chipTrending = findViewById(R.id.chipTrending);
-        chipNewArrival = findViewById(R.id.chipNewArrival);
-        chipBestSelling = findViewById(R.id.chipBestSelling);
+        chipRating = findViewById(R.id.chipRating);
         chipHtoL = findViewById(R.id.chipHtoL);
         chipLtoH = findViewById(R.id.chipLtoH);
         cgSort = findViewById(R.id.cgSort);
@@ -50,9 +48,7 @@ public class filter extends AppCompatActivity {
             }
         };
 
-        chipTrending.setOnCheckedChangeListener(checkedChangeListener);
-        chipNewArrival.setOnCheckedChangeListener(checkedChangeListener);
-        chipBestSelling.setOnCheckedChangeListener(checkedChangeListener);
+        chipRating.setOnCheckedChangeListener(checkedChangeListener);
         chipHtoL.setOnCheckedChangeListener(checkedChangeListener);
         chipLtoH.setOnCheckedChangeListener(checkedChangeListener);
 
