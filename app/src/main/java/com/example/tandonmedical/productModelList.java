@@ -19,13 +19,13 @@ public class productModelList {
     String boughtTimes;
     String discount;
     Boolean prescription;
-    Float avgRating;
+    String avgRating;
 
-    public Float getAvgRating() {
+    public String getAvgRating() {
         return avgRating;
     }
 
-    public void setAvgRating(Float avgRating) {
+    public void setAvgRating(String avgRating) {
         this.avgRating = avgRating;
     }
 

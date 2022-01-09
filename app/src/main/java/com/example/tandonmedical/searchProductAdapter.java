@@ -45,7 +45,7 @@ public class searchProductAdapter extends RecyclerView.Adapter<searchProductAdap
         holder.productName.setText(productModelList.get(position).name);
 
         holder.search_star_tv.setText(productModelList.get(position).rating);
-        holder.search_star_rb.setRating(productModelList.get(position).avgRating);
+        holder.search_star_rb.setRating(4);
         holder.productPrice.setText("Rs. " + productModelList.get(position).price + ".00");
         holder.productMrp.setText("Rs. " + productModelList.get(position).mrp + ".00");
         holder.productDiscount.setText(productModelList.get(position).discount + "% OFF");

@@ -11,44 +11,47 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
-import java.util.ArrayList;
-
 public class filter extends AppCompatActivity {
 
-    private Chip chipRating, chipHtoL, chipLtoH;
+    private Chip chipRating4, chipRating3, chipRating2, chipRating1, chipHtoL, chipLtoH;
     private ChipGroup cgSort, cgPrice;
     private Button filter_apply;
 
-    private ArrayList<String> selectedChipData;
+    private String filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
 
-        chipRating = findViewById(R.id.chipRating);
+        chipRating4 = findViewById(R.id.chipRating4);
+        chipRating3 = findViewById(R.id.chipRating3);
+        chipRating2 = findViewById(R.id.chipRating2);
+        chipRating1 = findViewById(R.id.chipRating1);
         chipHtoL = findViewById(R.id.chipHtoL);
         chipLtoH = findViewById(R.id.chipLtoH);
         cgSort = findViewById(R.id.cgSort);
         cgPrice = findViewById(R.id.cgPrice);
         filter_apply = findViewById(R.id.filter_apply);
 
-        selectedChipData = new ArrayList<>();
+        filter = "";
 
         CompoundButton.OnCheckedChangeListener checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    selectedChipData.add(buttonView.getText().toString());
-                }
-                else {
-                    selectedChipData.remove(buttonView.getText().toString());
+                    filter = buttonView.getText().toString();
+                } else {
+                    filter = "";
                 }
 
             }
         };
 
-        chipRating.setOnCheckedChangeListener(checkedChangeListener);
+        chipRating4.setOnCheckedChangeListener(checkedChangeListener);
+        chipRating3.setOnCheckedChangeListener(checkedChangeListener);
+        chipRating2.setOnCheckedChangeListener(checkedChangeListener);
+        chipRating1.setOnCheckedChangeListener(checkedChangeListener);
         chipHtoL.setOnCheckedChangeListener(checkedChangeListener);
         chipLtoH.setOnCheckedChangeListener(checkedChangeListener);
 
@@ -56,8 +59,8 @@ public class filter extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("data",selectedChipData.toString());
-                setResult(101,resultIntent);
+                resultIntent.putExtra("filter", filter);
+                setResult(101, resultIntent);
                 finish();
             }
         });

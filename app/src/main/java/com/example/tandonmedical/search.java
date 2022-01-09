@@ -1,5 +1,7 @@
 package com.example.tandonmedical;
 
+import static com.google.firebase.firestore.Query.Direction.DESCENDING;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,10 +22,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.core.OrderBy;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -36,7 +38,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
-    private String currentUserUid, filterData;
+    private String currentUserUid, filter;
     private ProgressBar search_progress_bar;
     private RecyclerView searchProductRV;
     private searchProductAdapter searchProductAdapter;
@@ -60,8 +62,10 @@ public class search extends AppCompatActivity implements searchProductInterface 
         searchProductRV = findViewById(R.id.search_rv);
         searchProductRV.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
-        productModelLists = getAllProducts();
-
+        filter = "";
+        if (filter.isEmpty()) {
+            productModelLists = getAllProducts(filter);
+        }
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -85,17 +89,6 @@ public class search extends AppCompatActivity implements searchProductInterface 
             @Override
             public void afterTextChanged(Editable s) {
                 filter(s.toString());
-
-//                String search = s.toString();
-//                String[] tags = search.split(" ");
-//                if (search.isEmpty()) {
-//                    productModelLists.clear();
-//                    searchProductAdapter.notifyDataSetChanged();
-//                } else {
-//                    for (String tag : tags) {
-//                        searchProduct(tag);
-//                    }
-//                }
             }
         });
 
@@ -118,99 +111,157 @@ public class search extends AppCompatActivity implements searchProductInterface 
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == 101) {
-            filterData = data.getStringExtra("data");
-            search_et.setText(filterData);
+            filter = data.getStringExtra("filter");
+            productModelLists.clear();
+            searchProductAdapter.notifyDataSetChanged();
+            productModelLists = getAllProducts(filter);
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    searchProductAdapter = new searchProductAdapter(getApplicationContext(), productModelLists, search.this);
+                    searchProductRV.setAdapter(searchProductAdapter);
+                }
+            }, 3000);
         }
     }
 
-    private ArrayList<productModelList> getAllProducts() {
+    private ArrayList<productModelList> getAllProducts(String filter) {
+
         final ArrayList<productModelList> productModelLists = new ArrayList<>();
-        mDb.collection("products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        productModelList productModelList = new productModelList();
-                        productModelList.setName((String) document.get("name"));
-                        productModelList.setImageUrl((String) document.get("imageUrl"));
-                        productModelList.setPrice((String) document.get("price"));
-                        productModelList.setDiscount((String) document.get("discount"));
-                        productModelList.setMrp((String) document.get("mrp"));
-                        productModelList.setCategory((String) document.get("category"));
-                        productModelList.setSellerId((String) document.get("sellerId"));
-                        productModelList.setSeller((String) document.get("seller"));
-                        productModelList.setProductId((String) document.get("productId"));
-                        productModelList.setDescription((String) document.get("description"));
-                        productModelList.setPrescription((Boolean) document.get("prescription"));
-                        productModelList.setRating((String) document.get("rating"));
-                        productModelList.setReview((String) document.get("review"));
-                        productModelList.setAvgRating(Float.parseFloat((String) document.get("avgRating")));
-                        productModelList.setSellerToken((String) document.get("sellerToken"));
-                        productModelLists.add(productModelList);
+        if (filter.isEmpty()) {
+            mDb.collection("products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            productModelList productModelList = new productModelList();
+                            productModelList.setName((String) document.get("name"));
+                            productModelList.setImageUrl((String) document.get("imageUrl"));
+                            productModelList.setPrice((String) document.get("price"));
+                            productModelList.setDiscount((String) document.get("discount"));
+                            productModelList.setMrp((String) document.get("mrp"));
+                            productModelList.setCategory((String) document.get("category"));
+                            productModelList.setSellerId((String) document.get("sellerId"));
+                            productModelList.setSeller((String) document.get("seller"));
+                            productModelList.setProductId((String) document.get("productId"));
+                            productModelList.setDescription((String) document.get("description"));
+                            productModelList.setPrescription((Boolean) document.get("prescription"));
+                            productModelList.setRating((String) document.get("rating"));
+                            productModelList.setReview((String) document.get("review"));
+                            productModelList.setAvgRating((String) document.get("avgRating"));
+                            productModelList.setSellerToken((String) document.get("sellerToken"));
+                            productModelLists.add(productModelList);
+                        }
                     }
                 }
+            });
+        }
+        if (!filter.isEmpty()) {
+            if (filter.contains("High To Low")) {
+                mDb.collection("products").orderBy("price", DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                productModelList productModelList = new productModelList();
+                                Toast.makeText(search.this, (String) document.get("name"), Toast.LENGTH_SHORT).show();
+                                productModelList.setName((String) document.get("name"));
+                                productModelList.setImageUrl((String) document.get("imageUrl"));
+                                productModelList.setPrice((String) document.get("price"));
+                                productModelList.setDiscount((String) document.get("discount"));
+                                productModelList.setMrp((String) document.get("mrp"));
+                                productModelList.setCategory((String) document.get("category"));
+                                productModelList.setSellerId((String) document.get("sellerId"));
+                                productModelList.setSeller((String) document.get("seller"));
+                                productModelList.setProductId((String) document.get("productId"));
+                                productModelList.setDescription((String) document.get("description"));
+                                productModelList.setPrescription((Boolean) document.get("prescription"));
+                                productModelList.setRating((String) document.get("rating"));
+                                productModelList.setReview((String) document.get("review"));
+                                productModelList.setAvgRating((String) document.get("avgRating"));
+                                productModelList.setSellerToken((String) document.get("sellerToken"));
+                                productModelLists.add(productModelList);
+                            }
+                        }
+                    }
+                });
             }
-        });
+            if (filter.contains("Low To High")) {
+                mDb.collection("products").orderBy("price").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                productModelList productModelList = new productModelList();
+                                productModelList.setName((String) document.get("name"));
+                                productModelList.setImageUrl((String) document.get("imageUrl"));
+                                productModelList.setPrice((String) document.get("price"));
+                                productModelList.setDiscount((String) document.get("discount"));
+                                productModelList.setMrp((String) document.get("mrp"));
+                                productModelList.setCategory((String) document.get("category"));
+                                productModelList.setSellerId((String) document.get("sellerId"));
+                                productModelList.setSeller((String) document.get("seller"));
+                                productModelList.setProductId((String) document.get("productId"));
+                                productModelList.setDescription((String) document.get("description"));
+                                productModelList.setPrescription((Boolean) document.get("prescription"));
+                                productModelList.setRating((String) document.get("rating"));
+                                productModelList.setReview((String) document.get("review"));
+                                productModelList.setAvgRating((String) document.get("avgRating"));
+                                productModelList.setSellerToken((String) document.get("sellerToken"));
+                                productModelLists.add(productModelList);
+                            }
+                        }
+                    }
+                });
+            }
+            if (filter.contains("4.0") || filter.contains("3.0") || filter.contains("2.0") || filter.contains("1.0")) {
+                mDb.collection("products").whereGreaterThanOrEqualTo("avgRating", filter).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                productModelList productModelList = new productModelList();
+                                productModelList.setName((String) document.get("name"));
+                                productModelList.setImageUrl((String) document.get("imageUrl"));
+                                productModelList.setPrice((String) document.get("price"));
+                                productModelList.setDiscount((String) document.get("discount"));
+                                productModelList.setMrp((String) document.get("mrp"));
+                                productModelList.setCategory((String) document.get("category"));
+                                productModelList.setSellerId((String) document.get("sellerId"));
+                                productModelList.setSeller((String) document.get("seller"));
+                                productModelList.setProductId((String) document.get("productId"));
+                                productModelList.setDescription((String) document.get("description"));
+                                productModelList.setPrescription((Boolean) document.get("prescription"));
+                                productModelList.setRating((String) document.get("rating"));
+                                productModelList.setReview((String) document.get("review"));
+                                productModelList.setAvgRating((String) document.get("avgRating"));
+                                productModelList.setSellerToken((String) document.get("sellerToken"));
+                                productModelLists.add(productModelList);
+                            }
+                        }
+                    }
+                });
+            }
+
+        }
+
         return productModelLists;
     }
 
     private void filter(String text) {
         ArrayList<productModelList> filteredList = new ArrayList<>();
-
         for (productModelList item : productModelLists) {
-            String searchRating = item.rating.toLowerCase();
+            String searchRating = item.name.toLowerCase();
             if (!searchRating.isEmpty() && searchRating.contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
         }
         searchProductAdapter.filterList(filteredList);
-    }
-
-    private void searchProduct(String tag) {
-        if (!tag.isEmpty()) {
-            // this search will work for exact words only
-            //.orderBy("tags").startAt(tag).endAt(tag + "\uf8ff")
-            tag = tag.toLowerCase();
-            mDb.collection("products").whereArrayContains("tags", tag).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful() && task.getResult() != null) {
-                                productModelLists.clear();
-                                searchProductAdapter.notifyDataSetChanged();
-
-                                for (DocumentSnapshot doc : task.getResult().getDocuments()) {
-                                    productModelList productModelList = new productModelList();
-                                    productModelList.setName((String) doc.get("name"));
-                                    productModelList.setImageUrl((String) doc.get("imageUrl"));
-                                    productModelList.setPrice((String) doc.get("price"));
-                                    productModelList.setDiscount((String) doc.get("discount"));
-                                    productModelList.setMrp((String) doc.get("mrp"));
-                                    productModelList.setCategory((String) doc.get("category"));
-                                    productModelList.setSellerId((String) doc.get("sellerId"));
-                                    productModelList.setSeller((String) doc.get("seller"));
-                                    productModelList.setProductId((String) doc.get("productId"));
-                                    productModelList.setDescription((String) doc.get("description"));
-                                    productModelLists.add(productModelList);
-                                    searchProductAdapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                String error = task.getException().getMessage();
-                                Toast.makeText(search.this, error, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        }
     }
 
     @Override
