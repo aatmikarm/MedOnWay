@@ -36,6 +36,13 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -64,6 +71,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.paytm.pgsdk.PaytmPGService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
@@ -73,6 +84,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -158,9 +170,69 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
             public void onClick(View v) {
                 onlinePayment_cv.setCardBackgroundColor(Color.argb(255, 237, 47, 101));
                 cashOnDelivery_cv.setCardBackgroundColor(Color.WHITE);
+
+                if (ContextCompat.checkSelfPermission(payment.this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(payment.this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, 101);
+                }
+
+                String Mid = "ZLeZrQ05806456401015";
+                String userId = currentUserUid;
+                String orderId = UUID.randomUUID().toString().substring(0, 28);
+                String url = "https://aatmik.000webhostapp.com/paytmGateway/generateChecksum.php";
+                String callBackUrl = "https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp";
+
+                RequestQueue requestQueue = Volley.newRequestQueue(payment.this);
+
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject JSONObject = new JSONObject(response);
+                            if (JSONObject.has("CHECKSUMHASH")) {
+                                String checkSumHash = JSONObject.getString("CHECKSUMHASH");
+
+                                PaytmPGService Service = PaytmPGService.getStagingService();
+
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(payment.this, "Error", Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    @Nullable
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+
+                        Map<String, String> paramMap = new HashMap<>();
+                        paramMap.put("MID", Mid);
+                        paramMap.put("ORDER_ID", orderId);
+                        paramMap.put("CUST_ID", userId);
+                        paramMap.put("CHANNEL_ID", "WAP");
+                        paramMap.put("TXN_AMOUNT", "10");
+                        paramMap.put("WEBSITE", "WEBSTAGING");
+                        paramMap.put("INDUSTRY_TYPE_ID", "Retail");
+                        paramMap.put("CALLBACK_URL", callBackUrl);
+
+                        return paramMap;
+                    }
+                };
+
+                requestQueue.add(stringRequest);
+
             }
         });
     }
+
 
     private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
         String strAdd = "";
