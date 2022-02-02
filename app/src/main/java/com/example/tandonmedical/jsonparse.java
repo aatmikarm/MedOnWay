@@ -1,4 +1,5 @@
 package com.example.tandonmedical;
+
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -65,7 +66,7 @@ public class jsonparse {
                 urlConnection.disconnect();
             }
         }
-        // Log.e("jsonpardse ", "respone is "+ jObj.toString() );
+
         return jObj;
     }
 }

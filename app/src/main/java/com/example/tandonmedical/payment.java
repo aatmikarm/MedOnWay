@@ -46,6 +46,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.tandonmedical.databinding.ActivityPaymentBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -121,6 +122,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
         mStorageRef = FirebaseStorage.getInstance().getReference();
         currentUserUid = firebaseAuth.getUid();
 
+
         FirebaseMessaging.getInstance().subscribeToTopic("all");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -175,59 +177,13 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                     ActivityCompat.requestPermissions(payment.this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, 101);
                 }
 
-                String Mid = "ZLeZrQ05806456401015";
                 String userId = currentUserUid;
                 String orderId = UUID.randomUUID().toString().substring(0, 28);
-                String url = "https://aatmik.000webhostapp.com/paytmGateway/generateChecksum.php";
-                String callBackUrl = "https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp";
 
-                RequestQueue requestQueue = Volley.newRequestQueue(payment.this);
-
-
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        try {
-                            JSONObject JSONObject = new JSONObject(response);
-                            if (JSONObject.has("CHECKSUMHASH")) {
-                                String checkSumHash = JSONObject.getString("CHECKSUMHASH");
-
-                                PaytmPGService Service = PaytmPGService.getStagingService();
-
-
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(payment.this, "Error", Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-                    @Nullable
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-
-                        Map<String, String> paramMap = new HashMap<>();
-                        paramMap.put("MID", Mid);
-                        paramMap.put("ORDER_ID", orderId);
-                        paramMap.put("CUST_ID", userId);
-                        paramMap.put("CHANNEL_ID", "WAP");
-                        paramMap.put("TXN_AMOUNT", "10");
-                        paramMap.put("WEBSITE", "WEBSTAGING");
-                        paramMap.put("INDUSTRY_TYPE_ID", "Retail");
-                        paramMap.put("CALLBACK_URL", callBackUrl);
-
-                        return paramMap;
-                    }
-                };
-
-                requestQueue.add(stringRequest);
+                Intent intent = new Intent(payment.this, checksum.class);
+                intent.putExtra("orderid", orderId);
+                intent.putExtra("custid", userId);
+                startActivity(intent);
 
             }
         });
