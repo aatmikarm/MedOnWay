@@ -20,21 +20,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class checksum extends AppCompatActivity implements PaytmPaymentTransactionCallback {
+
     String custid = "", orderId = "", mid = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         Intent intent = getIntent();
         orderId = intent.getExtras().getString("orderid");
         custid = intent.getExtras().getString("custid");
         mid = "RioOvN61317740803594";
+
         sendUserDetailTOServerdd dl = new sendUserDetailTOServerdd();
         dl.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public class sendUserDetailTOServerdd extends AsyncTask<ArrayList<String>, Void, String> {
+
         private ProgressDialog dialog = new ProgressDialog(checksum.this);
 
         String url = "https://aatmik.000webhostapp.com/paytmGateway/generateChecksum.php";
@@ -71,7 +76,6 @@ public class checksum extends AppCompatActivity implements PaytmPaymentTransacti
         @Override
         protected void onPostExecute(String result) {
 
-            Log.e(" setup acc ", "  signup result  " + result);
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
@@ -99,7 +103,7 @@ public class checksum extends AppCompatActivity implements PaytmPaymentTransacti
 
     @Override
     public void onTransactionResponse(Bundle bundle) {
-        Log.e("checksum ", " respon true " + bundle.toString());
+
     }
 
     @Override
@@ -122,16 +126,16 @@ public class checksum extends AppCompatActivity implements PaytmPaymentTransacti
 
     @Override
     public void onErrorLoadingWebPage(int i, String s, String s1) {
-        Log.e("checksum ", " error loading pagerespon true " + s + "  s1 " + s1);
+
     }
 
     @Override
     public void onBackPressedCancelTransaction() {
-        Log.e("checksum ", " cancel call back respon  ");
+
     }
 
     @Override
     public void onTransactionCancel(String s, Bundle bundle) {
-        Log.e("checksum ", "  transaction cancel ");
+
     }
 }
