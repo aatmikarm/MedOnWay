@@ -108,6 +108,7 @@ public class checksum extends AppCompatActivity implements PaytmPaymentTransacti
 
     @Override
     public void networkNotAvailable() {
+
     }
 
     @Override
@@ -117,11 +118,12 @@ public class checksum extends AppCompatActivity implements PaytmPaymentTransacti
 
     @Override
     public void clientAuthenticationFailed(String s) {
+
     }
 
     @Override
     public void someUIErrorOccurred(String s) {
-        Log.e("checksum ", " ui fail respon  " + s);
+
     }
 
     @Override

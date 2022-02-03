@@ -2,6 +2,7 @@ package com.example.tandonmedical;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -46,7 +47,6 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.example.tandonmedical.databinding.ActivityPaymentBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -72,7 +72,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
+import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -173,20 +175,161 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                 onlinePayment_cv.setCardBackgroundColor(Color.argb(255, 237, 47, 101));
                 cashOnDelivery_cv.setCardBackgroundColor(Color.WHITE);
 
-                if (ContextCompat.checkSelfPermission(payment.this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(payment.this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, 101);
-                }
-
-                String userId = currentUserUid;
-                String orderId = UUID.randomUUID().toString().substring(0, 28);
-
-                Intent intent = new Intent(payment.this, checksum.class);
-                intent.putExtra("orderid", orderId);
-                intent.putExtra("custid", userId);
-                startActivity(intent);
+                makePayment();
 
             }
         });
+    }
+
+    private void makePayment() {
+
+        ProgressDialog dialog = new ProgressDialog(payment.this);
+        dialog.setMessage("Please wait");
+        dialog.show();
+
+        if (ContextCompat.checkSelfPermission(payment.this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(payment.this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, 101);
+        }
+
+        String mid = "RioOvN61317740803594";
+        String custid = currentUserUid;
+        String orderId = UUID.randomUUID().toString().substring(0, 28);
+        String url = "https://aatmik.000webhostapp.com/paytmGateway/generateChecksum.php";
+        String varifyurl = "https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp";
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(payment.this);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.has("CHECKSUMHASH")) {
+
+                        String CHECKSUMHASH = jsonObject.getString("CHECKSUMHASH");
+
+                        PaytmPGService paytmPGService = PaytmPGService.getProductionService();
+
+                        HashMap<String, String> paramMap = new HashMap<String, String>();
+
+                        paramMap.put("MID", mid);
+                        paramMap.put("CUST_ID", custid);
+                        paramMap.put("ORDER_ID", orderId);
+                        paramMap.put("CHANNEL_ID", "WAP");
+                        paramMap.put("TXN_AMOUNT", "100");
+                        paramMap.put("WEBSITE", "WEBSTAGING");
+                        paramMap.put("CALLBACK_URL", varifyurl);
+                        paramMap.put("CHECKSUMHASH", CHECKSUMHASH);
+                        paramMap.put("INDUSTRY_TYPE_ID", "Retail");
+
+                        PaytmOrder order = new PaytmOrder(paramMap);
+
+                        paytmPGService.initialize(order, null);
+                        paytmPGService.startPaymentTransaction(payment.this, true, true, new PaytmPaymentTransactionCallback() {
+                            @Override
+                            public void onTransactionResponse(Bundle bundle) {
+                                Toast.makeText(payment.this, "error", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void networkNotAvailable() {
+                                Toast.makeText(payment.this, "error", Toast.LENGTH_SHORT).show();
+                                if (dialog.isShowing()) {
+                                    dialog.dismiss();
+                                }
+                            }
+
+                            @Override
+                            public void onErrorProceed(String s) {
+                                if (dialog.isShowing()) {
+                                    dialog.dismiss();
+                                }
+                                Toast.makeText(payment.this, "error", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void clientAuthenticationFailed(String s) {
+                                if (dialog.isShowing()) {
+                                    dialog.dismiss();
+                                }
+                                Toast.makeText(payment.this, "error", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void someUIErrorOccurred(String s) {
+                                if (dialog.isShowing()) {
+                                    dialog.dismiss();
+                                }
+                                Toast.makeText(payment.this, "error", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onErrorLoadingWebPage(int i, String s, String s1) {
+                                if (dialog.isShowing()) {
+                                    dialog.dismiss();
+                                }
+                                Toast.makeText(payment.this, "error", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onBackPressedCancelTransaction() {
+                                if (dialog.isShowing()) {
+                                    dialog.dismiss();
+                                }
+                                Toast.makeText(payment.this, "error", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onTransactionCancel(String s, Bundle bundle) {
+                                if (dialog.isShowing()) {
+                                    dialog.dismiss();
+                                }
+                                Toast.makeText(payment.this, "error", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+
+                Toast.makeText(payment.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> paramMap = new HashMap<String, String>();
+
+                paramMap.put("MID", mid);
+                paramMap.put("CUST_ID", custid);
+                paramMap.put("ORDER_ID", orderId);
+                paramMap.put("CHANNEL_ID", "WAP");
+                paramMap.put("TXN_AMOUNT", "100");
+                paramMap.put("WEBSITE", "WEBSTAGING");
+                paramMap.put("CALLBACK_URL", varifyurl);
+                paramMap.put("INDUSTRY_TYPE_ID", "Retail");
+
+                return paramMap;
+            }
+        };
+
+        requestQueue.add(stringRequest);
+
+//        Intent intent = new Intent(payment.this, checksum.class);
+//        intent.putExtra("orderid", orderId);
+//        intent.putExtra("custid", custid);
+//        startActivity(intent);
+
     }
 
 
