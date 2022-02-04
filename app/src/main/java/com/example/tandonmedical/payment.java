@@ -32,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
@@ -101,11 +102,13 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
     private FusedLocationProviderClient mfusedLocationProviderClient;
     private LatLngBounds mMapBoundary;
     private EditText paymentAddress_et;
-    private TextView paymentActivity_totalPayment;
-    private CardView onlinePayment_cv, cashOnDelivery_cv, payment_confirm_cv;
+    private TextView paymentActivity_totalPayment, payment_done_orderId_tv, payment_done_continue_shopping_tv;
+    private CardView onlinePayment_cv, cashOnDelivery_cv;
     private Float totalAmount;
     private String currentUserUid, productId, sellerToken;
     private productModelList productModelLists;
+    private ConstraintLayout payment_done_con;
+
 
     GeoPoint currentUserGeoPoints;
     private StorageReference mStorageRef;
@@ -139,44 +142,37 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
 
         paymentAddress_et = findViewById(R.id.paymentAddress_et);
         paymentActivity_totalPayment = findViewById(R.id.paymentActivity_totalPayment);
-        payment_confirm_cv = findViewById(R.id.payment_confirm_cv);
         onlinePayment_cv = findViewById(R.id.onlinePayment_cv);
         cashOnDelivery_cv = findViewById(R.id.cashOnDelivery_cv);
+        payment_done_con = findViewById(R.id.payment_done_con);
+        payment_done_orderId_tv = findViewById(R.id.payment_done_orderId_tv);
+        payment_done_continue_shopping_tv = findViewById(R.id.payment_done_continue_shopping_tv);
+
         paymentActivity_totalPayment.setText(String.valueOf(totalAmount));
 
-        payment_confirm_cv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (totalAmount == 0) {
-
-                    Toast.makeText(payment.this, "CART IS EMPTY", Toast.LENGTH_SHORT).show();
-                    finish();
-
-                } else if (totalAmount != 0) {
-                    updateUserProductStatus();
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), orders.class));
-
-                }
-
-            }
-        });
         cashOnDelivery_cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cashOnDelivery_cv.setCardBackgroundColor(Color.argb(255, 237, 47, 101));
                 onlinePayment_cv.setCardBackgroundColor(Color.WHITE);
+
+                if (totalAmount == 0) {
+                    Toast.makeText(payment.this, "CART IS EMPTY", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else if (totalAmount != 0) {
+                    updateUserProductStatus();
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), orders.class));
+                }
             }
         });
+
         onlinePayment_cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onlinePayment_cv.setCardBackgroundColor(Color.argb(255, 237, 47, 101));
                 cashOnDelivery_cv.setCardBackgroundColor(Color.WHITE);
-
                 makePayment();
-
             }
         });
     }
@@ -229,8 +225,27 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                         paytmPGService.initialize(order, null);
                         paytmPGService.startPaymentTransaction(payment.this, true, true, new PaytmPaymentTransactionCallback() {
                             @Override
-                            public void onTransactionResponse(Bundle bundle) {
-                                Toast.makeText(payment.this, "error", Toast.LENGTH_SHORT).show();
+                            public void onTransactionResponse(Bundle inResponse) {
+                                //Toast.makeText(payment.this, "error", Toast.LENGTH_SHORT).show();
+                                if (inResponse.getString("STATUS").equals("TXN_SUCCESS")) {
+
+                                    payment_done_orderId_tv.setText("Order Id " + inResponse.getString("ORDERID"));
+                                    payment_done_con.setVisibility(View.VISIBLE);
+                                    payment_done_continue_shopping_tv.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            if (totalAmount == 0) {
+                                                Toast.makeText(payment.this, "CART IS EMPTY", Toast.LENGTH_SHORT).show();
+                                                finish();
+                                            } else if (totalAmount != 0) {
+                                                updateUserProductStatus();
+                                                finish();
+                                                startActivity(new Intent(getApplicationContext(), orders.class));
+                                            }
+                                        }
+                                    });
+
+                                }
                             }
 
                             @Override

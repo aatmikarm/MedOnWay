@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         cart_cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 startActivity(new Intent(getApplicationContext(), cart.class));
             }
         });
