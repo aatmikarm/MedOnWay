@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,6 +24,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class orders extends AppCompatActivity implements ordersProductInterface {
 
@@ -138,6 +139,7 @@ public class orders extends AppCompatActivity implements ordersProductInterface 
                 }
             }
         });
+
         return productModelLists;
     }
 
@@ -155,19 +157,21 @@ public class orders extends AppCompatActivity implements ordersProductInterface 
 
     @Override
     public void cancelProductFromOrders(int position) {
+
+        Map<String, Object> updateUserOrderStatus = new HashMap<>();
+        updateUserOrderStatus.put("status", "canceled");
+
+        Map<String, Object> updateSellerOrderStatus = new HashMap<>();
+        updateSellerOrderStatus.put("status", "canceled");
+
         mDb.collection("users").document(currentUserUid).collection("orders")
-                .document(productModelLists.get(position).getProductOrderId().toString()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(orders.this, "Product Canceled", Toast.LENGTH_SHORT).show();
-            }
-        });
+                .document(productModelLists.get(position).getProductOrderId().toString()).update(updateUserOrderStatus);
+
+
         mDb.collection("seller").document(productModelLists.get(position).getSellerId().toString()).collection("orders")
-                .document(productModelLists.get(position).getProductOrderId().toString()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                //Toast.makeText(orders.this, "Product Canceled", Toast.LENGTH_SHORT).show();
-            }
-        });
+                .document(productModelLists.get(position).getProductOrderId().toString()).update(updateSellerOrderStatus);
+
+        Toast.makeText(getApplicationContext(), "Product Canceled", Toast.LENGTH_SHORT).show();
+
     }
 }
