@@ -105,7 +105,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
     private TextView paymentActivity_totalPayment, payment_done_orderId_tv, payment_done_continue_shopping_tv;
     private CardView onlinePayment_cv, cashOnDelivery_cv;
     private Float totalAmount;
-    private String currentUserUid, productId, sellerToken;
+    private String currentUserUid, productId, sellerToken,paymentType;
     private productModelList productModelLists;
     private ConstraintLayout payment_done_con;
 
@@ -160,7 +160,8 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                     Toast.makeText(payment.this, "CART IS EMPTY", Toast.LENGTH_SHORT).show();
                     finish();
                 } else if (totalAmount != 0) {
-                    updateUserProductStatus();
+                    paymentType = "cash";
+                    updateUserProductStatus(paymentType);
                     finish();
                     startActivity(new Intent(getApplicationContext(), orders.class));
                 }
@@ -238,7 +239,8 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                                                 Toast.makeText(payment.this, "CART IS EMPTY", Toast.LENGTH_SHORT).show();
                                                 finish();
                                             } else if (totalAmount != 0) {
-                                                updateUserProductStatus();
+                                                paymentType = "online";
+                                                updateUserProductStatus(paymentType);
                                                 finish();
                                                 startActivity(new Intent(getApplicationContext(), orders.class));
                                             }
@@ -373,7 +375,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
         return strAdd;
     }
 
-    private void updateUserProductStatus() {
+    private void updateUserProductStatus(String paymentType) {
         mDb.collection("users").document(currentUserUid).collection("orders")
                 .whereEqualTo("status", "in cart").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -381,15 +383,20 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                 if (task.isSuccessful()) {
                     int otp = generateRandomOTP();
                     for (QueryDocumentSnapshot document : task.getResult()) {
+
                         SimpleDateFormat sdf = new SimpleDateFormat("ssmmHHddMMyyyy");
                         final String productOrderPlacedTime = sdf.format(new Date());
+
                         Map<String, Object> updateUserInfo = new HashMap<>();
                         updateUserInfo.put("status", "on the way");
                         updateUserInfo.put("productOrderPlacedTime", productOrderPlacedTime);
                         updateUserInfo.put("otp", String.valueOf(otp));
+                        updateUserInfo.put("paymentType", paymentType);
+
                         mDb.collection("users").document(currentUserUid)
                                 .collection("orders").document((String) document.get("productOrderId"))
                                 .update(updateUserInfo);
+
                         Map<String, Object> updateSellerInfo = new HashMap<>();
                         updateSellerInfo.put("name", (String) document.get("name"));
                         updateSellerInfo.put("userId", currentUserUid);
@@ -408,6 +415,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                         updateSellerInfo.put("productQuantity", (String) document.get("productQuantity"));
                         updateSellerInfo.put("productOrderPlacedTime", productOrderPlacedTime);
                         updateSellerInfo.put("status", "on the way");
+                        updateSellerInfo.put("paymentType", paymentType);
 
                         mDb.collection("seller").document((String) document.get("sellerId"))
                                 .collection("orders").document((String) document.get("productOrderId"))

@@ -65,7 +65,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class productStatus extends AppCompatActivity implements OnMapReadyCallback {
 
-    private TextView productStatus_deliveryPersonName_tv, productStaus_arrivalTime, userProductOTP_tv, productStatusView_tv;
+    private TextView productStatus_deliveryPersonName_tv, productStaus_arrivalTime, userProductOTP_tv, productStatusView_tv,paymentType_tv;
     private ImageView productStatus_deliveryPerson_iv, productStatus_back_iv;
     private CardView productStatus_deliveryPersonCall;
     private FragmentManager ratingfragmentManager;
@@ -110,6 +110,7 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
         productStatus_deliveryPersonCall = findViewById(R.id.productStatus_deliveryPersonCall);
         userProductOTP_tv = findViewById(R.id.userProductOTP_tv);
         productStatusView_tv = findViewById(R.id.productStatusView_tv);
+        paymentType_tv = findViewById(R.id.paymentType_tv);
 
         if (savedInstanceState == null) {
             ratingFragment ratingFragment = new ratingFragment();
@@ -175,6 +176,7 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
                     if (document.exists()) {
                         userProductOTP_tv.setText((String) document.get("otp").toString());
                         productStatusView_tv.setText((String) document.get("status").toString());
+                        paymentType_tv.setText((String) document.get("paymentType").toString());
                     } else {
                         Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
                     }

@@ -20,6 +20,15 @@ public class productModelList {
     String discount;
     Boolean prescription;
     String avgRating;
+    String paymentType;
+
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
 
     public String getAvgRating() {
         return avgRating;
