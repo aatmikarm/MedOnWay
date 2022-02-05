@@ -74,8 +74,6 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
             experience, status, rating, review, doctorToken,
             education, hospital, degree, timing, fee, tag, sign;
     private GeoPoint geo_point;
-    private TextView doctorDetails_doctorName_tv, doctorDetails_category_tv, rating_and_review_star_tv,
-            doctor_education, doctor_hospital, doctor_degree, doctor_fee, doctor_detail_eta_tv;
     private ImageView doctor_profile_iv, doctorDetail_back_iv;
     private RatingBar rating_and_review_star_rb;
     private CardView doctorDetails_appointment_cv;
@@ -87,11 +85,14 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
     private Handler handler1;
     private Runnable runnable1;
 
+    private TextView doctorDetails_doctorName_tv, doctorDetails_category_tv, rating_and_review_star_tv,
+            doctor_education, doctor_hospital, doctor_degree, doctor_fee, doctor_detail_eta_tv, doctor_address;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_details);
-      
+
         firebaseAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -110,6 +111,7 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
         doctorDetails_appointment_cv = findViewById(R.id.doctorDetails_appointment_cv);
         doctorDetail_back_iv = findViewById(R.id.doctorDetail_back_iv);
         doctor_detail_eta_tv = findViewById(R.id.doctor_detail_eta_tv);
+        doctor_address = findViewById(R.id.doctor_address);
 
         if (getIntent().getExtras() != null) {
             this.name = (String) getIntent().getExtras().get("name");
@@ -133,8 +135,8 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
             this.fee = (String) getIntent().getExtras().get("fee");
             this.tag = (String) getIntent().getExtras().get("tag");
             this.sign = (String) getIntent().getExtras().get("sign");
-            this.geo_point = (GeoPoint) getIntent().getExtras().get("geo_point");
-            Toast.makeText(getApplicationContext(), doctorId, Toast.LENGTH_SHORT).show();
+            //this.geo_point = (GeoPoint) getIntent().getExtras().get("geo_point");
+
         }
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -152,10 +154,26 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
                     // 5 is 5meter per second speed and 60 is seconds conversion
                     double timeInSeconds = (distance / 5);
                     doctor_detail_eta_tv.setText(convertSecondsToTime(timeInSeconds) + " Min");
+
+                    doctorDetails_category_tv.setText(category);
+                    doctor_education.setText(education);
+                    doctor_hospital.setText(hospital);
+                    doctor_degree.setText(degree);
+                    doctor_fee.setText(fee);
+                    doctor_address.setText(address);
+
                 }
                 handler1.postDelayed(this, 10000);
             }
         }, 5000);
+
+        doctorDetails_appointment_cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Feature Coming Soon", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         doctorDetail_back_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

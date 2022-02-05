@@ -235,17 +235,21 @@ public class MainActivity extends AppCompatActivity {
                         doctorsModelList.setPhone((String) document.get("phone"));
                         doctorsModelList.setExperience((String) document.get("experience"));
                         doctorsModelList.setStatus((String) document.get("status"));
-                        doctorsModelList.setRating((String) document.get("rating"));
-                        doctorsModelList.setReview((String) document.get("review"));
-                        doctorsModelList.setDoctorToken((String) document.get("doctorToken"));
                         doctorsModelList.setEducation((String) document.get("education"));
                         doctorsModelList.setHospital((String) document.get("hospital"));
                         doctorsModelList.setDegree((String) document.get("degree"));
                         doctorsModelList.setTiming((String) document.get("timing"));
                         doctorsModelList.setFee((String) document.get("fee"));
+                        doctorsModelList.setGeo_point((GeoPoint) document.get("geo_point"));
+
+                        //Toast.makeText(getApplicationContext(), (String) document.get("education"), Toast.LENGTH_SHORT).show();
+                        //todoo
+                        doctorsModelList.setRating((String) document.get("rating"));
+                        doctorsModelList.setReview((String) document.get("review"));
+                        doctorsModelList.setDoctorToken((String) document.get("doctorToken"));
                         doctorsModelList.setTag((String) document.get("tag"));
                         doctorsModelList.setSign((String) document.get("sign"));
-                        doctorsModelList.setGeo_point((GeoPoint) document.get("geo_point"));
+
                         doctorsModelLists.add(doctorsModelList);
                     }
                 }

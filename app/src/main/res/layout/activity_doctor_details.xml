@@ -34,10 +34,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/con3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/con1"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/sCon1"
@@ -50,8 +50,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:text="20 Min"
-                android:textSize="30sp"
                 android:textColor="@color/light"
+                android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cv9" />
@@ -62,22 +62,12 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:layout_marginBottom="9dp"
-                android:text="Estimated Arrival Time"
+                android:text="Estimated Time"
                 android:textColor="@color/light"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/doctor_detail_eta_tv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/doctor_detail_eta_tv" />
-
-            <TextView
-                android:id="@+id/textView24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:text="About"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cv7" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv7"
@@ -97,9 +87,9 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/doctorDetails_image_iv"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_margin="20dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="10dp"
                         app:cardCornerRadius="50dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -117,16 +107,14 @@
                         android:id="@+id/doctorDetails_doctorName_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
+                        android:layout_margin="10dp"
                         android:ellipsize="end"
-                        android:ems="10"
-                        android:maxLines="2"
+                        android:ems="7"
+                        android:maxLines="1"
+                        android:textColor="@color/light"
                         android:text="doctor Name"
-                        android:textSize="22sp"
+                        android:textSize="30sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/doctorDetails_category_tv"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/doctorDetails_image_iv"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -134,12 +122,11 @@
                         android:id="@+id/doctorDetails_category_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
                         android:maxLines="1"
                         android:text="doctor Category"
-                        android:textSize="12sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
                         app:layout_constraintStart_toStartOf="@+id/doctorDetails_doctorName_tv"
                         app:layout_constraintTop_toBottomOf="@+id/doctorDetails_doctorName_tv" />
 
@@ -147,7 +134,7 @@
                         android:id="@+id/constraintLayout2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginTop="10dp"
                         app:layout_constraintStart_toStartOf="@+id/doctorDetails_category_tv"
                         app:layout_constraintTop_toBottomOf="@+id/doctorDetails_category_tv">
 
@@ -161,7 +148,6 @@
                             android:progressTint="#8BC34A"
                             android:rating="4"
                             android:stepSize="0.5"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -179,37 +165,45 @@
                             app:layout_constraintTop_toTopOf="@+id/search_star_rb" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
+                    <TextView
+                        android:id="@+id/textView19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Education"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hospital"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@+id/textView19"
+                        app:layout_constraintTop_toBottomOf="@+id/doctor_education" />
 
-
-            </androidx.cardview.widget.CardView>
-
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:outlineSpotShadowColor="@color/light"
-                app:cardCornerRadius="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView24">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rectangular_border">
+                    <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Degree"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@+id/textView17"
+                        app:layout_constraintTop_toBottomOf="@+id/doctor_hospital" />
 
                     <TextView
                         android:id="@+id/doctor_education"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:text="TextView"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView19"
+                        android:ellipsize="end"
+                        android:ems="11"
+                        android:maxLines="2"
+                        android:text="JLN Medical Collage"
                         app:layout_constraintStart_toEndOf="@+id/textView19"
                         app:layout_constraintTop_toTopOf="@+id/textView19" />
 
@@ -218,9 +212,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:text="TextView"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView17"
+                        android:ellipsize="end"
+                        android:ems="11"
+                        android:maxLines="2"
+                        android:text="City Hospital"
                         app:layout_constraintStart_toEndOf="@+id/textView17"
                         app:layout_constraintTop_toTopOf="@+id/textView17" />
 
@@ -229,49 +224,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:text="TextView"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView15"
+                        android:layout_marginBottom="10dp"
+                        android:ellipsize="end"
+                        android:ems="11"
+                        android:maxLines="2"
+                        android:text="MBBS"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView15"
                         app:layout_constraintTop_toTopOf="@+id/textView15" />
 
-                    <TextView
-                        android:id="@+id/textView19"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="Education"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/textView17"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView17"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="Hospital"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/textView15"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-                    <TextView
-                        android:id="@+id/textView15"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="Degree"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView17" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/doctor_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
@@ -279,7 +247,7 @@
                 android:text="Location"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cv8" />
+                app:layout_constraintTop_toBottomOf="@+id/cv7" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv9"
@@ -290,7 +258,7 @@
                 app:cardCornerRadius="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8">
+                app:layout_constraintTop_toBottomOf="@+id/doctor_address">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -331,8 +299,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:text="Consultation Fee"
-            android:textStyle="bold"
             android:textColor="@color/light"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/doctor_fee"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/doctor_fee" />
