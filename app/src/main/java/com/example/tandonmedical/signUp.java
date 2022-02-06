@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -114,6 +116,8 @@ public class signUp extends AppCompatActivity {
                             String uid = firebaseAuth.getUid();
                             Date CurrentDateAndTime = new Date();
 
+                            sendVerificationEmail();
+
                             Map<String, Object> user = new HashMap<>();
                             user.put("uid", uid);
                             user.put("name", signupName);
@@ -128,7 +132,6 @@ public class signUp extends AppCompatActivity {
                             mDb.collection("users").document(uid).set(user);
 
                             Toast.makeText(signUp.this, "Successfully registered", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
 
                         } else {
@@ -156,6 +159,22 @@ public class signUp extends AppCompatActivity {
                 startActivity(new Intent(signUp.this, resetPassword.class));
             }
         });
+    }
+
+    private void sendVerificationEmail() {
+
+        Objects.requireNonNull(firebaseAuth.getCurrentUser()).sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(signUp.this, "Email verification has been sent to your email address", Toast.LENGTH_LONG).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(signUp.this, "Verification Error", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
 }

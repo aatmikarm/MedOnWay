@@ -105,11 +105,17 @@ public class signIn extends AppCompatActivity {
                     if (document.exists()) {
                         String type = document.get("type").toString();
                         if (type != null && type.equals("user")) {
-                            //checkIfEmailVerified();
-                            signin_progressBar.setVisibility(View.GONE);
-                            Intent intent = new Intent(signIn.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+
+                            if(firebaseAuth.getCurrentUser().isEmailVerified()){
+                                signin_progressBar.setVisibility(View.GONE);
+                                Intent intent = new Intent(signIn.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                            else {
+                                Toast.makeText(signIn.this, "Your Email is not verified! Please verify your email address", Toast.LENGTH_LONG).show();
+                            }
+
                         } else {
                             signin_progressBar.setVisibility(View.GONE);
                             Toast.makeText(signIn.this, "You are not authorized to access this application!",

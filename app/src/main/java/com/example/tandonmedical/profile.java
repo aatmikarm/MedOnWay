@@ -142,6 +142,7 @@ public class profile extends AppCompatActivity {
                         mDb.collection("users").document(currentUserUid).update(updateUserInfo);
                         profileName_tv.setText(profileName_et.getText().toString());
                         Toast.makeText(getApplicationContext(), "Profile Updated", Toast.LENGTH_SHORT).show();
+                        finish();
 
                     }
                 });
@@ -176,9 +177,14 @@ public class profile extends AppCompatActivity {
         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
+
+
+
                 ImageView imageView;
                 imageView = findViewById(R.id.profile_iv);
                 Glide.with(getApplicationContext()).load(uri).into(imageView);
+
+
 
                 Map<String, Object> userImageUrl = new HashMap<>();
                 userImageUrl.put("imageUrl", uri.toString());

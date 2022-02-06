@@ -15,6 +15,7 @@
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/camera_ic.xml" value="0.1215" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/cart_add_ic.xml" value="0.173" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/circle_boder.xml" value="0.1215" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/circleimage.xml" value="0.2155" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/defaultdot.xml" value="0.176" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/dotselector.xml" value="0.1615" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/drawable/email_ic.xml" value="0.1695" />
@@ -37,7 +38,7 @@
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_payment.xml" value="0.264" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_product_details.xml" value="0.264" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_product_status.xml" value="0.176" />
-        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_profile.xml" value="0.2" />
+        <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_profile.xml" value="0.176" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_rating.xml" value="0.2" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_reset_password.xml" value="0.264" />
         <entry key="..\:/Users/Aatmik/AndroidStudioProjects/tandonmedical2/app/src/main/res/layout/activity_search.xml" value="0.264" />
