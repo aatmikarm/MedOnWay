@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="5dp"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/specificCategory_back_btn"
@@ -35,9 +35,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Category Name"
+            android:textColor="@color/light"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/light"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +61,38 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/specific_category_pb"
+            style="?android:attr/progressBarStyle"
+            android:layout_marginTop="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/specific_category_cart_iv"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specific_category_pb"
+            app:srcCompat="@drawable/cart_add_ic" />
+
+        <TextView
+            android:id="@+id/specific_category_cart_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Products are not available for this category"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specific_category_cart_iv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

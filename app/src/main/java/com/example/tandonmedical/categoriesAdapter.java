@@ -47,7 +47,6 @@ public class categoriesAdapter extends RecyclerView.Adapter<categoriesAdapter.It
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("category", categoriesModelLists.get(position).getName());
                 intent.putExtra("imageUrl", categoriesModelLists.get(position).getImageUrl());
-                Toast.makeText(context, categoriesModelLists.get(position).getName(), Toast.LENGTH_LONG).show();
                 context.startActivity(intent);
             }
         });
