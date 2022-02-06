@@ -41,9 +41,9 @@ public class signIn extends AppCompatActivity {
         signin_Email_et = (EditText) findViewById(R.id.signin_Email_et);
         signin_Password_et = (EditText) findViewById(R.id.signin_Password_et);
         signin_login_tv = (TextView) findViewById(R.id.signin_login_tv);
-        signin_createAccount_tv = (TextView) findViewById(R.id.signin_createAccount_tv);
-        signin_forgot_tv = (TextView) findViewById(R.id.signin_forgot_tv);
-        signin_progressBar = (ProgressBar) findViewById(R.id.signin_progressBar);
+        signin_createAccount_tv = (TextView) findViewById(R.id.signup_login_tv);
+        signin_forgot_tv = (TextView) findViewById(R.id.signup_reset_tv);
+        signin_progressBar = (ProgressBar) findViewById(R.id.signup_progressBar);
         signin_progressBar.setVisibility(View.GONE);
 
         signin_login_tv.setOnClickListener(new View.OnClickListener() {
