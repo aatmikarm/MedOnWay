@@ -1,6 +1,7 @@
 package com.example.tandonmedical;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,12 +14,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -29,7 +39,7 @@ import java.util.Objects;
 
 public class signUp extends AppCompatActivity {
 
-    private TextView signup_login_tv, signup_reset_tv, signup_tv;
+    private TextView signup_login_tv, signup_tv;
     private EditText signupName_et, signupEmail_et, signupPhone_et, signupPassword_et;
     private ImageView signup_back_iv;
     private ProgressBar signup_progressBar;
@@ -40,12 +50,35 @@ public class signUp extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final String TAG = "DocSnippets";
 
+    private GoogleSignInClient googleSignInClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-      
+
+        //google sign in
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("157671413790-a148v3i9ngrfobso9ud9lrh8f58450tg.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent signInIntent = googleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, 77);
+            }
+        });
+
+
         firebaseAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
         //firebase cloud messeging
@@ -66,7 +99,6 @@ public class signUp extends AppCompatActivity {
         signupPassword_et = (EditText) findViewById(R.id.signupPassword_et);
 
         signup_login_tv = findViewById(R.id.signup_login_tv);
-        signup_reset_tv = findViewById(R.id.signup_reset_tv);
         signup_tv = findViewById(R.id.signup_tv);
 
         signup_progressBar = (ProgressBar) findViewById(R.id.signup_progressBar);
@@ -152,13 +184,81 @@ public class signUp extends AppCompatActivity {
                 startActivity(new Intent(signUp.this, signIn.class));
             }
         });
+    }
 
-        signup_reset_tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(signUp.this, resetPassword.class));
-            }
-        });
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 77) {
+
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+
+
+            AuthCredential authCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+
+            firebaseAuth.signInWithCredential(authCredential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                @Override
+                public void onSuccess(AuthResult authResult) {
+
+                    if (acct != null) {
+                        String personName = acct.getDisplayName();
+                        String personGivenName = acct.getGivenName();
+                        String personFamilyName = acct.getFamilyName();
+                        String personEmail = acct.getEmail();
+                        String personId = acct.getId();
+                        Uri personPhoto = acct.getPhotoUrl();
+
+                        Toast.makeText(signUp.this, "Email = " + personEmail, Toast.LENGTH_LONG).show();
+
+
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        String uid = firebaseUser.getUid();
+                        String email = firebaseUser.getEmail();
+                        String name = firebaseUser.getDisplayName();
+
+                        Date CurrentDateAndTime = new Date();
+
+                        sendVerificationEmail();
+
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("uid", uid);
+                        user.put("name", name);
+                        user.put("email", email);
+                        user.put("bio", "");
+                        user.put("userToken", userToken);
+                        user.put("type", "user");
+                        user.put("CurrentDateAndTime", CurrentDateAndTime);
+
+                        mDb.collection("users").document(uid).set(user);
+
+                        Toast.makeText(signUp.this, "Successfully registered", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(signUp.this, MainActivity.class));
+                        finish();
+
+                    }
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                    Toast.makeText(signUp.this, "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+
+        } catch (ApiException e) {
+
+
+        }
     }
 
     private void sendVerificationEmail() {
