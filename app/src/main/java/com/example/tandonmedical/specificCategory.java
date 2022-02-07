@@ -115,8 +115,14 @@ public class specificCategory extends AppCompatActivity {
                         productModelList.setDiscount((String) document.get("discount"));
                         productModelList.setMrp((String) document.get("mrp"));
                         productModelList.setCategory((String) document.get("category"));
+                        productModelList.setSellerId((String) document.get("sellerId"));
+                        productModelList.setSeller((String) document.get("seller"));
                         productModelList.setProductId((String) document.get("productId"));
                         productModelList.setDescription((String) document.get("description"));
+                        productModelList.setRating((String) document.get("rating"));
+                        productModelList.setPrescription((Boolean) document.get("prescription"));
+                        productModelList.setReview((String) document.get("review"));
+                        productModelList.setSellerToken((String) document.get("sellerToken"));
                         productModelLists.add(productModelList);
                     }
                 } else {

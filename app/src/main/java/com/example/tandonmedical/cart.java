@@ -34,7 +34,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
     private RecyclerView cartProductRecyclerView;
     private String currentUserUid;
     private TextView cartTotalAmount, cart_cart_tv;
-    private ImageView cart_cart_iv;
+    private ImageView cart_cart_iv,backBtn;
     private CardView cart_buy_cv;
     private ProgressBar cart_pb;
     private FirebaseFirestore mDb;
@@ -55,6 +55,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
         currentUserUid = firebaseAuth.getUid();
 
         cartTotalAmount = findViewById(R.id.cartTotalAmount);
+        backBtn = findViewById(R.id.cart_back_iv);
         cart_buy_cv = findViewById(R.id.cart_buy_cv);
         cart_cart_tv = findViewById(R.id.cart_cart_tv);
         cart_cart_iv = findViewById(R.id.cart_cart_iv);
@@ -89,6 +90,14 @@ public class cart extends AppCompatActivity implements cartProductInterface {
                 }
             }
         });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
     }
 
     private void updateTotalAmount() {

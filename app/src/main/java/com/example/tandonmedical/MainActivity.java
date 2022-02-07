@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -38,6 +40,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -181,19 +185,26 @@ public class MainActivity extends AppCompatActivity {
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
             fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
                     Location location = task.getResult();
                     if (location != null) {
                         GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+
+                        String userAddress = getCompleteAddressString(geoPoint.getLatitude(), geoPoint.getLongitude());
+
                         Map<String, Object> updateUserLocation = new HashMap<>();
                         updateUserLocation.put("geo_point", geoPoint);
+                        updateUserLocation.put("address", userAddress);
+
                         mDb.collection("users").document(firebaseAuth.getUid()).update(updateUserLocation);
                     }
                 }
             });
         }
     }
+
 
 
     private ArrayList<productModelList> getAllProducts() {
@@ -296,4 +307,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                strAdd = strReturnedAddress.toString();
+                //Toast.makeText(payment.this, "My Current loction address"+ strReturnedAddress.toString(), Toast.LENGTH_SHORT).show();
+                //paymentAddress_et.setText(strReturnedAddress.toString());
+            } else {
+                //Toast.makeText(payment.this, "No Address returned!", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            //Toast.makeText(payment.this, "Cannot Get Address", Toast.LENGTH_SHORT).show();
+        }
+        return strAdd;
+    }
+
 }

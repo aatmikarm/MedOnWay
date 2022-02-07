@@ -89,7 +89,7 @@ public class profile extends AppCompatActivity {
                         profileName_et.setText(document.get("name").toString());
                         profileEmail_et.setText(document.get("email").toString());
                         profilePhone_et.setText(document.get("phone").toString());
-                        profileAddress_et.setText(document.get("bio").toString());
+                        profileAddress_et.setText(document.get("address").toString());
 
 
                     } else {
@@ -137,7 +137,7 @@ public class profile extends AppCompatActivity {
                         Map<String, Object> updateUserInfo = new HashMap<>();
                         updateUserInfo.put("name", profileName_et.getText().toString());
                         updateUserInfo.put("phone", profilePhone_et.getText().toString());
-                        updateUserInfo.put("bio", profileAddress_et.getText().toString());
+                        updateUserInfo.put("address", profileAddress_et.getText().toString());
 
                         mDb.collection("users").document(currentUserUid).update(updateUserInfo);
                         profileName_tv.setText(profileName_et.getText().toString());
