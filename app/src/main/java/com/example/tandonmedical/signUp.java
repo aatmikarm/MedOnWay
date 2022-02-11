@@ -49,7 +49,6 @@ public class signUp extends AppCompatActivity {
     private FirebaseFirestore mDb;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final String TAG = "DocSnippets";
-
     private GoogleSignInClient googleSignInClient;
 
 
@@ -199,31 +198,23 @@ public class signUp extends AppCompatActivity {
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-
-
-            AuthCredential authCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+            GoogleSignInAccount newAccount = completedTask.getResult(ApiException.class);
+            GoogleSignInAccount alreadySignInAccount = GoogleSignIn.getLastSignedInAccount(this);
+            AuthCredential authCredential = GoogleAuthProvider.getCredential(newAccount.getIdToken(), null);
 
             firebaseAuth.signInWithCredential(authCredential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                 @Override
                 public void onSuccess(AuthResult authResult) {
 
-                    if (acct != null) {
-                        String personName = acct.getDisplayName();
-                        String personGivenName = acct.getGivenName();
-                        String personFamilyName = acct.getFamilyName();
-                        String personEmail = acct.getEmail();
-                        String personId = acct.getId();
-                        Uri personPhoto = acct.getPhotoUrl();
-
-                        Toast.makeText(signUp.this, "Email = " + personEmail, Toast.LENGTH_LONG).show();
-
+                    if (authResult.getAdditionalUserInfo().isNewUser()) {
 
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                         String uid = firebaseUser.getUid();
                         String email = firebaseUser.getEmail();
+                        String phone = firebaseUser.getPhoneNumber();
                         String name = firebaseUser.getDisplayName();
+
+                        String imageUrl = firebaseUser.getPhotoUrl().toString();
 
                         Date CurrentDateAndTime = new Date();
 
@@ -233,7 +224,9 @@ public class signUp extends AppCompatActivity {
                         user.put("uid", uid);
                         user.put("name", name);
                         user.put("email", email);
+                        user.put("phone", phone);
                         user.put("bio", "");
+                        user.put("imageUrl", imageUrl);
                         user.put("userToken", userToken);
                         user.put("type", "user");
                         user.put("CurrentDateAndTime", CurrentDateAndTime);
@@ -243,7 +236,9 @@ public class signUp extends AppCompatActivity {
                         Toast.makeText(signUp.this, "Successfully registered", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(signUp.this, MainActivity.class));
                         finish();
-
+                    } else {
+                        Toast.makeText(signUp.this, "Already Registered! Sign In", Toast.LENGTH_LONG).show();
+                        finish();
                     }
 
                 }
@@ -255,10 +250,13 @@ public class signUp extends AppCompatActivity {
                 }
             });
 
-        } catch (ApiException e) {
+
+        } catch (
+                ApiException e) {
 
 
         }
+
     }
 
     private void sendVerificationEmail() {

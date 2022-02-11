@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,9 +28,11 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -79,7 +82,8 @@ public class MainActivity extends AppCompatActivity {
         allDoctor = findViewById(R.id.allDoctor);
 
         setCurrentUserImage();
-        updateUserLocationOnFirebase();
+
+
 
         mDb.collection("users").document(currentUserUid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -170,41 +174,67 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         setCurrentUserImage();
-        updateUserLocationOnFirebase();
-
+        askForPermission();
 
     }
 
-    private void updateUserLocationOnFirebase() {
+    private void askForPermission() {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_FINE_LOCATION},
-                        LOCATION_PERMISSION_REQUEST_CODE);
-            }
-            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-                    Location location = task.getResult();
-                    if (location != null) {
-                        GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-
-                        String userAddress = getCompleteAddressString(geoPoint.getLatitude(), geoPoint.getLongitude());
-
-                        Map<String, Object> updateUserLocation = new HashMap<>();
-                        updateUserLocation.put("geo_point", geoPoint);
-                        updateUserLocation.put("address", userAddress);
-
-                        mDb.collection("users").document(firebaseAuth.getUid()).update(updateUserLocation);
-                    }
+                } else {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}
+                            , LOCATION_PERMISSION_REQUEST_CODE);
                 }
-            });
+            }
         }
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case LOCATION_PERMISSION_REQUEST_CODE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    updateUserLocationOnFirebase();
+                } else {
+
+                }
+                return;
+            }
+        }
+    }
+
+
+    private void updateUserLocationOnFirebase() {
+
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                Location location = task.getResult();
+                if (location != null) {
+                    GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+
+                    String userAddress = getCompleteAddressString(geoPoint.getLatitude(), geoPoint.getLongitude());
+
+                    Map<String, Object> updateUserLocation = new HashMap<>();
+                    updateUserLocation.put("geo_point", geoPoint);
+                    updateUserLocation.put("address", userAddress);
+
+                    mDb.collection("users").document(firebaseAuth.getUid()).update(updateUserLocation);
+                }
+            }
+        });
+
+    }
 
 
     private ArrayList<productModelList> getAllProducts() {
@@ -299,11 +329,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setCurrentUserImage() {
-        StorageReference ref = mStorageRef.child("images/" + currentUserUid).child("profilepic.jpg");
+        StorageReference ref = mStorageRef.child("images/" + firebaseAuth.getUid()).child("profilepic.jpg");
         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
+
                 Glide.with(getApplicationContext()).load(uri).into(user_profile_iv);
+
+                Map<String, Object> userImageUrl = new HashMap<>();
+                userImageUrl.put("imageUrl", uri.toString());
+                mDb.collection("users").document(currentUserUid).update(userImageUrl);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                Uri imageUrl = firebaseUser.getPhotoUrl();
+                if (imageUrl != null) {
+                    Glide.with(getApplicationContext()).load(imageUrl).into(user_profile_iv);
+
+                    Map<String, Object> userImageUrl = new HashMap<>();
+                    userImageUrl.put("imageUrl", imageUrl.toString());
+                    mDb.collection("users").document(currentUserUid).update(userImageUrl);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please Upload Profile Picture", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -54,7 +55,7 @@ public class profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-      
+
 
         profileName_tv = findViewById(R.id.profileName_tv);
         profileBack_iv = findViewById(R.id.profileBack_iv);
@@ -89,8 +90,7 @@ public class profile extends AppCompatActivity {
                         profileName_et.setText(document.get("name").toString());
                         profileEmail_et.setText(document.get("email").toString());
 
-                       //profilePhone_et.setText(document.get("phone").toString());
-
+                        //profilePhone_et.setText(document.get("phone").toString());
 
 
                         profileAddress_et.setText(document.get("address").toString());
@@ -176,23 +176,37 @@ public class profile extends AppCompatActivity {
     }
 
     private void setCurrentUserImage() {
-        final String uid = firebaseAuth.getUid();
-        StorageReference ref = mStorageRef.child("images/" + uid).child("profilepic.jpg");
+
+        StorageReference ref = mStorageRef.child("images/" + firebaseAuth.getUid()).child("profilepic.jpg");
         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-
-
 
                 ImageView imageView;
                 imageView = findViewById(R.id.profile_iv);
                 Glide.with(getApplicationContext()).load(uri).into(imageView);
 
-
-
                 Map<String, Object> userImageUrl = new HashMap<>();
                 userImageUrl.put("imageUrl", uri.toString());
                 mDb.collection("users").document(currentUserUid).update(userImageUrl);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                Uri imageUrl = firebaseUser.getPhotoUrl();
+                if (imageUrl != null) {
+                    ImageView imageView;
+                    imageView = findViewById(R.id.profile_iv);
+                    Glide.with(getApplicationContext()).load(imageUrl).into(imageView);
+
+                    Map<String, Object> userImageUrl = new HashMap<>();
+                    userImageUrl.put("imageUrl", imageUrl.toString());
+                    mDb.collection("users").document(currentUserUid).update(userImageUrl);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please Upload Profile Picture", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
