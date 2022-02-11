@@ -64,6 +64,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
 
         filter = "";
         if (filter.isEmpty()) {
+            search_progress_bar.setVisibility(View.VISIBLE);
             productModelLists = getAllProducts(filter);
         }
         handler = new Handler();
@@ -72,6 +73,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
             public void run() {
                 searchProductAdapter = new searchProductAdapter(getApplicationContext(), productModelLists, search.this);
                 searchProductRV.setAdapter(searchProductAdapter);
+                search_progress_bar.setVisibility(View.GONE);
             }
         }, 3000);
 
@@ -106,8 +108,6 @@ public class search extends AppCompatActivity implements searchProductInterface 
                 startActivityForResult(intent, 101);
             }
         });
-
-
     }
 
     @Override
@@ -118,6 +118,9 @@ public class search extends AppCompatActivity implements searchProductInterface 
             filter = data.getStringExtra("filter");
             productModelLists.clear();
             searchProductAdapter.notifyDataSetChanged();
+
+            search_progress_bar.setVisibility(View.VISIBLE);
+
             productModelLists = getAllProducts(filter);
             handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -125,6 +128,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
                 public void run() {
                     searchProductAdapter = new searchProductAdapter(getApplicationContext(), productModelLists, search.this);
                     searchProductRV.setAdapter(searchProductAdapter);
+                    search_progress_bar.setVisibility(View.GONE);
                 }
             }, 3000);
         }
