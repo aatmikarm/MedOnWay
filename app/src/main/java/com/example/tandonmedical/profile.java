@@ -86,13 +86,9 @@ public class profile extends AppCompatActivity {
                     if (document.exists()) {
 
                         profileName_tv.setText(document.get("name").toString());
-
                         profileName_et.setText(document.get("name").toString());
                         profileEmail_et.setText(document.get("email").toString());
-
-                        //profilePhone_et.setText(document.get("phone").toString());
-
-
+                        profilePhone_et.setText(document.get("phone").toString());
                         profileAddress_et.setText(document.get("address").toString());
 
 
