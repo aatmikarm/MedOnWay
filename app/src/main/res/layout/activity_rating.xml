@@ -56,7 +56,8 @@
             android:id="@+id/constraintLayout3"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/new_rating_rb"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/new_rating_review_tiet"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -76,9 +77,9 @@
             android:layout_height="wrap_content"
             android:progressTint="@color/light"
             android:rating="4.5"
+            android:layout_marginStart="10dp"
             android:stepSize="0.5"
-            app:layout_constraintBottom_toTopOf="@+id/new_rating_review_tiet"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -86,9 +87,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:hint="Write Product Review"
-            app:layout_constraintBottom_toTopOf="@+id/rating_and_review_upload_cv"
+            app:layout_constraintBottom_toTopOf="@+id/new_rating_rb"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -113,7 +113,7 @@
             app:cardCornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toEndOf="@+id/new_rating_rb">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
