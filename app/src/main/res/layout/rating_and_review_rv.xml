@@ -13,7 +13,7 @@
 
         android:id="@+id/search_product_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/rectangular_border"
         android:padding="10dp">
 
@@ -21,7 +21,6 @@
             android:id="@+id/rating_and_review_rv_user_iv"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_margin="10dp"
             app:cardCornerRadius="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,8 +36,8 @@
                 android:id="@+id/user_profile_iv"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/user_ic"
                 android:layout_gravity="center"
+                android:background="@drawable/user_ic"
                 android:scaleType="centerCrop" />
 
 
@@ -48,17 +47,14 @@
             android:id="@+id/search_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:ems="12"
             android:maxLines="2"
             android:text="Nice Product"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/rating_and_review_rv_user_iv"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/search_rating_cv"
+            app:layout_constraintTop_toBottomOf="@+id/search_rating_cv" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/search_rating_cv"
@@ -66,13 +62,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:cardCornerRadius="10dp"
-            app:layout_constraintStart_toStartOf="@+id/search_name"
-            app:layout_constraintTop_toBottomOf="@+id/search_name">
+            app:layout_constraintStart_toStartOf="@+id/search_user_name_tv"
+            app:layout_constraintTop_toBottomOf="@+id/search_user_name_tv">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 app:layout_constraintBottom_toTopOf="@+id/search_user_name_tv"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintTop_toBottomOf="@+id/search_name">
@@ -82,7 +79,6 @@
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
                     android:isIndicator="true"
                     android:numStars="5"
                     android:progressTint="@color/light"
@@ -96,7 +92,7 @@
                     android:id="@+id/search_star_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_marginStart="5dp"
                     android:text="4.5"
                     android:textColor="@color/light"
                     android:textStyle="bold"
@@ -111,26 +107,25 @@
             android:id="@+id/search_user_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginStart="20dp"
             android:text="Aatmik Mishra"
             android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/search_rating_cv"
-            app:layout_constraintTop_toBottomOf="@+id/search_rating_cv" />
+            app:layout_constraintStart_toEndOf="@+id/rating_and_review_rv_user_iv"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
             android:id="@+id/rating_and_review_time_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
             android:foregroundGravity="center"
             android:gravity="center"
             android:text="Oct, 2021"
             android:textSize="14sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="@+id/search_user_name_tv"
-            app:layout_constraintStart_toEndOf="@+id/search_user_name_tv"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/search_user_name_tv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

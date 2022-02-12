@@ -33,7 +33,7 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RATING"
+            android:text="Product Ratings"
             android:textColor="@color/light"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -52,43 +52,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/con1">
 
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Rate this product"
-            android:textAllCaps="false"
-            android:textSize="20sp"
-            android:textStyle="bold"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/new_rating_rb"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rating_and_review_rv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RatingBar
             android:id="@+id/new_rating_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:progressTint="@color/light"
             android:rating="4.5"
             android:stepSize="0.5"
-            app:layout_constraintStart_toStartOf="@+id/textView11"
-            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+            app:layout_constraintBottom_toTopOf="@+id/new_rating_review_tiet"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/new_rating_review_tiet"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Comment"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/new_rating_rb">
+            android:layout_margin="10dp"
+            android:hint="Write Product Review"
+            app:layout_constraintBottom_toTopOf="@+id/rating_and_review_upload_cv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/new_rating_review_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:background="@drawable/roundedittext"
                 android:drawableLeft="@drawable/ic_star"
                 android:drawablePadding="10dp"
@@ -97,37 +104,6 @@
                 android:padding="10dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageView
-            android:id="@+id/new_rating_review_upload_product_iv"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/camera_ic"
-            android:backgroundTint="@color/light"
-            app:layout_constraintStart_toStartOf="@+id/new_rating_review_tiet"
-            app:layout_constraintTop_toBottomOf="@+id/new_rating_review_tiet" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/new_rating_review_upload_product_iv">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rating_and_review_rv"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <androidx.cardview.widget.CardView
             android:id="@+id/rating_and_review_upload_cv"
             android:layout_width="0dp"
@@ -135,10 +111,9 @@
             android:layout_margin="10dp"
             android:backgroundTint="@color/light"
             app:cardCornerRadius="20dp"
-            app:layout_constraintBottom_toBottomOf="@+id/new_rating_review_upload_product_iv"
-            app:layout_constraintEnd_toEndOf="@+id/new_rating_review_tiet"
-            app:layout_constraintStart_toEndOf="@+id/new_rating_review_upload_product_iv"
-            app:layout_constraintTop_toTopOf="@+id/new_rating_review_upload_product_iv">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

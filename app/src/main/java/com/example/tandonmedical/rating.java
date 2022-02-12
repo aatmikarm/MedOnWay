@@ -34,7 +34,7 @@ public class rating extends AppCompatActivity {
     private EditText new_rating_review_et;
     private RatingBar new_rating_rb;
     private CardView rating_and_review_upload_cv;
-    private ImageView rating_back_iv, new_rating_review_upload_product_iv;
+    private ImageView rating_back_iv;
     private FirebaseFirestore mDb;
     private FirebaseAuth firebaseAuth;
     private StorageReference mStorageRef;
@@ -55,7 +55,6 @@ public class rating extends AppCompatActivity {
 
 
         rating_back_iv = findViewById(R.id.rating_back_iv);
-        new_rating_review_upload_product_iv = findViewById(R.id.new_rating_review_upload_product_iv);
         new_rating_rb = findViewById(R.id.new_rating_rb);
         new_rating_review_et = findViewById(R.id.new_rating_review_et);
         rating_and_review_rv = findViewById(R.id.rating_and_review_rv);
