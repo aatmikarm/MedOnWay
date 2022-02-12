@@ -189,7 +189,7 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        setCurrentUserImage();
+                        Glide.with(getApplicationContext()).load(imageUrl).into(doctor_profile_iv);
                         doctorDetails_doctorName_tv.setText((String) document.get("name").toString());
                     } else {
                         Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
@@ -201,15 +201,6 @@ public class doctorDetails extends AppCompatActivity implements OnMapReadyCallba
         });
     }
 
-    private void setCurrentUserImage() {
-        StorageReference ref = mStorageRef.child("images/" + doctorId).child("profilepic.jpg");
-        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(getApplicationContext()).load(uri).into(doctor_profile_iv);
-            }
-        });
-    }
 
 
     private void setDoctorLocationOnMap() {

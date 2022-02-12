@@ -50,12 +50,12 @@ public class signIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-
         //google sign in
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("157671413790-a148v3i9ngrfobso9ud9lrh8f58450tg.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
+
         googleSignInClient = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
@@ -213,7 +213,7 @@ public class signIn extends AppCompatActivity {
                         }
                     } else {
                         signin_progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "You are not authorized to access this application!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "user does not exist", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     signin_progressBar.setVisibility(View.GONE);

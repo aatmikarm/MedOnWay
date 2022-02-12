@@ -62,7 +62,8 @@ public class signUp extends AppCompatActivity {
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+        // GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
@@ -189,123 +190,71 @@ public class signUp extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 77) {
-
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
 
-        if (requestCode == 0) {
-            if (resultCode == RESULT_OK) { // Activity.RESULT_OK
-
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                String phone = data.getStringExtra("phoneNumber");
-                String uid = firebaseUser.getUid();
-                String email = firebaseUser.getEmail();
-                String name = firebaseUser.getDisplayName();
-                String imageUrl = firebaseUser.getPhotoUrl().toString();
-
-                firebaseAuth.signInWithCredential(authCredential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-
-                        if (authResult.getAdditionalUserInfo().isNewUser()) {
-
-                            Date CurrentDateAndTime = new Date();
-                            sendVerificationEmail();
-                            Map<String, Object> user = new HashMap<>();
-                            user.put("uid", uid);
-                            user.put("name", name);
-                            user.put("email", email);
-                            user.put("phone", phone);
-                            user.put("bio", "");
-                            user.put("imageUrl", imageUrl);
-                            user.put("userToken", userToken);
-                            user.put("type", "user");
-                            user.put("CurrentDateAndTime", CurrentDateAndTime);
-
-                            mDb.collection("users").document(uid).set(user);
-
-                            Toast.makeText(signUp.this, "Successfully registered", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(signUp.this, MainActivity.class));
-                            finish();
-
-                        } else {
-                            Toast.makeText(signUp.this, "Already Registered! Sign In", Toast.LENGTH_LONG).show();
-                            finish();
-                        }
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                        Toast.makeText(signUp.this, "Error", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        }
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+    private void handleSignInResult(Task<GoogleSignInAccount> task) {
         try {
-            GoogleSignInAccount newAccount = completedTask.getResult(ApiException.class);
-            GoogleSignInAccount alreadySignInAccount = GoogleSignIn.getLastSignedInAccount(this);
+
+           // GoogleSignInAccount alreadySignInAccount = GoogleSignIn.getLastSignedInAccount(this);
+
+            GoogleSignInAccount newAccount = task.getResult(ApiException.class);
             AuthCredential authCredential = GoogleAuthProvider.getCredential(newAccount.getIdToken(), null);
 
-            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-            String uid = firebaseUser.getUid();
-            String email = firebaseUser.getEmail();
-            String phone = firebaseUser.getPhoneNumber();
-            String name = firebaseUser.getDisplayName();
-            String imageUrl = firebaseUser.getPhotoUrl().toString();
+            //String uid = newAccount.getId();
+            String email =  newAccount.getEmail();
+            String name = newAccount.getDisplayName();
+            String imageUrl = newAccount.getPhotoUrl().toString();
 
-            if (phone != null) {
 
-                firebaseAuth.signInWithCredential(authCredential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
+            firebaseAuth.signInWithCredential(authCredential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                @Override
+                public void onSuccess(AuthResult authResult) {
 
-                        if (authResult.getAdditionalUserInfo().isNewUser()) {
+                    if (authResult.getAdditionalUserInfo().isNewUser()) {
 
-                            Date CurrentDateAndTime = new Date();
-                            sendVerificationEmail();
-                            Map<String, Object> user = new HashMap<>();
-                            user.put("uid", uid);
-                            user.put("name", name);
-                            user.put("email", email);
-                            user.put("phone", phone);
-                            user.put("bio", "");
-                            user.put("imageUrl", imageUrl);
-                            user.put("userToken", userToken);
-                            user.put("type", "user");
-                            user.put("CurrentDateAndTime", CurrentDateAndTime);
 
-                            mDb.collection("users").document(uid).set(user);
+                        String uid = firebaseAuth.getUid();
+                        Date CurrentDateAndTime = new Date();
+                        sendVerificationEmail();
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("uid", uid);
+                        user.put("name", name);
+                        user.put("email", email);
+                        user.put("phone", "");
+                        user.put("bio", "I am a user");
+                        user.put("imageUrl", imageUrl);
+                        user.put("userToken", userToken);
+                        user.put("type", "user");
+                        user.put("CurrentDateAndTime", CurrentDateAndTime);
 
-                            Toast.makeText(signUp.this, "Successfully registered", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(signUp.this, MainActivity.class));
-                            finish();
+                        mDb.collection("users").document(uid).set(user);
 
-                        } else {
-                            Toast.makeText(signUp.this, "Already Registered! Sign In", Toast.LENGTH_LONG).show();
-                            finish();
-                        }
+                        Toast.makeText(signUp.this, "Successfully registered", Toast.LENGTH_LONG).show();
 
+                        Intent intent = new Intent(getApplicationContext(), mobileNumber.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("uid", uid);
+                        startActivity(intent);
+
+                        finish();
+
+                    } else {
+                        Toast.makeText(signUp.this, "Already Registered! Sign In", Toast.LENGTH_LONG).show();
+                        finish();
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
 
-                        Toast.makeText(signUp.this, "Error", Toast.LENGTH_LONG).show();
-                    }
-                });
-            } else {
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 
-                int LAUNCH_SECOND_ACTIVITY = 1;
-                Intent intent = new Intent(signUp.this, mobileNumber.class);
-                startActivityForResult(intent, LAUNCH_SECOND_ACTIVITY);
-
-            }
+                    Toast.makeText(signUp.this, "Error", Toast.LENGTH_LONG).show();
+                }
+            });
 
 
         } catch (
@@ -313,7 +262,6 @@ public class signUp extends AppCompatActivity {
 
 
         }
-
     }
 
 
