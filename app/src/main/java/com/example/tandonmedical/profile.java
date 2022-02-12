@@ -38,7 +38,7 @@ public class profile extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 77;
 
-    private TextView profileName_tv, profile_no_of_orders, profile_no_of_prescriptions;
+    private TextView profileName_tv;
     private EditText profileName_et, profileEmail_et, profilePhone_et, profileAddress_et;
     private ImageView logOut_iv, profileBack_iv, profile_iv;
     private CardView profileUpload_cv;
@@ -56,19 +56,14 @@ public class profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-
         profileName_tv = findViewById(R.id.profileName_tv);
         profileBack_iv = findViewById(R.id.profileBack_iv);
         profileUpload_cv = findViewById(R.id.profileUpload_cv);
-
         profileEmail_et = findViewById(R.id.profileEmail_et);
         profileName_et = findViewById(R.id.profileName_et);
         profilePhone_et = findViewById(R.id.profilePhone_et);
         profileAddress_et = findViewById(R.id.profileAddress_et);
-
         logOut_iv = findViewById(R.id.logOut_iv);
-        profile_no_of_orders = findViewById(R.id.profile_no_of_orders);
-        profile_no_of_prescriptions = findViewById(R.id.profile_no_of_prescriptions);
         profile_iv = findViewById(R.id.profile_iv);
 
         mDb = FirebaseFirestore.getInstance();
@@ -103,14 +98,12 @@ public class profile extends AppCompatActivity {
 
         setCurrentUserImage();
 
-
         profile_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SelectImage();
             }
         });
-
 
         profileBack_iv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,8 +142,6 @@ public class profile extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     // Select Image method
@@ -161,7 +152,6 @@ public class profile extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Image from here..."), PICK_IMAGE_REQUEST);
     }
-
 
     private void logout() {
         FirebaseAuth.getInstance().signOut();
@@ -229,11 +219,11 @@ public class profile extends AppCompatActivity {
     private void uploadImage() throws IOException {
         if (filePath != null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
+            progressDialog.setTitle("Uploading, Please wait");
             progressDialog.show();
 
-            final String uid = firebaseAuth.getUid();
-            StorageReference childRef2 = mStorageRef.child("images/" + uid).child("profilepic.jpg");
+            StorageReference childRef2 = mStorageRef.child("images/" + firebaseAuth.getUid()).child("profilepic.jpg");
+
             Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bmp.compress(Bitmap.CompressFormat.JPEG, 25, baos);
@@ -253,5 +243,4 @@ public class profile extends AppCompatActivity {
 
         }
     }
-
 }

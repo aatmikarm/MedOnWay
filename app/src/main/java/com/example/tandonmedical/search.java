@@ -45,7 +45,6 @@ public class search extends AppCompatActivity implements searchProductInterface 
     private ArrayList<productModelList> productModelLists;
     private Handler handler;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +62,9 @@ public class search extends AppCompatActivity implements searchProductInterface 
         searchProductRV.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
         filter = "";
+
+        search_et.setVisibility(View.GONE);
+
         if (filter.isEmpty()) {
             search_progress_bar.setVisibility(View.VISIBLE);
             productModelLists = getAllProducts(filter);
@@ -74,6 +76,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
                 searchProductAdapter = new searchProductAdapter(getApplicationContext(), productModelLists, search.this);
                 searchProductRV.setAdapter(searchProductAdapter);
                 search_progress_bar.setVisibility(View.GONE);
+                search_et.setVisibility(View.VISIBLE);
             }
         }, 3000);
 
@@ -120,7 +123,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
             searchProductAdapter.notifyDataSetChanged();
 
             search_progress_bar.setVisibility(View.VISIBLE);
-
+            search_et.setVisibility(View.GONE);
             productModelLists = getAllProducts(filter);
             handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -129,6 +132,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
                     searchProductAdapter = new searchProductAdapter(getApplicationContext(), productModelLists, search.this);
                     searchProductRV.setAdapter(searchProductAdapter);
                     search_progress_bar.setVisibility(View.GONE);
+                    search_et.setVisibility(View.VISIBLE);
                 }
             }, 3000);
         }
@@ -251,9 +255,7 @@ public class search extends AppCompatActivity implements searchProductInterface 
                     }
                 });
             }
-
         }
-
         return productModelLists;
     }
 

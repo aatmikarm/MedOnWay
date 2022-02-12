@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.medOnWay">
         <activity
+            android:name=".mobileNumber"
+            android:exported="true" />
+        <activity
             android:name=".filter"
             android:exported="true" />
         <activity
@@ -41,14 +44,14 @@
         <activity
             android:name=".productStatus"
             android:exported="true" />
-
-        <activity android:name="com.paytm.pgsdk.PaytmPGActivity"
+        <activity
+            android:name="com.paytm.pgsdk.PaytmPGActivity"
+            android:configChanges="keyboardHidden|orientation|keyboard"
             android:exported="true"
-            android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation|keyboard"/>
-
-
-        <activity android:name=".checksum"
-            android:exported="true"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".checksum"
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -65,16 +68,15 @@
             android:name=".profile"
             android:exported="true"
             tools:ignore="ExtraText" />
-
-        <activity android:name=".cart"
-            android:exported="true"/>
-
+        <activity
+            android:name=".cart"
+            android:exported="true" />
         <activity
             android:name=".orders"
-            android:launchMode="singleTop"
-            android:exported="true"/>
-
-        <activity android:name=".splashScreen"
+            android:exported="true"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".splashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -82,22 +84,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".resetPassword"
-            android:exported="true"/>
-        <activity android:name=".signUp"
-            android:exported="true"/>
-        <activity android:name=".signIn"
-            android:exported="true"/>
-        <activity android:name=".MainActivity"
-            android:exported="true"/>
+        <activity
+            android:name=".resetPassword"
+            android:exported="true" />
+        <activity
+            android:name=".signUp"
+            android:exported="true" />
+        <activity
+            android:name=".signIn"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
 
         <service
             android:name=".FirebaseMessagingService"
+            android:exported="true"
             android:permission="TODO"
-            tools:ignore="ExportedService"
-            android:exported="true">
-
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

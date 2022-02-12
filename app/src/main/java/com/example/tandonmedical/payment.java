@@ -193,7 +193,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
         String orderId = UUID.randomUUID().toString().substring(0, 28);
         String url = "https://aatmik.000webhostapp.com/paytmGateway/generateChecksum.php";
         String varifyurl = "https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp";
-
+        //String varifyurl = "https://securegw-stage.paytm.in/theia/api/v1/initiateTransaction";
 
         RequestQueue requestQueue = Volley.newRequestQueue(payment.this);
 
@@ -215,7 +215,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                         paramMap.put("CUST_ID", custid);
                         paramMap.put("ORDER_ID", orderId);
                         paramMap.put("CHANNEL_ID", "WAP");
-                        paramMap.put("TXN_AMOUNT", "100");
+                        paramMap.put("TXN_AMOUNT", String.valueOf(totalAmount));
                         paramMap.put("WEBSITE", "WEBSTAGING");
                         paramMap.put("CALLBACK_URL", varifyurl);
                         paramMap.put("CHECKSUMHASH", CHECKSUMHASH);
@@ -227,11 +227,13 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                         paytmPGService.startPaymentTransaction(payment.this, true, true, new PaytmPaymentTransactionCallback() {
                             @Override
                             public void onTransactionResponse(Bundle inResponse) {
-                                //Toast.makeText(payment.this, "error", Toast.LENGTH_SHORT).show();
                                 if (inResponse.getString("STATUS").equals("TXN_SUCCESS")) {
 
                                     payment_done_orderId_tv.setText("Order Id " + inResponse.getString("ORDERID"));
                                     payment_done_con.setVisibility(View.VISIBLE);
+                                    if (dialog.isShowing()) {
+                                        dialog.dismiss();
+                                    }
                                     payment_done_continue_shopping_tv.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
@@ -331,7 +333,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                 paramMap.put("CUST_ID", custid);
                 paramMap.put("ORDER_ID", orderId);
                 paramMap.put("CHANNEL_ID", "WAP");
-                paramMap.put("TXN_AMOUNT", "100");
+                paramMap.put("TXN_AMOUNT", String.valueOf(totalAmount));
                 paramMap.put("WEBSITE", "WEBSTAGING");
                 paramMap.put("CALLBACK_URL", varifyurl);
                 paramMap.put("INDUSTRY_TYPE_ID", "Retail");
@@ -428,7 +430,7 @@ public class payment extends AppCompatActivity implements OnMapReadyCallback {
                                 (String) document.get("productQuantity") + " " + (String) document.get("name"),
                                 getApplicationContext(), payment.this);
                         notificationsSender.SendNotifications();
-                        Toast.makeText(payment.this, sellerToken, Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(payment.this, sellerToken, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
