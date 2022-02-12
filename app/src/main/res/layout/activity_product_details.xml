@@ -49,7 +49,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="5dp"
         app:layout_constraintBottom_toTopOf="@+id/con3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,12 +67,11 @@
                 android:id="@+id/productDetails_discount_cv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
                 app:cardBackgroundColor="@color/light"
                 app:cardCornerRadius="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/productDetails_image_iv"
+                android:layout_marginEnd="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/productDetails_productName_tv">
+                app:layout_constraintTop_toTopOf="@+id/productDetails_price_tv">
 
                 <TextView
                     android:id="@+id/productDetails_discount_tv"
@@ -82,7 +80,6 @@
                     android:layout_margin="5dp"
                     android:gravity="center"
                     android:text="15% OFF"
-                    android:textSize="10sp"
                     android:textStyle="bold" />
 
 
@@ -90,41 +87,29 @@
 
             <TextView
                 android:id="@+id/productDetails_productName_tv"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:ellipsize="end"
-                android:ems="14"
+                android:ems="13"
                 android:maxLines="2"
+                android:textColor="@color/light"
                 android:text="Product Name"
-                android:textSize="22sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/productDetails_category_tv"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:maxLines="1"
                 android:text="Product Category"
-                android:textSize="12sp"
-                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/productDetails_discount_cv"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/productDetails_productName_tv" />
-
-            <TextView
-                android:id="@+id/productDetails_prescription_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:maxLines="1"
-                android:textColor="@color/light"
-                android:text="Prescription Required"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/productDetails_category_tv"
                 app:layout_constraintTop_toBottomOf="@+id/productDetails_productName_tv" />
 
             <ImageView
@@ -141,8 +126,10 @@
                 android:id="@+id/search_user_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
                 android:text="Best Price"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/productDetails_image_iv" />
@@ -156,7 +143,6 @@
                 android:textColor="@color/light"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/search_user_name_tv"
                 app:layout_constraintStart_toEndOf="@+id/search_user_name_tv"
                 app:layout_constraintTop_toTopOf="@+id/search_user_name_tv" />
 
@@ -164,8 +150,8 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_marginTop="1dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
                 android:text="MRP"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/search_user_name_tv" />
@@ -177,10 +163,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="Rs 975"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView3"
                 app:layout_constraintStart_toEndOf="@+id/textView3"
                 app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+            <TextView
+                android:id="@+id/productDetails_prescription_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:maxLines="1"
+                android:text="Prescription Required"
+                android:textColor="@color/light"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv9"
@@ -191,7 +188,7 @@
                 app:cardCornerRadius="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3">
+                app:layout_constraintTop_toBottomOf="@+id/productDetails_prescription_tv">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -202,18 +199,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="Product Description"
+                        android:text="Description"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-
                     <TextView
                         android:id="@+id/productDetails_productDescription_tv"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:layout_margin="10dp"
                         android:text="Product Description"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -307,8 +303,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1"
-                    android:textStyle="bold"
                     android:textSize="30dp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -335,8 +331,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="+"
-                    android:textStyle="bold"
                     android:textSize="30dp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -374,6 +370,8 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
