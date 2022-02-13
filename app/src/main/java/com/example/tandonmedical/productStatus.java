@@ -248,7 +248,7 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
                     if (location != null) {
                         Toast.makeText(productStatus.this, "location = " + location.getLatitude(), Toast.LENGTH_SHORT).show();
                         map.setMyLocationEnabled(true);
-                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15.0f));
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16.0f));
                         GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                         Map<String, Object> updateUserLocation = new HashMap<>();
                         updateUserLocation.put("geo_point", geoPoint);
