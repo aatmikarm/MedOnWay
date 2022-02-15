@@ -34,7 +34,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
     private RecyclerView cartProductRecyclerView;
     private String currentUserUid;
     private TextView cartTotalAmount, cart_cart_tv;
-    private ImageView cart_cart_iv,backBtn;
+    private ImageView cart_cart_iv, backBtn;
     private CardView cart_buy_cv;
     private ProgressBar cart_pb;
     private FirebaseFirestore mDb;
@@ -47,7 +47,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-      
+
 
         firebaseAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
@@ -103,7 +103,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
     private void updateTotalAmount() {
         totalAmount = 0;
 
-        for (int i=0; i<productModelLists.size(); i++) {
+        for (int i = 0; i < productModelLists.size(); i++) {
             totalAmount = totalAmount + (Float.parseFloat(productModelLists.get(i).getPrice()) * Float.parseFloat(productModelLists.get(i).getProductQuantity()));
         }
         cartTotalAmount.setText(String.valueOf(totalAmount));
@@ -111,7 +111,6 @@ public class cart extends AppCompatActivity implements cartProductInterface {
             cart_cart_iv.setVisibility(View.VISIBLE);
             cart_cart_tv.setVisibility(View.VISIBLE);
         }
-
 
 //        mDb.collection("users").document(currentUserUid).collection("orders")
 //                .whereEqualTo("status", "in cart")

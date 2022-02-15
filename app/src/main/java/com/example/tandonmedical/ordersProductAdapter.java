@@ -43,8 +43,14 @@ public class ordersProductAdapter extends RecyclerView.Adapter<ordersProductAdap
     @Override
     public void onBindViewHolder(ordersProductAdapter.ItemViewHolder holder, int position) {
 
+        String totalProductPrice = String.valueOf(Float.parseFloat(productModelList.get(position).getPrice() ) *
+                Float.parseFloat(productModelList.get(position).getProductQuantity()));
+
+
         Glide.with(context).load(productModelList.get(position).getImageUrl()).into(holder.productImage);
         holder.productName.setText(productModelList.get(position).name);
+        holder.productTotalAmount.setText("Rs. "+totalProductPrice);
+
         holder.order_status_tv.setText(productModelList.get(position).status);
         holder.productPrice.setText("Rs. " + productModelList.get(position).price + ".00");
         holder.productMrp.setText("Rs. " + productModelList.get(position).mrp + ".00");
@@ -78,7 +84,7 @@ public class ordersProductAdapter extends RecyclerView.Adapter<ordersProductAdap
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         ImageView productImage;
-        TextView productName, productPrice, productMrp, productDiscount, order_status_tv, order_date_time_tv, order_quantity_tv;
+        TextView productName, productPrice, productMrp, productDiscount, order_status_tv, order_date_time_tv, order_quantity_tv,productTotalAmount;
         ConstraintLayout productContainer;
         CardView order_status_cv,order_cancel_cv;
 
@@ -87,6 +93,7 @@ public class ordersProductAdapter extends RecyclerView.Adapter<ordersProductAdap
 
             productName = itemView.findViewById(R.id.orders_product_name);
             productImage = itemView.findViewById(R.id.orders_product_image);
+            productTotalAmount = itemView.findViewById(R.id.orders_product_total_amount_tv);
             productPrice = itemView.findViewById(R.id.orders_product_discounted_price);
             productMrp = itemView.findViewById(R.id.orders_product_mrp);
             productContainer = itemView.findViewById(R.id.orders_product_container);
