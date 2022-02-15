@@ -65,8 +65,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class productStatus extends AppCompatActivity implements OnMapReadyCallback {
 
-    private TextView productStatus_deliveryPersonName_tv,productStatus_product_name, productStaus_arrivalTime, userProductOTP_tv, productStatusView_tv,paymentType_tv;
-    private ImageView productStatus_deliveryPerson_iv, productStatus_back_iv,productStatus_image_iv;
+    private TextView productStatus_deliveryPersonName_tv, productStatus_total_amount_tv, productStatus_product_name, productStaus_arrivalTime, userProductOTP_tv, productStatusView_tv, paymentType_tv;
+    private ImageView productStatus_deliveryPerson_iv, productStatus_back_iv, productStatus_image_iv;
     private CardView productStatus_deliveryPersonCall;
     private FragmentManager ratingfragmentManager;
     private String currentUserUid, seller, sellerId, sellerPhone, productId, productOrderId, distanceBetweenUserAndSeller;
@@ -89,7 +89,7 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_status);
-      
+
 
         firebaseAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
@@ -111,6 +111,7 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
         productStatus_deliveryPersonCall = findViewById(R.id.productStatus_deliveryPersonCall);
         userProductOTP_tv = findViewById(R.id.userProductOTP_tv);
         productStatus_product_name = findViewById(R.id.productStatus_product_name);
+        productStatus_total_amount_tv = findViewById(R.id.productStatus_total_amount_tv);
         productStatusView_tv = findViewById(R.id.productStatusView_tv);
         paymentType_tv = findViewById(R.id.paymentType_tv);
 
@@ -179,6 +180,12 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
                         userProductOTP_tv.setText((String) document.get("otp").toString());
                         productStatusView_tv.setText((String) document.get("status").toString());
                         paymentType_tv.setText((String) document.get("paymentType").toString());
+
+                        String totalProductPrice = String.valueOf(Float.parseFloat((String) document.get("price").toString()) *
+                                Float.parseFloat((String) document.get("productQuantity").toString()));
+
+                        productStatus_total_amount_tv.setText("Rs. "+(String) document.get("price").toString() + "  *  "
+                                + (String) document.get("productQuantity").toString() + "  = Rs. " + totalProductPrice);
                         productStatus_product_name.setText((String) document.get("name").toString());
                         Glide.with(productStatus.this).load((String) document.get("imageUrl").toString()).into(productStatus_image_iv);
 
