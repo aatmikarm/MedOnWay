@@ -62,7 +62,6 @@ public class cart extends AppCompatActivity implements cartProductInterface {
         cart_pb = findViewById(R.id.cart_pb);
 
         productModelLists = getCartProducts();
-        updateTotalAmount();
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -70,6 +69,7 @@ public class cart extends AppCompatActivity implements cartProductInterface {
             public void run() {
                 cart_pb.setVisibility(View.GONE);
                 cartProductRecyclerView = findViewById(R.id.cart_list_recycler_view);
+                updateTotalAmount();
                 cartProductAdapter cartProductAdapter = new cartProductAdapter(getApplicationContext(), productModelLists, cart.this);
                 cartProductRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
                 cartProductRecyclerView.setAdapter(cartProductAdapter);
@@ -102,23 +102,34 @@ public class cart extends AppCompatActivity implements cartProductInterface {
 
     private void updateTotalAmount() {
         totalAmount = 0;
-        mDb.collection("users").document(currentUserUid).collection("orders")
-                .whereEqualTo("status", "in cart")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        totalAmount = totalAmount + (Float.parseFloat((String) document.get("price")) * Float.parseFloat((String) document.get("productQuantity")));
-                    }
-                    cartTotalAmount.setText(String.valueOf(totalAmount));
-                    if (totalAmount == 0) {
-                        cart_cart_iv.setVisibility(View.VISIBLE);
-                        cart_cart_tv.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        });
+
+        for (int i=0; i<productModelLists.size(); i++) {
+            totalAmount = totalAmount + (Float.parseFloat(productModelLists.get(i).getPrice()) * Float.parseFloat(productModelLists.get(i).getProductQuantity()));
+        }
+        cartTotalAmount.setText(String.valueOf(totalAmount));
+        if (totalAmount == 0) {
+            cart_cart_iv.setVisibility(View.VISIBLE);
+            cart_cart_tv.setVisibility(View.VISIBLE);
+        }
+
+
+//        mDb.collection("users").document(currentUserUid).collection("orders")
+//                .whereEqualTo("status", "in cart")
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        totalAmount = totalAmount + (Float.parseFloat((String) document.get("price")) * Float.parseFloat((String) document.get("productQuantity")));
+//                    }
+//                    cartTotalAmount.setText(String.valueOf(totalAmount));
+//                    if (totalAmount == 0) {
+//                        cart_cart_iv.setVisibility(View.VISIBLE);
+//                        cart_cart_tv.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//            }
+//        });
     }
 
     private ArrayList<productModelList> getCartProducts() {
@@ -172,6 +183,9 @@ public class cart extends AppCompatActivity implements cartProductInterface {
         mDb.collection("users").document(currentUserUid)
                 .collection("orders").document(productModelLists.get(position).getProductOrderId())
                 .update(order);
+
+        productModelLists.get(position).setProductQuantity(String.valueOf(currentQuantity));
+        Toast.makeText(cart.this, productModelLists.get(position).getProductQuantity(), Toast.LENGTH_SHORT).show();
         updateTotalAmount();
     }
 

@@ -85,6 +85,22 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
 
                 }
             });
+            cartProduct_plus_cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+                    int currentQuantity = Integer.parseInt(cartProduct_quantity_tv.getText().toString());
+                    if (currentQuantity < 5) {
+                        currentQuantity++;
+                        cartProduct_quantity_tv.setText(String.valueOf(currentQuantity));
+                        cartProductInterface.productQuantityChange(getAdapterPosition(), currentQuantity);
+                    }
+                    if (currentQuantity == 5) {
+                        Toast.makeText(context, "Max Quantity Limit", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
             cartProduct_minus_cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,23 +113,7 @@ public class cartProductAdapter extends RecyclerView.Adapter<cartProductAdapter.
                     if (currentQuantity > 1) {
                         currentQuantity--;
                         cartProduct_quantity_tv.setText(String.valueOf(currentQuantity));
-                        cartProductInterface.productQuantityChange(getAdapterPosition(),currentQuantity);
-                    }
-                }
-            });
-            cartProduct_plus_cv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
-                    int currentQuantity = Integer.parseInt(cartProduct_quantity_tv.getText().toString());
-                    if (currentQuantity < 5) {
-                        currentQuantity++;
-                        cartProduct_quantity_tv.setText(String.valueOf(currentQuantity));
-                        cartProductInterface.productQuantityChange(getAdapterPosition(),currentQuantity);
-                    }
-                    if (currentQuantity == 5) {
-                        Toast.makeText(context, "Max Quantity Limit", Toast.LENGTH_SHORT).show();
+                        cartProductInterface.productQuantityChange(getAdapterPosition(), currentQuantity);
                     }
                 }
             });
