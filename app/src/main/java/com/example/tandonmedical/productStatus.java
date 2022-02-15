@@ -65,8 +65,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class productStatus extends AppCompatActivity implements OnMapReadyCallback {
 
-    private TextView productStatus_deliveryPersonName_tv, productStaus_arrivalTime, userProductOTP_tv, productStatusView_tv,paymentType_tv;
-    private ImageView productStatus_deliveryPerson_iv, productStatus_back_iv;
+    private TextView productStatus_deliveryPersonName_tv,productStatus_product_name, productStaus_arrivalTime, userProductOTP_tv, productStatusView_tv,paymentType_tv;
+    private ImageView productStatus_deliveryPerson_iv, productStatus_back_iv,productStatus_image_iv;
     private CardView productStatus_deliveryPersonCall;
     private FragmentManager ratingfragmentManager;
     private String currentUserUid, seller, sellerId, sellerPhone, productId, productOrderId, distanceBetweenUserAndSeller;
@@ -107,8 +107,10 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
         productStaus_arrivalTime = findViewById(R.id.productStaus_arrivalTime);
         productStatus_deliveryPerson_iv = findViewById(R.id.productStatus_deliveryPerson_iv);
         productStatus_back_iv = findViewById(R.id.productStatus_back_iv);
+        productStatus_image_iv = findViewById(R.id.productStatus_image_iv);
         productStatus_deliveryPersonCall = findViewById(R.id.productStatus_deliveryPersonCall);
         userProductOTP_tv = findViewById(R.id.userProductOTP_tv);
+        productStatus_product_name = findViewById(R.id.productStatus_product_name);
         productStatusView_tv = findViewById(R.id.productStatusView_tv);
         paymentType_tv = findViewById(R.id.paymentType_tv);
 
@@ -177,6 +179,9 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
                         userProductOTP_tv.setText((String) document.get("otp").toString());
                         productStatusView_tv.setText((String) document.get("status").toString());
                         paymentType_tv.setText((String) document.get("paymentType").toString());
+                        productStatus_product_name.setText((String) document.get("name").toString());
+                        Glide.with(productStatus.this).load((String) document.get("imageUrl").toString()).into(productStatus_image_iv);
+
                     } else {
                         Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
                     }
@@ -246,7 +251,7 @@ public class productStatus extends AppCompatActivity implements OnMapReadyCallba
                 public void onComplete(@NonNull Task<Location> task) {
                     Location location = task.getResult();
                     if (location != null) {
-                        Toast.makeText(productStatus.this, "location = " + location.getLatitude(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(productStatus.this, "location = " + location.getLatitude(), Toast.LENGTH_SHORT).show();
                         map.setMyLocationEnabled(true);
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16.0f));
                         GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
